@@ -26,7 +26,6 @@ function App() {
 
   return (
     <div className="App">
-      <div>tsdfsdesfdfds</div>
       <button>
         <Link to="/">메인</Link>
       </button>
