@@ -26,6 +26,7 @@ function App() {
 
   return (
     <div className="App">
+      <div>test</div>
       <button>
         <Link to="/">메인</Link>
       </button>
