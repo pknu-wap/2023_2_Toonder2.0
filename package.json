@@ -1,6 +1,0 @@
-{
-  "dependencies": {
-    "@supabase/supabase-js": "^2.38.4",
-    "react-icons": "^4.11.0"
-  }
-}
