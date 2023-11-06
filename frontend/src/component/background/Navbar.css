@@ -1,0 +1,17 @@
+.navbar {
+    display: flex;
+    justify-content: flex-end; /* 아이콘을 오른쪽으로 정렬 */
+    color: #fff;
+    padding: 10px;
+    width: 100%; /* 부모 요소 너비를 100%로 설정 */
+  }
+  
+  .navbar-icons {
+    display: flex;
+    align-items: center; /* 아이콘들을 수직 가운데 정렬 */
+  }
+  
+  .navbar-icons > * {
+    margin-right: 16px; /* 아이콘 사이의 간격을 조절 */
+    font-size: 20px;
+  }
