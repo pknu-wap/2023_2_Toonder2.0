@@ -4,11 +4,13 @@ import { Container } from "./component/background/Container";
 import MainPage from "./component/main/MainPage";
 import LoginPage from "./component/login/LoginPage";
 import FindPwPage from "./component/find/FindPwPage";
+import NewPwPage from "./component/find/NewPwPage";
 import JoinPageStep1 from "./component/join/JoinPageStep1";
 import JoinPageStep2 from "./component/join/JoinPageStep2";
 import { Routes, Route, Link } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
+
 
 function App() {
   document.title = "툰더";
@@ -43,6 +45,9 @@ function App() {
       <button>
         <Link to="/findpw">비밀번호 초기화</Link>
       </button>
+      <button>
+        <Link to="/newpw">비밀번호 재설정</Link>
+      </button>
 
       <Container>
         <Routes>
@@ -51,6 +56,7 @@ function App() {
           <Route path="/join/step1" element={<JoinPageStep1 />} />
           <Route path="/join/step2" element={<JoinPageStep2 />} />
           <Route path="/findpw" element={<FindPwPage />}></Route>
+          <Route path="/newpw" element={<NewPwPage />}></Route>
           <Route path="/user/kakao/callback" element={<LoginHandler />}></Route>
         </Routes>
       </Container>
