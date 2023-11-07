@@ -45,9 +45,6 @@ function App() {
       <button>
         <Link to="/findpw">비밀번호 초기화</Link>
       </button>
-      <button>
-        <Link to="/newpw">비밀번호 재설정</Link>
-      </button>
 
       <Container>
         <Routes>
