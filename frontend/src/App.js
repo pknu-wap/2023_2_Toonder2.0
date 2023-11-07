@@ -9,6 +9,7 @@ import JoinPageStep2 from "./component/join/JoinPageStep2";
 import { Routes, Route, Link } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
+import { Footer } from "./component/background/Footer";
 
 function App() {
   document.title = "툰더";
@@ -53,6 +54,7 @@ function App() {
           <Route path="/findpw" element={<FindPwPage />}></Route>
           <Route path="/user/kakao/callback" element={<LoginHandler />}></Route>
         </Routes>
+        <Footer/>
       </Container>
     </div>
   );
