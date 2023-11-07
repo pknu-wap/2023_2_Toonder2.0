@@ -108,7 +108,7 @@ function LoginForm() {
       const session = data.session;
 
       if (session !== null) {
-        // 이미 로그인된 상태라면 로그아웃하고 메인 페이지로 이동
+        // 이미 로그인된 상태라면 메인 페이지로 이동
         alert("이미 로그인되어 있습니다.");
         navigate("/"); // 메인 페이지로 이동
       }
