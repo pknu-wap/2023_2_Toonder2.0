@@ -1,6 +1,5 @@
 import React from "react";
 import styled from "styled-components";
-import { FaHome, FaUser, FaPlus, FaSignInAlt } from "react-icons/fa";
 import { Link } from "react-router-dom";
 
 const FooterContainer = styled.div`
@@ -19,35 +18,74 @@ const FooterContainer = styled.div`
   border-top-right-radius: 10px; /* 오른쪽 위 모서리를 둥글게 만듭니다. */
 `;
 
-const FooterIcons = styled.div`
+const FooterIcon = styled.div`
   display: flex;
+  justify-content: center;
   align-items: center;
   font-size: 20px;
   color: white;
-  padding: 14px;
+  padding-top: 8px;
+  color: #efefef;
 `;
 
-const WhiteIcon = styled.div`
-  color: white;
+const FooterIconText = styled.div`
+  font-size: 10px;
+  align-items: center;
+  color: #efefef;
+  padding: 6px;
+  letter-spacing: 1px;
 `;
 
 export const Footer = () => {
   return (
     <FooterContainer>
-      <FooterIcons>
-        <Link to="/">
-          <FaHome />
-        </Link>
-      </FooterIcons>
-      <FooterIcons>
-        <FaUser />
-      </FooterIcons>
-      <FooterIcons>
-        <FaPlus />
-      </FooterIcons>
-      <FooterIcons>
-        <FaSignInAlt />
-      </FooterIcons>
+      <Link to="/" style={{ textDecoration: "none" }}>
+        <FooterIcon>
+          <img
+            src={process.env.PUBLIC_URL + "/home_icon_dark.png"}
+            alt="logo"
+            width="28px"
+            height="auto"
+          />
+        </FooterIcon>
+        <FooterIconText>홈</FooterIconText>
+      </Link>
+
+      <Link to="/webtoonlist" style={{ textDecoration: "none" }}>
+        <FooterIcon>
+          <img
+            src={process.env.PUBLIC_URL + "/webtoonlist_icon_dark.png"}
+            alt="logo"
+            width="26px"
+            height="auto"
+          />
+        </FooterIcon>
+        <FooterIconText>웹툰목록</FooterIconText>
+      </Link>
+
+      <Link to="/mywebtoon" style={{ textDecoration: "none" }}>
+        <FooterIcon>
+          <img
+            src={process.env.PUBLIC_URL + "/mywebtoon_icon_dark.png"}
+            alt="logo"
+            width="26px"
+            height="auto"
+          />
+        </FooterIcon>
+        <FooterIconText>마이웹툰</FooterIconText>
+      </Link>
+
+      <Link to="/mypage" style={{ textDecoration: "none" }}>
+        <FooterIcon>
+          <img
+            src={process.env.PUBLIC_URL + "/mypage_icon_dark.png"}
+            alt="logo"
+            width="26px"
+            height="auto"
+          />
+        </FooterIcon>
+        <FooterIconText>마이페이지</FooterIconText>
+      </Link>
     </FooterContainer>
   );
 };
