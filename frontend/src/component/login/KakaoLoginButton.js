@@ -6,12 +6,12 @@ const loginUrl = `https://kauth.kakao.com/oauth/authorize?client_id=${kakaoClien
 
 const KakaoLoginButton = () => {
   return (
-    <div style={{ margin: "30px" }}>
+    <div style={{ margin: "20px" }}>
       <a href={loginUrl} rel="noopener noreferrer">
         <img
           src={process.env.PUBLIC_URL + "/kakaoLoginImg.png"}
           alt="kakaoLoginImg"
-          width="50px"
+          width="48px"
           height="auto"
         />
       </a>
