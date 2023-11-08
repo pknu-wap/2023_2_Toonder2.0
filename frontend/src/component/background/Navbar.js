@@ -1,15 +1,37 @@
 import React from 'react';
-import { FaSearch, FaBars } from 'react-icons/fa'; // React-icons에서 사용할 아이콘 가져오기
-import './Navbar.css'; // 스타일을 정의하는 CSS 파일
+import { FaSearch, FaBars } from 'react-icons/fa';
+import styled from 'styled-components'; // Import styled from styled-components
+
+const NavbarContainer = styled.div`
+  display: flex;
+  justify-content: flex-end;
+  color: #fff;
+  padding: 10px;
+  width: 100%;
+`;
+
+const NavbarIcons = styled.div`
+  display: flex;
+  align-items: center;
+`;
+
+const Icon = styled.div`
+  margin-right: 16px;
+  font-size: 18px;
+`;
 
 function Navbar() {
   return (
-    <div className="navbar">
-      <div className="navbar-icons">
-        <FaSearch />
-        <FaBars />
-      </div>
-    </div>
+    <NavbarContainer>
+      <NavbarIcons>
+        <Icon>
+          <FaSearch />
+        </Icon>
+        <Icon>
+          <FaBars />
+        </Icon>
+      </NavbarIcons>
+    </NavbarContainer>
   );
 }
 
