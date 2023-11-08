@@ -10,7 +10,7 @@ const SidebarContainer = styled.div`
   right: ${({ isOpen }) => (isOpen ? "0" : "-270px")};
   width: ${({ isOpen }) => (isOpen ? "270px" : "0")};
   height: 100%;
-  background-color: rgba(51, 51, 51, 0.96);
+  background-color: rgba(30, 30, 30, 0.98);
   transition: right 0.3s ease;
 `;
 
@@ -32,7 +32,7 @@ const menuItems = [
 ];
 
 const Sidebar = ({ isOpen, onMenuClick }) => {
-  const [isLogined, setLogined] = useState(false);
+  const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -44,11 +44,11 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
       if (session !== null) {
         // 이미 로그인된 상태라면 메인 페이지로 이동
         console.log("로그인되어 있습니다.");
-        console.log(isLogined);
-        setLogined(true);
+        console.log(isLoggedIn);
+        setLoggedIn(true);
       } else {
         console.log("로그아웃되어 있습니다.");
-        console.log(isLogined);
+        console.log(isLoggedIn);
       }
     };
 
