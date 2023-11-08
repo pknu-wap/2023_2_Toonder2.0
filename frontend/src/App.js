@@ -29,24 +29,6 @@ function App() {
 
   return (
     <div className="App">
-      <button>
-        <Link to="/">메인</Link>
-      </button>
-      <button>
-        <Link to="/login">로그인</Link>
-      </button>
-      <button>
-        <Link to="/" onClick={handleLogout}>
-          로그아웃
-        </Link>
-      </button>
-      <button>
-        <Link to="/join/step1">회원가입</Link>
-      </button>
-      <button>
-        <Link to="/findpw">비밀번호 초기화</Link>
-      </button>
-
       <Container>
         <Navbar />
 
