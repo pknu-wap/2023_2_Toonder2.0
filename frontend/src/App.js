@@ -16,17 +16,6 @@ import Navbar from "./component/background/Navbar";
 function App() {
   document.title = "툰더";
 
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
-
-    if (error) {
-      console.error("로그아웃 중 오류가 발생했습니다.", error);
-    } else {
-      // 로그아웃 성공한 경우 로그아웃 메시지를 표시하거나 원하는 작업을 수행할 수 있습니다.
-      console.log("로그아웃되었습니다.");
-    }
-  };
-
   return (
     <div className="App">
       <Container>
