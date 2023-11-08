@@ -10,7 +10,7 @@ const Title = styled.div`
   font-size: 24px;
   color: #efefef;
   letter-spacing: 2px;
-  margin: 10px;
+  margin: 5px;
 `;
 
 const Subtitle = styled.div`
@@ -26,7 +26,7 @@ function Header(props) {
         <img
           src={process.env.PUBLIC_URL + "/logo.png"}
           alt="logo"
-          width="80px"
+          width="60px"
           height="auto"
         />
       </Link>
