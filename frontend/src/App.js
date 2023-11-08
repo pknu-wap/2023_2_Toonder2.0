@@ -11,7 +11,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
-
+import Navbar from "./component/background/Navbar";
 
 function App() {
   document.title = "툰더";
@@ -48,6 +48,8 @@ function App() {
       </button>
 
       <Container>
+        <Navbar />
+
         <Routes>
           <Route path="/" element={<MainPage />}></Route>
           <Route path="/login" element={<LoginPage />}></Route>
@@ -57,7 +59,7 @@ function App() {
           <Route path="/newpw" element={<NewPwPage />}></Route>
           <Route path="/user/kakao/callback" element={<LoginHandler />}></Route>
         </Routes>
-        <Footer/>
+        <Footer />
       </Container>
     </div>
   );
