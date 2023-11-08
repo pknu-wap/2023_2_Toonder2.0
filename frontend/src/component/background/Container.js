@@ -11,6 +11,7 @@ export const Container = styled.div`
   align-items: center; /* 수정: 수직 가운데 정렬을 위해 필요 */
   box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1); /* 그림자 추가 */
   transition: box-shadow 0.3s ease; /* 효과를 부드럽게 적용하기 위한 트랜지션 추가 */
+  overflow-x: hidden; /* 가로 스크롤 없애기 */
   overflow-y: hidden; /* 스크롤이 필요한 경우 스크롤 표시 */
   min-height: 100vh; /* 컨테이너의 최소 높이를 뷰포트 높이로 설정 */
 `;
