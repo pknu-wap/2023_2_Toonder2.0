@@ -1,7 +1,10 @@
 import React from "react";
 import { Link } from "react-router-dom";
-import { Head } from "../../styles/background/Head";
 import styled from "styled-components";
+
+const HeaderContainer = styled.div`
+  margin: 10px;
+`;
 
 const Title = styled.div`
   font-size: 24px;
@@ -18,7 +21,7 @@ const Subtitle = styled.div`
 
 function Header(props) {
   return (
-    <Head>
+    <HeaderContainer>
       <Link to="/">
         <img
           src={process.env.PUBLIC_URL + "/logo.png"}
@@ -29,7 +32,7 @@ function Header(props) {
       </Link>
       <Title>{props.title}</Title>
       <Subtitle>{props.subtitle}</Subtitle>
-    </Head>
+    </HeaderContainer>
   );
 }
 
