@@ -1,6 +1,7 @@
-import React from 'react';
-import { FaSearch, FaBars } from 'react-icons/fa';
-import styled from 'styled-components'; // Import styled from styled-components
+import React, { useState } from "react";
+import { FaSearch, FaBars } from "react-icons/fa";
+import styled from "styled-components"; // Import styled from styled-components
+import Sidebar from "./Sidebar";
 
 const NavbarContainer = styled.div`
   display: flex;
@@ -21,17 +22,31 @@ const Icon = styled.div`
 `;
 
 function Navbar() {
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+
+  const toggleSidebar = () => {
+    setSidebarOpen(!sidebarOpen);
+  };
+
+  const handleMenuClick = () => {
+    setSidebarOpen(false);
+  };
+
   return (
-    <NavbarContainer>
-      <NavbarIcons>
-        <Icon>
-          <FaSearch />
-        </Icon>
-        <Icon>
-          <FaBars />
-        </Icon>
-      </NavbarIcons>
-    </NavbarContainer>
+    <>
+      <NavbarContainer>
+        <NavbarIcons>
+          <Icon>
+            <FaSearch />
+          </Icon>
+          <Icon>
+            <FaBars onClick={toggleSidebar} />
+          </Icon>
+        </NavbarIcons>
+      </NavbarContainer>
+
+      <Sidebar isOpen={sidebarOpen} onMenuClick={handleMenuClick} />
+    </>
   );
 }
 
