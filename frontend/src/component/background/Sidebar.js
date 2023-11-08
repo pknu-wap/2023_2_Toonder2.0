@@ -10,7 +10,7 @@ const SidebarContainer = styled.div`
   right: ${({ isOpen }) => (isOpen ? "0" : "-270px")};
   width: ${({ isOpen }) => (isOpen ? "270px" : "0")};
   height: 100%;
-  background-color: rgba(30, 30, 30, 0.98);
+  background-color: rgba(30, 30, 30, 0.95);
   transition: right 0.3s ease;
 `;
 
