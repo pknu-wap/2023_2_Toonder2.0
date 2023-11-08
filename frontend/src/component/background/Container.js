@@ -4,6 +4,7 @@ export const Container = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
+  position: relative; /* Container에 position: relative; 추가 */
   max-width: 540px; /* 너비 제한 추가 */
   margin: 0 auto; /* 가운데 정렬을 위해 추가 */
   text-align: center; /* 텍스트를 중앙으로 정렬합니다. */
