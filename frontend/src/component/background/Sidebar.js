@@ -6,18 +6,29 @@ import styled from "styled-components";
 const SidebarContainer = styled.div`
   position: absolute;
   top: 0;
-  right: ${({ isOpen }) => (isOpen ? "0" : "-300px")};
-  width: ${({ isOpen }) => (isOpen ? "300px" : "0")};
+  right: ${({ isOpen }) => (isOpen ? "0" : "-270px")};
+  width: ${({ isOpen }) => (isOpen ? "270px" : "0")};
   height: 100%;
   background-color: rgba(51, 51, 51, 0.96);
   transition: right 0.3s ease;
 `;
 
 const Menu = styled.div`
-  padding: 20px;
+  padding: 16px;
   color: #fff;
   cursor: pointer;
+  font-size: 14px;
 `;
+
+const menuItems = [
+  { to: "/", text: "메인" },
+  { to: "/login", text: "로그인" },
+  { to: "/join/step1", text: "회원가입" },
+  { to: "/freeboard", text: "자유게시판" },
+  { to: "/mypage", text: "마이페이지" },
+  { to: "/", text: "마이웹툰" },
+  { to: "/", text: "최근 쓴 글" },
+];
 
 const Sidebar = ({ isOpen, onMenuClick }) => {
   const sidebarRef = useRef(null);
@@ -38,16 +49,11 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
-      <Link to="/" style={{ textDecoration: "none" }}>
-        <Menu>메인</Menu>
-      </Link>
-      <Link to="/login" style={{ textDecoration: "none" }}>
-        <Menu onClick={onMenuClick}>로그인</Menu>
-      </Link>
-      <Link to="/join/step1" style={{ textDecoration: "none" }}>
-        <Menu onClick={onMenuClick}>회원가입</Menu>
-      </Link>
-      <Menu>마이페이지</Menu>
+      {menuItems.map((item, index) => (
+        <Link key={index} to={item.to} style={{ textDecoration: "none" }}>
+          <Menu onClick={onMenuClick}>{item.text}</Menu>
+        </Link>
+      ))}
     </SidebarContainer>
   );
 };
