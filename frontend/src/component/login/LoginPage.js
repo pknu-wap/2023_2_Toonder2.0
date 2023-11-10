@@ -153,7 +153,8 @@ function LoginForm() {
       } else if (data) {
         alert("로그인 되었습니다");
         sessionStorage.setItem("loggedUserEmail", email); // 로그인 하면 sessionStorage에 email이 저장됨
-        navigate("/"); // 로그인 성공 시 메인으로 리다이렉트
+        // navigate("/"); // 로그인 성공 시 메인으로 리다이렉트
+        window.location.replace("/");
       }
     } catch (error) {
       alert("로그인 실패");
