@@ -81,7 +81,7 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
       ))}
 
       {isLoggedIn ? (
-        <Menu style={{ fontSize: "12px" }} onClick={handleLogout}>
+        <Menu style={{ fontSize: "12px", textDecoration: "none" }} onClick={handleLogout}>
           로그아웃
         </Menu>
       ) : (
