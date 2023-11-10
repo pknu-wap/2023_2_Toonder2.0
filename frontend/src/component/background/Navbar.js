@@ -19,9 +19,10 @@ const NavbarIcons = styled.div`
 const Icon = styled.div`
   margin-right: 16px;
   font-size: 18px;
+  cursor : pointer;
 `;
 
-function Navbar() {
+export const Navbar = () => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
