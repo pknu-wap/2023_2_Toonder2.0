@@ -3,6 +3,7 @@ import React, { useRef, useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import supabase from "../supabase";
+import { useAuth } from "../../AuthContext";
 
 const SidebarContainer = styled.div`
   position: absolute;
@@ -22,38 +23,17 @@ const Menu = styled.div`
 `;
 
 const menuItems = [
-  { to: "/login", text: "로그인" },
-  { to: "/join/step1", text: "회원가입" },
   { to: "/mypage", text: "마이페이지" },
   { to: "/freeboard", text: "자유게시판" },
-  // { to: "/", text: "마이웹툰" },
+  { to: "/", text: "마이웹툰" },
   { to: "/", text: "최근 쓴 글" },
-  // { to: "/", text: "웹툰 목록" },
+  { to: "/", text: "웹툰 목록" },
 ];
 
 const Sidebar = ({ isOpen, onMenuClick }) => {
-  const [isLoggedIn, setLoggedIn] = useState(false);
+  // const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
-
-  useEffect(() => {
-    // 이미 로그인된 상태인지 확인
-    const checkLoggedIn = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      const session = data.session;
-
-      if (session !== null) {
-        // 이미 로그인된 상태라면 메인 페이지로 이동
-        console.log("로그인되어 있습니다.");
-        console.log(isLoggedIn);
-        setLoggedIn(true);
-      } else {
-        console.log("로그아웃되어 있습니다.");
-        console.log(isLoggedIn);
-      }
-    };
-
-    checkLoggedIn();
-  }, []);
+  const { isLoggedIn, logout } = useAuth();
 
   const sidebarRef = useRef(null);
 
@@ -71,28 +51,44 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
     };
   }, [onMenuClick]);
 
-  const handleLogout = async () => {
-    const { error } = await supabase.auth.signOut();
+  useEffect(() => {
+    // 로그인 상태 변경될 때마다 확인
+    const checkLoginStatus = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      const session = data?.session;
 
-    if (error) {
-      console.error("로그아웃 중 오류가 발생했습니다.", error);
-    } else {
-      // 로그아웃 성공한 경우 로그아웃 메시지를 표시하거나 원하는 작업을 수행할 수 있습니다.
-      alert("로그아웃되었습니다.");
-      navigate("/");
-    }
+      if (session !== null) {
+        console.log("로그인되어 있습니다.");
+      } else {
+        console.log("로그아웃되어 있습니다.");
+      }
+    };
+
+    checkLoginStatus();
+  }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
+
+  const handleLogout = async () => {
+    await logout();
   };
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
+      {/* 프로필 사진 넣기 */}
       {menuItems.map((item, index) => (
         <Link key={index} to={item.to} style={{ textDecoration: "none" }}>
           <Menu onClick={onMenuClick}>{item.text}</Menu>
         </Link>
       ))}
-      <Menu style={{ fontSize: "12px" }} onClick={handleLogout}>
-        로그아웃
-      </Menu>
+
+      {isLoggedIn ? (
+        <Menu style={{ fontSize: "12px" }} onClick={handleLogout}>
+          로그아웃
+        </Menu>
+      ) : (
+        <Link to="/login" style={{ textDecoration: "none" }}>
+          <Menu>로그인</Menu>
+        </Link>
+      )}
     </SidebarContainer>
   );
 };
