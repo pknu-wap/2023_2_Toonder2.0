@@ -12,7 +12,9 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
     
 	List<Webtoon> findByMainGenreCdNmNotContaining(String mainGenreCdNm, Pageable pageable);
 
-    List<Webtoon> findByTitleContaining(String keyword, Pageable pageable);
+    List<Webtoon> findByTitleContaining(String keyword, Pageable pageable); 
+
+	List<Webtoon> findByPictrWritrNmContaining(String keyword, Pageable pageable);
 
 	public final static String SELECT_WEBTOON_LIST_PAGED = ""
 			+ "SELECT " 
