@@ -75,7 +75,7 @@ public class WebtoonController {
         return ResponseEntity.ok(webtoonResponseDto);
     } 
 
-    //웹툰 제목으로 검색
+    //웹툰 제목/작가명으로 검색
     @GetMapping("/webtoon/search")
     public ResponseEntity<List<WebtoonResponseDto>> search(
         @RequestParam("type") String type, 
