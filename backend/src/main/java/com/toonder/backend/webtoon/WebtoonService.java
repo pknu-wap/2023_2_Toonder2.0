@@ -89,7 +89,7 @@ public class WebtoonService {
         return new WebtoonResponseDto(webtoon);
     }
 
-    //웹툰 제목으로 검색 (페이징 처리)
+    //웹툰 제목/작가명으로 검색 (페이징 처리)
     @Transactional
     public ResponseEntity<Map<String, Object>> search(String type, String keyword, Pageable pageable) {
         Map<String, Object> result = new HashMap<>();
