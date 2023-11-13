@@ -9,15 +9,12 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
-import com.toonder.backend.board.BoardResponseDto;
 
 import org.springframework.data.domain.Sort;
 
@@ -55,10 +52,25 @@ public class WebtoonController {
     
     // 웹툰 목록 리턴 (페이징 처리)
     @GetMapping("/webtoon")
-    public ResponseEntity<List<WebtoonResponseDto>> getAllWebtoons(@RequestParam(value = "p_num", required = false) Integer p_num) {
-        if (p_num == null || p_num <= 0) p_num = 1;
+    public ResponseEntity<List<WebtoonResponseDto>> getAllWebtoons(
+        @RequestParam(value ="type", required = false)  String type,
+        @RequestParam(value = "page", required = false) Integer page,
+        @PageableDefault(size = 64, direction = Sort.Direction.DESC) Pageable pageable) {
     
-        ResponseEntity<Map<String, Object>> response = webtoonService.getPagingWebtoon(p_num);
+        if (page == null) {
+            page = 1;
+        }
+
+        Pageable modifiedPageable;
+        // Check if the 'type' parameter is null or empty
+        if (StringUtils.hasText(type)) {
+            modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), Sort.by(type));
+        } else {
+            // If 'type' is null or empty, default to sorting by mastrId
+            modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), Sort.by("mastrId").descending());
+        }
+
+        ResponseEntity<Map<String, Object>> response = webtoonService.getPagingWebtoon(type, modifiedPageable);
         if (response == null || response.getBody() == null) {
             return ResponseEntity.ok(Collections.emptyList());
         }
