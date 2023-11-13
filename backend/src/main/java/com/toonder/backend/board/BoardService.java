@@ -4,13 +4,12 @@ import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
@@ -41,27 +40,21 @@ public class BoardService {
     }
 
 	// 페이징 처리된 글목록 데이터를 리턴
-	public ResponseEntity<Map<String, Object>> getPagingBoard(Integer p_num) {
+	public ResponseEntity<Map<String, Object>> getPagingBoard(Pageable pageable) {
 		Map<String, Object> result = new HashMap<>();
+        List<Board> boardList;
 
-		int totalObjectCount = findAllCount(); // 전체 글 수 조회
+		boardList = boardRepository.findAllByOrderByBrdNoDesc(pageable); 
 
-		PagingUtil pu = new PagingUtil(p_num, 5, 5);
-		List<Board> boardList = boardRepository.findFromTo(pu.getObjectStartNum(), pu.getObjectCountPerPage());
-		pu.setObjectCountTotal(totalObjectCount);
-		pu.setCalcForPaging();
+		List<BoardResponseDto> boardResponseDtoList = new ArrayList<>();
+        for (Board board : boardList) {
+            BoardResponseDto dto = new BoardResponseDto(board);
+            boardResponseDtoList.add(dto);
+        }
 
-		if (boardList == null || boardList.size() == 0) {
-			return ResponseEntity.ok(Collections.emptyMap());
-		}
-
-		List<BoardResponseDto> boardResponseDtoList = boardList.stream()
-				.map(BoardResponseDto::new)
-				.collect(Collectors.toList());
-
-		result.put("pagingData", pu);
 		result.put("list", boardResponseDtoList);
 		return ResponseEntity.ok(result);
+
 	}
 
 

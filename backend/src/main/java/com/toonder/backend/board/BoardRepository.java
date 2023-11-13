@@ -2,11 +2,14 @@ package com.toonder.backend.board;
 
 import java.util.List;
 
+import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface BoardRepository extends JpaRepository<Board, Integer>{
 
+	List<Board> findAllByOrderByBrdNoDesc(Pageable pageable);
+	
 	public final static String SELECT_BOARD_LIST_PAGED = ""
 			+ "SELECT "
 			+ "brdNo,"
