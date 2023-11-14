@@ -75,9 +75,10 @@ public class WebtoonController {
         return ResponseEntity.ok(webtoonResponseDto);
     } 
 
-    //웹툰 제목으로 검색
+    //웹툰 제목/작가명으로 검색
     @GetMapping("/webtoon/search")
     public ResponseEntity<List<WebtoonResponseDto>> search(
+        @RequestParam("type") String type, 
         @RequestParam("keyword") String keyword, 
         @RequestParam(value = "page", required = false) Integer page,
         @PageableDefault(size = 64, sort = "mastrId", direction = Sort.Direction.DESC) Pageable pageable) {
@@ -89,7 +90,7 @@ public class WebtoonController {
         
         Pageable modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
 
-        ResponseEntity<Map<String, Object>> response = webtoonService.search(keyword, modifiedPageable);
+        ResponseEntity<Map<String, Object>> response = webtoonService.search(type, keyword, modifiedPageable);
         if (response == null || response.getBody() == null) {
             return ResponseEntity.ok(Collections.emptyList());
         }
