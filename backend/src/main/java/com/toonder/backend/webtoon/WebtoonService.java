@@ -89,9 +89,9 @@ public class WebtoonService {
         return new WebtoonResponseDto(webtoon);
     }
 
-    //웹툰 제목으로 검색 (페이징 처리)
+    //웹툰 제목/작가명으로 검색 (페이징 처리)
     @Transactional
-    public ResponseEntity<Map<String, Object>> search(String keyword, Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> search(String type, String keyword, Pageable pageable) {
         Map<String, Object> result = new HashMap<>();
 
         if (keyword == null || keyword.isEmpty()) {
@@ -100,7 +100,17 @@ public class WebtoonService {
             return ResponseEntity.ok(emptyResponse);
         }
 
-        List<Webtoon> webtoonList = webtoonRepository.findByTitleContaining(keyword, pageable);
+        List<Webtoon> webtoonList;
+        if ("title".equals(type)) {
+            webtoonList = webtoonRepository.findByTitleContaining(keyword, pageable);
+        } else if ("author".equals(type)) {
+            webtoonList = webtoonRepository.findByPictrWritrNmContaining(keyword, pageable);
+        } else {
+            Map<String, Object> invalidTypeResponse = new HashMap<>();
+            invalidTypeResponse.put("message", "유효하지 않은 검색 타입입니다");
+            return ResponseEntity.ok(invalidTypeResponse);
+        }
+        
         if (webtoonList == null || webtoonList.isEmpty()) {
             Map<String, Object> emptyResponse = new HashMap<>();
             emptyResponse.put("message", "검색 결과가 없습니다");
