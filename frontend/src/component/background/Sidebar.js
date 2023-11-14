@@ -1,5 +1,5 @@
 // Sidebar.js
-import React, { useRef, useEffect, useState } from "react";
+import React, { useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import supabase from "../supabase";
@@ -31,7 +31,6 @@ const menuItems = [
 ];
 
 const Sidebar = ({ isOpen, onMenuClick }) => {
-  // const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
 
@@ -71,9 +70,14 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
     await logout();
   };
 
+  const handleLoginClick = () => {
+    // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
+    navigate("/login");
+    onMenuClick();
+  };
+
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
-      {/* 프로필 사진 넣기 */}
       {menuItems.map((item, index) => (
         <Link key={index} to={item.to} style={{ textDecoration: "none" }}>
           <Menu onClick={onMenuClick}>{item.text}</Menu>
@@ -85,9 +89,7 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
           로그아웃
         </Menu>
       ) : (
-        <Link to="/login" style={{ textDecoration: "none" }}>
-          <Menu>로그인</Menu>
-        </Link>
+        <Menu onClick={handleLoginClick}>로그인</Menu>
       )}
     </SidebarContainer>
   );
