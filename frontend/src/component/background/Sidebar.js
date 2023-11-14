@@ -24,7 +24,7 @@ const Menu = styled.div`
 
 const menuItems = [
   { to: "/mypage", text: "마이페이지" },
-  { to: "/freeboard", text: "자유게시판" },
+  { to: "/board", text: "자유게시판" },
   { to: "/", text: "마이웹툰" },
   { to: "/", text: "최근 쓴 글" },
   { to: "/", text: "웹툰 목록" },

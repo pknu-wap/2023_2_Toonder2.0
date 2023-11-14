@@ -7,7 +7,7 @@ import FindPwPage from "./component/find/FindPwPage";
 import NewPwPage from "./component/find/NewPwPage";
 import JoinPageStep1 from "./component/join/JoinPageStep1";
 import JoinPageStep2 from "./component/join/JoinPageStep2";
-import FreeboardPage from "./component/freeboard/FreeboardPage";
+import BoardList from "./component/freeboard/BoardList";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
@@ -53,7 +53,7 @@ function App() {
             <Route path="/join/step2" element={<JoinPageStep2 />} />
             <Route path="/findpw" element={<FindPwPage />}></Route>
             <Route path="/newpw" element={<NewPwPage />}></Route>
-            <Route path="/freeboard" element={<FreeboardPage/>}></Route>
+            <Route path="/board" element={<BoardList/>}></Route>
             <Route
               path="/user/kakao/callback"
               element={<LoginHandler />}

@@ -51,7 +51,7 @@ const ListContainer = styled.div`
   }
 `;
 
-function FreeboardPage() {
+function BoardList() {
   return (
     <>
       <Header title="자유게시판" />
@@ -66,4 +66,4 @@ function FreeboardPage() {
   );
 }
 
-export default FreeboardPage;
+export default BoardList;
