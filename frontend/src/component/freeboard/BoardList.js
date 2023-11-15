@@ -8,6 +8,7 @@ const FreeboardContainer = styled.div`
   align-items: center;
   max-width: 540px;
   margin: 0 auto;
+  margin-bottom: 100px;
   text-align: center;
   align-items: center;
   transition: box-shadow 0.3s ease;
@@ -65,7 +66,7 @@ const PostTitle = styled.div`
   font-size: 16px;
   margin: 20px 0px 0px 0px;
   @media (max-width: 540px) {
-    font-size: 16px; /* 모바일에서 내부 여백을 더 줄임 */
+    font-size: 16px; /* 모바일에서 글제목 크기 */
   }
 `;
 
@@ -74,7 +75,7 @@ const PostProperty = styled.div`
   font-size: 12px;
   margin: 10px 0px 20px 0;
   @media (max-width: 540px) {
-    font-size: 12px; /* 모바일에서 내부 여백을 더 줄임 */
+    font-size: 12px; /* 모바일에서 글 속성 크기 */
   }
 `;
 
@@ -82,7 +83,6 @@ function BoardList() {
   const [jsonData, setJsonData] = useState([]);
 
   useEffect(() => {
-    // JSON 파일 경로
     const fetchData = async () => {
       try {
         const response = await fetch("./postdata.json");
