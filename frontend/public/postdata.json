@@ -1,0 +1,82 @@
+[
+  {
+    "brdNo": 1,
+    "brdTitle": "최근에 읽은 책 추천합니다!",
+    "brdUpdateDate": "2023-04-22",
+    "brdLike": 7,
+    "brdViewCount": 5,
+    "member": "BookLover92"
+  },
+  {
+    "brdNo": 2,
+    "brdTitle": "내가 체험한 신기한 여행 이야기",
+    "brdUpdateDate": "2023-06-11",
+    "brdLike": 4,
+    "brdViewCount": 8,
+    "member": "BookLover96"
+  },
+  {
+    "brdNo": 3,
+    "brdTitle": "요리 초보자를 위한 간단 레시피 공유합니다!",
+    "brdUpdateDate": "2023-02-28",
+    "brdLike": 6,
+    "brdViewCount": 3,
+    "member": "BookLover99"
+  },
+  {
+    "brdNo": 4,
+    "brdTitle": "오늘의 일기: 생산적인 하루였어요!",
+    "brdUpdateDate": "2023-08-19",
+    "brdLike": 3,
+    "brdViewCount": 9,
+    "member": "BookLover98"
+  },
+  {
+    "brdNo": 5,
+    "brdTitle": "최근에 발견한 음악 추천해요!",
+    "brdUpdateDate": "2023-05-07",
+    "brdLike": 8,
+    "brdViewCount": 6,
+    "member": "BookLover97"
+  },
+  {
+    "brdNo": 6,
+    "brdTitle": "취미로 시작한 그림 그리기, 나의 이야기",
+    "brdUpdateDate": "2023-03-15",
+    "brdLike": 5,
+    "brdViewCount": 4,
+    "member": "BookLover95"
+  },
+  {
+    "brdNo": 7,
+    "brdTitle": "건강한 식습관을 위한 팁 공유합니다!",
+    "brdUpdateDate": "2023-09-28",
+    "brdLike": 2,
+    "brdViewCount": 7,
+    "member": "BookLover94"
+  },
+  {
+    "brdNo": 8,
+    "brdTitle": "오늘의 책 읽은 후기와 감상",
+    "brdUpdateDate": "2023-07-06",
+    "brdLike": 9,
+    "brdViewCount": 2,
+    "member": "BookLover91"
+  },
+  {
+    "brdNo": 9,
+    "brdTitle": "여름 휴가 계획하는 법",
+    "brdUpdateDate": "2023-06-30",
+    "brdLike": 6,
+    "brdViewCount": 10,
+    "member": "BookLover90"
+  },
+  {
+    "brdNo": 10,
+    "brdTitle": "새로운 공부법으로 학습 효율 높이기",
+    "brdUpdateDate": "2023-04-10",
+    "brdLike": 4,
+    "brdViewCount": 7,
+    "member": "BookLover93"
+  }
+]
