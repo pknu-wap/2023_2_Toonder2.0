@@ -46,7 +46,7 @@ const Button = styled.button`
   font-size: 1rem;
 
   &:hover {
-    background: tomato;
+    background: #121212;
     cursor: pointer;
     transform: translateY(-2px);
   }
