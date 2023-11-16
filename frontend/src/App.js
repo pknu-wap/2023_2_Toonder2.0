@@ -14,6 +14,7 @@ import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
 import Navbar from "./component/background/Navbar";
 import { AuthProvider } from "./AuthContext";
+import PostView from "./component/freeboard/PostView";
 
 function App() {
   document.title = "툰더";
@@ -58,6 +59,7 @@ function App() {
               path="/user/kakao/callback"
               element={<LoginHandler />}
             ></Route>
+            <Route path="postview" element={<PostView/>}></Route>
           </Routes>
           <Footer />
         </Container>
