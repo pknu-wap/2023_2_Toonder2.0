@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import Header from "../background/Header";
 import styled from "styled-components";
 import Pagination from "./Pagination";
@@ -31,7 +31,7 @@ const WriteBtn = styled.button`
   font-size: 14px;
   cursor: pointer;
   border-radius: 10px;
-  padding: 8px 20px;
+  padding: 8px 24px;
   display: center;
   transition: box-shadow 0.3s ease;
 
@@ -91,6 +91,13 @@ function BoardList() {
   const [page, setPage] = useState(1);
   const offset = (page - 1) * limit;
   const navigate = useNavigate();
+  const location = useLocation();
+
+  useEffect(() => {
+    const queryParams = new URLSearchParams(location.search);
+    queryParams.set("p_num", String(page));
+    navigate(`${location.pathname}?${queryParams.toString()}`);
+  }, [page, navigate, location.search]);
 
   useEffect(() => {
     const fetchData = async () => {
@@ -105,7 +112,6 @@ function BoardList() {
 
     fetchData();
   }, []);
-
 
   return (
     <>
