@@ -4,25 +4,6 @@ import Header from "../background/Header";
 import styled from "styled-components";
 import Pagination from "./Pagination";
 
-const WriteBtn = styled.button`
-  font-family: "NIXGONM-Vb";
-  background-color: #6e6e6e;
-  border: none;
-  color: white;
-  font-size: 14px;
-  cursor: pointer;
-  border-radius: 10px;
-  padding: 8px 24px;
-  display: center;
-  transition: box-shadow 0.3s ease;
-
-  &:hover {
-    box-shadow: 5px 5px 10px rgba(0, 0, 0, 0.3);
-  }
-
-  margin-left: auto;
-`;
-
 const PostContainer = styled.div`
   color: #e2e2e2;
   border-bottom: 1px solid #ccc;
