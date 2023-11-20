@@ -38,7 +38,7 @@ const ListContainer = styled.div`
   }
 `;
 
-const WriteBtn = styled.button`
+export const BoardBtn = styled.button`
   font-family: "NIXGONM-Vb";
   background-color: #6e6e6e;
   border: none;
@@ -67,7 +67,7 @@ function BoardLayout() {
       </Link>
 
       <BoardContainer>
-        {showWriteBtn && <WriteBtn>쓰기</WriteBtn>}
+        {showWriteBtn && <BoardBtn>쓰기</BoardBtn>}
         <ListContainer>
           <Outlet />
         </ListContainer>
