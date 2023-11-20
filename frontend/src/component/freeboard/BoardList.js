@@ -85,7 +85,9 @@ function BoardList() {
         <PostContainer key={index}>
           <PostTitle
             onClick={() => {
-              navigate("/postview");
+              navigate(`/postview`, {
+                state: {brdNo: post.brdNo}, 
+              });
             }}
           >
             {post.brdTitle}
