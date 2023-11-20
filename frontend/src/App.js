@@ -15,6 +15,8 @@ import { Footer } from "./component/background/Footer";
 import Navbar from "./component/background/Navbar";
 import { AuthProvider } from "./AuthContext";
 import PostView from "./component/freeboard/PostView";
+import PostForm from "./component/freeboard/PostForm";
+import BoardLayout from "./component/freeboard/BoardLayout";
 
 function App() {
   document.title = "툰더";
@@ -54,12 +56,15 @@ function App() {
             <Route path="/join/step2" element={<JoinPageStep2 />} />
             <Route path="/findpw" element={<FindPwPage />}></Route>
             <Route path="/newpw" element={<NewPwPage />}></Route>
-            <Route path="/board" element={<BoardList/>}></Route>
+            <Route element={<BoardLayout />}>
+              <Route path="board" element={<BoardList />} />
+              <Route path="postview" element={<PostView />} />
+              <Route path="postform" element={<PostForm />} />
+            </Route>
             <Route
               path="/user/kakao/callback"
               element={<LoginHandler />}
             ></Route>
-            <Route path="postview" element={<PostView/>}></Route>
           </Routes>
           <Footer />
         </Container>

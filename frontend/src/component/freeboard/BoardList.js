@@ -1,27 +1,8 @@
 import React, { useState, useEffect } from "react";
-import { useNavigate, useLocation } from "react-router-dom";
+import { Link, useNavigate, useLocation } from "react-router-dom";
 import Header from "../background/Header";
 import styled from "styled-components";
 import Pagination from "./Pagination";
-
-const BoardContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  max-width: 540px;
-  margin: 0 auto;
-  margin-bottom: 30px; // Footer와의 간격
-  text-align: center;
-  align-items: center;
-  transition: box-shadow 0.3s ease;
-  overflow-x: hidden;
-  overflow-y: hidden;
-  min-height: 100vh;
-  /* 미디어 쿼리 추가 */
-  @media (max-width: 540px) {
-    max-width: 100%; /* 모바일 화면에서 가로 길이를 100%로 설정 */
-  }
-`;
 
 const WriteBtn = styled.button`
   font-family: "NIXGONM-Vb";
@@ -40,21 +21,6 @@ const WriteBtn = styled.button`
   }
 
   margin-left: auto;
-`;
-
-const ListContainer = styled.div`
-  display: flex;
-  flex-direction: column;
-  border: 1.5px solid #d8d8d8;
-  border-radius: 10px;
-  box-sizing: border-box;
-  width: 500px;
-  margin-top: 10px;
-  padding: 10px 20px 10px 20px; /* 내부 여백 */
-  /* 미디어 쿼리 추가 */
-  @media (max-width: 540px) {
-    width: 96vw;
-  }
 `;
 
 const PostContainer = styled.div`
@@ -115,33 +81,27 @@ function BoardList() {
 
   return (
     <>
-      <Header title="자유게시판" />
-      <BoardContainer>
-        <WriteBtn>쓰기</WriteBtn>
-        <ListContainer>
-          {jsonData.slice(offset, offset + limit).map((post, index) => (
-            <PostContainer key={index}>
-              <PostTitle
-                onClick={() => {
-                  navigate("/postview");
-                }}
-              >
-                {post.brdTitle}
-              </PostTitle>
-              <PostProperty>
-                {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
-              </PostProperty>
-            </PostContainer>
-          ))}
-        </ListContainer>
-        {/* Pagination */}
-        <Pagination
-          total={jsonData.length}
-          limit={limit}
-          page={page}
-          setPage={setPage}
-        />
-      </BoardContainer>
+      {jsonData.slice(offset, offset + limit).map((post, index) => (
+        <PostContainer key={index}>
+          <PostTitle
+            onClick={() => {
+              navigate("/postview");
+            }}
+          >
+            {post.brdTitle}
+          </PostTitle>
+          <PostProperty>
+            {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
+          </PostProperty>
+        </PostContainer>
+      ))}
+      {/* Pagination */}
+      <Pagination
+        total={jsonData.length}
+        limit={limit}
+        page={page}
+        setPage={setPage}
+      />
     </>
   );
 }
