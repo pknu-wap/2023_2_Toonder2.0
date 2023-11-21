@@ -42,7 +42,7 @@ export const BoardBtn = styled.button`
   font-family: "NIXGONM-Vb";
   background-color: #6e6e6e;
   border: none;
-  color: white;
+  color: #e2e2e2;
   font-size: 14px;
   cursor: pointer;
   border-radius: 10px;
