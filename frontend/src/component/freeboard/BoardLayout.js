@@ -2,7 +2,7 @@ import { Outlet } from "react-router-dom";
 import styled from "styled-components";
 import { Link } from "react-router-dom";
 import Header from "../background/Header";
-import { useMatch } from "react-router-dom";
+import { useNavigate, useMatch } from "react-router-dom";
 
 const BoardContainer = styled.div`
   display: flex;
@@ -58,7 +58,13 @@ export const BoardBtn = styled.button`
 `;
 
 function BoardLayout() {
+  const navigate = useNavigate();
   const showWriteBtn = useMatch("/board"); // 현재 경로가 '/board'인지 확인
+
+  // 쓰기 버튼 클릭 시 이동 함수
+  const handleWriteClick = () => {
+    navigate("/postform"); // '/postform' 경로로 이동
+  };
 
   return (
     <>
@@ -67,7 +73,7 @@ function BoardLayout() {
       </Link>
 
       <BoardContainer>
-        {showWriteBtn && <BoardBtn>쓰기</BoardBtn>}
+        {showWriteBtn && <BoardBtn onClick={handleWriteClick}>쓰기</BoardBtn>}
         <ListContainer>
           <Outlet />
         </ListContainer>
