@@ -100,14 +100,14 @@ function PostView() {
   );
 }
 
-const PostHeader = styled.div`
+export const PostHeader = styled.div`
   color: #e2e2e2;
   border-bottom: 1px solid grey;
   width: 100%;
   text-align: left;
 `;
 
-const PostTitle = styled.div`
+export const PostTitle = styled.div`
   font-size: 20px;
   margin: 20px 0px 0px 0px;
   @media (max-width: 540px) {
@@ -115,7 +115,7 @@ const PostTitle = styled.div`
   }
 `;
 
-const PostProperty = styled.div`
+export const PostProperty = styled.div`
   display: flex; /* Flexbox를 사용하여 내부 아이템 정렬 */
   justify-content: space-between; /* 내부 아이템 간격 벌리기 */
   align-items: center; /* 세로 중앙 정렬 */
@@ -127,12 +127,13 @@ const PostProperty = styled.div`
   }
 `;
 
-const PostActions = styled.div`
+export const PostActions = styled.div`
   display: flex; /* Flexbox를 사용하여 내부 아이템 정렬 */
+  justify-content: center;
   align-items: center; /* 세로 중앙 정렬 */
 `;
 
-const PostBtn = styled(BoardBtn)`
+export const PostBtn = styled(BoardBtn)`
   font-size: 12px;
   padding: 6px 16px;
   margin-left: 8px; /* 버튼 사이의 간격 조정 */
