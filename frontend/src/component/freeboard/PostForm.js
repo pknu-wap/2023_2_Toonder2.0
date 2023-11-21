@@ -1,12 +1,41 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
-import { PostHeader, PostActions, PostProperty, PostBtn } from "./PostView";
+import { PostHeader, PostActions, PostBtn } from "./PostView";
+import axios from "axios";
 
 function PostForm() {
   const navigate = useNavigate();
-  const [title, setTitle] = useState(""); // 사용자가 입력한 제목을 상태로 관리
-  const [content, setContent] = useState(""); // 사용자가 입력한 글 내용을 상태로 관리
+  const [title, setTitle] = useState("");
+  const [content, setContent] = useState("");
+
+  // 문자열 내의 모든 개행 문자를 @로 대체
+  const addConvertLine = (text) => {
+    return text.replace(/\n/g, "@d`}");
+  };
+
+  const handleSubmit = async () => {
+    if (!title || !content) {
+      alert("제목과 내용을 작성해주세요.");
+      return;
+    }
+
+    const requestData = {
+      brdTitle: title,
+      brdContent: addConvertLine(content),
+      // mem_name: loggedUserName,
+      // mem_email: email,
+    };
+
+    try {
+      await axios.post("/toonder/board", requestData);
+      alert("글이 저장되었습니다.");
+      navigate(-1);
+    } catch (error) {
+      console.log(error);
+      alert("글을 저장하지 못했습니다.");
+    }
+  };
 
   return (
     <>
@@ -15,13 +44,13 @@ function PostForm() {
           type="text"
           value={title}
           onChange={(e) => setTitle(e.target.value)}
-          placeholder="글 제목"
+          placeholder="제목"
         />
       </PostHeader>
       <PostContent
         value={content}
         onChange={(e) => setContent(e.target.value)}
-        placeholder="글 내용을 입력하세요"
+        placeholder="내용"
       />
       <PostActions>
         <PostBtn
@@ -31,7 +60,9 @@ function PostForm() {
         >
           취소
         </PostBtn>
-        <PostBtn>저장</PostBtn>
+        <PostBtn type="submit" onClick={handleSubmit}>
+          저장
+        </PostBtn>
       </PostActions>
     </>
   );
