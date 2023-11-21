@@ -3,9 +3,106 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { BoardBtn } from "./BoardLayout";
 
+function PostView() {
+  const navigate = useNavigate();
+  const location = useLocation();
+  const { state } = location;
+  const [post, setPost] = useState(null); // 글
+  const [comments, setComments] = useState([]); // 댓글
+
+  // 글 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("./postdata.json");
+        const data = await response.json();
+        const foundPost = data.find((post) => post.brdNo === state?.brdNo);
+        setPost(foundPost);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, [state]);
+
+  // 댓글 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await fetch("./commentdata.json");
+        const data = await response.json();
+        setComments(data);
+      } catch (error) {
+        console.error("Error fetching data:", error);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  // 불러온 댓글
+  const filteredComments = comments.filter(
+    (comment) => comment.brdNo === post?.brdNo
+  );
+
+  return (
+    <>
+      <PostHeader>
+        {post ? (
+          <>
+            <PostTitle>{post.brdTitle}</PostTitle>
+            <PostProperty>
+              <div>
+                {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
+              </div>
+              <PostActions>
+                <PostBtn>수정</PostBtn>
+                <PostBtn>삭제</PostBtn>
+              </PostActions>
+            </PostProperty>
+          </>
+        ) : (
+          <p>데이터를 불러오는 중입니다...</p>
+        )}
+      </PostHeader>
+      <PostContentContainer>
+        {post && (
+          <>
+            <PostContentWrapper>{post.brdContent}</PostContentWrapper>
+            <PostBtnWrapper>
+              <PostBtn>♥</PostBtn>
+            </PostBtnWrapper>
+          </>
+        )}
+      </PostContentContainer>
+      <div style={{ color: "#e2e2e2", textAlign: "left", fontSize: "18px" }}>
+        댓글
+      </div>
+      <CommentContainer>
+        <CommentWrapper>
+          {filteredComments.map((comment) => (
+            <>
+              <div style={{ fontSize: "14px" }} key={comment.cmtNo}>
+                {`${comment.memName} : ${comment.cmtContent}`}
+              </div>
+
+              <CommentActions>
+                <CommentBtn>수정</CommentBtn>
+                <CommentBtn>삭제</CommentBtn>
+              </CommentActions>
+            </>
+          ))}
+        </CommentWrapper>
+        <CommentWriteContainer></CommentWriteContainer>
+      </CommentContainer>
+    </>
+  );
+}
+
 const PostHeader = styled.div`
   color: #e2e2e2;
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid grey;
   width: 100%;
   text-align: left;
 `;
@@ -42,68 +139,70 @@ const PostBtn = styled(BoardBtn)`
   }
 `;
 
-const PostContent = styled.div`
+const PostContentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
   font-size: 14px;
   color: #e2e2e2;
   margin: 20px 0px 20px 0px;
   white-space: pre-line; /* 글 내용 줄바꿈 적용 */
   line-height: 1.8; /* 줄간격 조정을 위한 line-height 속성 */
   text-align: left; /* 왼쪽 정렬을 위한 text-align 속성 */
-  border-bottom: 1px solid #ccc;
+  border-bottom: 1px solid grey;
 `;
 
-function PostView() {
-  const [jsonData, setJsonData] = useState([]);
-  const [limit, setLimit] = useState(5);
-  const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
-  const navigate = useNavigate();
-  const location = useLocation();
-  const { state } = location;
+const PostContentWrapper = styled.div`
+  position: relative;
+  width: 100%;
+`;
 
-  const [post, setPost] = useState(null);
+const PostBtnWrapper = styled.div`
+  margin: 20px 0px 10px 0px;
+  margin-left: auto;
+`;
 
-  useEffect(() => {
-    const fetchData = async () => {
-      try {
-        const response = await fetch("./postdata.json");
-        const data = await response.json();
-        const foundPost = data.find((post) => post.brdNo === state?.brdNo);
-        setPost(foundPost);
-      } catch (error) {
-        console.error("Error fetching data:", error);
-      }
-    };
+const CommentContainer = styled.div`
+  display: flex;
+  flex-direction: column;
+  border: 1.5px solid #6e6e6e;
+  background: #6e6e6e;
+  border-radius: 10px;
+  box-sizing: border-box;
+  margin-top: 10px;
+  padding: 10px 8px 10px 8px; /* 내부 여백 */
+  /* 모바일 화면에 맞게 너비 조정 */
+  width: calc(100%); /* 좌우 패딩값을 고려하여 너비 조정 */
 
-    fetchData();
-  }, [state]);
+  /* 미디어 쿼리 추가 */
+  @media (max-width: 540px) {
+    width: calc(100%); /* 모바일에서도 동일한 너비 적용 */
+  }
+`;
 
-  return (
-    <>
-      <PostHeader>
-        {post ? (
-          <>
-            <PostTitle>{post.brdTitle}</PostTitle>
-            <PostProperty>
-              <div>
-                {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
-              </div>
-              <PostActions>
-                <PostBtn>수정</PostBtn>
-                <PostBtn>삭제</PostBtn>
-              </PostActions>
-            </PostProperty>
-          </>
-        ) : (
-          <p>데이터를 불러오는 중입니다...</p>
-        )}
-      </PostHeader>
-      <PostContent>
-        {post && post.brdContent}
-        <PostBtn>❤</PostBtn>
-      </PostContent>
-    </>
-  );
-}
+const CommentWrapper = styled(PostProperty)`
+  margin-botton: 10px;
+  flex-wrap: wrap;
+`;
+
+const CommentActions = styled(PostActions)``;
+
+const CommentBtn = styled.button`
+  font-family: "NIXGONM-Vb";
+  background: none;
+  border: none;
+  color: #e2e2e2;
+  font-size: 14px;
+  cursor: pointer;
+  padding: 6px 8px;
+  display: center;
+  margin-left: auto;
+  background: none;
+  font-size: 12px;
+  padding: 6px 6px;
+`;
+
+const CommentWriteContainer = styled.div``;
 
 export default PostView;
