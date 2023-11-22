@@ -72,7 +72,7 @@ function PostView() {
           <>
             <PostContentWrapper>{post.brdContent}</PostContentWrapper>
             <PostBtnWrapper>
-              <PostBtn>♥</PostBtn>
+              <PostBtn>♡</PostBtn>
             </PostBtnWrapper>
           </>
         )}
@@ -92,9 +92,11 @@ function PostView() {
                 </CommentContentWrapper>
                 <CommentPropertyWrapper>
                   <span>{`${comment.cmtUpdateDate}`}</span>
-                  <CommentBtn>♥</CommentBtn>
+                  <CommentBtn style={{ padding: "0px 2px 0px 12px" }}>
+                    ♡
+                  </CommentBtn>
                   <span>{`${comment.cmtLike}`}</span>
-                  <CommentBtn>수정</CommentBtn>
+                  <CommentBtn style={{ marginLeft: "10px" }}>수정</CommentBtn>
                   <CommentBtn>삭제</CommentBtn>
                 </CommentPropertyWrapper>
               </div>
@@ -227,7 +229,7 @@ const CommentBtn = styled.button`
   font-size: 14px;
   cursor: pointer;
   display: flex;
-  padding: 0px 8px;
+  padding: 0px 6px;
   background: none;
   font-size: 12px;
 `;
