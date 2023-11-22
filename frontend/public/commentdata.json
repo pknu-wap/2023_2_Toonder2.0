@@ -1,11 +1,12 @@
 [
     {
         "cmtNo": 1,
-        "cmtContent": "첫번째 게시글에 대한 첫번째 댓글",
+        "cmtContent": "첫번째 게시글에 대한 첫번째 댓글 아무말 아무말~~~~~~~\n줄바꿈 테스트용 개행",
         "cmtRegDate": "2023-06-02",
         "cmtUpdateDate": "2023-06-02",
         "cmtLike": 3,
         "memName": "사용자1",
+        "mem_email": "hyeonsian23@gmail.com",
         "brdNo": 1
     },
     {
