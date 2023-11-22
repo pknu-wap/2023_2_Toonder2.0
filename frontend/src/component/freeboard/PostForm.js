@@ -3,11 +3,41 @@ import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { PostHeader, PostActions, PostBtn } from "./PostView";
 import axios from "axios";
+import supabase from "../supabase";
 
 function PostForm() {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [content, setContent] = useState("");
+  const [loggedUserName, setLoggedUserName] = useState();
+  const [loggedUserEmail, setLoggedUserEmail] = useState();
+
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      const session = data.session;
+
+      if (session === null) {
+        alert('로그인을 먼저 해주세요.');
+        navigate('/login');
+      } else {
+        const email = session.user.email;
+        setLoggedUserEmail(email);
+
+        const rdata = {
+          email: email,
+        };
+
+        axios
+          .post('toonder/name', rdata)
+          .then((loggedUserData) => {
+            setLoggedUserName(loggedUserData.data.mem_name);
+          })
+          .catch((error) => console.log(error));
+      }
+    };
+    fetchData();
+  }, []);
 
   // 문자열 내의 모든 개행 문자를 @로 대체
   // const addConvertLine = (text) => {
@@ -17,7 +47,7 @@ function PostForm() {
   const handleSubmit = async () => {
     if (title.length >= 100)
       alert("제목은 100글자를 넘을 수 없습니다.");
-    
+
     if (!title || !content) {
       alert("제목과 내용을 작성해주세요.");
       return;
@@ -26,8 +56,8 @@ function PostForm() {
     const requestData = {
       brdTitle: title,
       brdContent: content, //addConvertLine(content),
-      // mem_name: loggedUserName,
-      // mem_email: email,
+      mem_name: loggedUserName,
+      mem_email: loggedUserEmail,
     };
 
     try {
