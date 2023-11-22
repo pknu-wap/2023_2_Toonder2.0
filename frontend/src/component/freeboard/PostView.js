@@ -126,21 +126,29 @@ export const PostTitle = styled.div`
 `;
 
 export const PostProperty = styled.div`
-  display: flex; /* Flexbox를 사용하여 내부 아이템 정렬 */
+  display: flex;
+  flex-direction: row; /* 모바일 뷰에서 컬럼 방향으로 변경 */
   justify-content: space-between; /* 내부 아이템 간격 벌리기 */
   align-items: center; /* 세로 중앙 정렬 */
   color: #d8d8d8;
   font-size: 12px;
-  margin: 10px 0px 20px 0;
+  margin: 10px 0px 10px 0;
+
   @media (max-width: 540px) {
-    font-size: 12px; /* 모바일에서 글 속성 크기 */
+    flex-direction: column;
+    align-items: flex-start;
   }
 `;
 
 export const PostActions = styled.div`
   display: flex; /* Flexbox를 사용하여 내부 아이템 정렬 */
-  justify-content: center;
+  justify-content: flex-end;
   align-items: center; /* 세로 중앙 정렬 */
+
+  @media (max-width: 540px) {
+    margin-top: 10px;
+    margin-left: auto;
+  }
 `;
 
 export const PostBtn = styled(BoardBtn)`
@@ -152,7 +160,8 @@ export const PostBtn = styled(BoardBtn)`
 const PostContentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: flex-end;
+  justify-content: flex-start;
   position: relative;
   font-size: 14px;
   color: #e2e2e2;
@@ -181,7 +190,7 @@ const CommentContainer = styled.div`
   border-radius: 10px;
   box-sizing: border-box;
   margin-top: 10px;
-  padding: 0px 10px 10px 10px; /* 내부 여백 */
+  padding: 0px 15px 10px 15px; /* 내부 여백 */
   /* 모바일 화면에 맞게 너비 조정 */
   width: calc(100%); /* 좌우 패딩값을 고려하여 너비 조정 */
 
@@ -246,17 +255,18 @@ const CommentWriteForm = styled.textarea`
 
   &:focus {
     outline: none;
-    color: #efefef;
+    color: #e2e2e2;
   }
 
   &::placeholder {
-    color: #efefef;
+    color: #cccccc;
   }
 `;
 
 const CommentSubmitBtn = styled.button`
   font-family: "NIXGONM-Vb";
-  width: 100%; 
+  font-size: 14px;
+  width: 100%;
   padding: 8px 16px;
   background-color: #808080;
   color: white;
