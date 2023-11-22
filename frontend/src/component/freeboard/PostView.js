@@ -2,15 +2,37 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import { BoardBtn } from "./BoardLayout";
+import supabase from "../supabase";
+import axios from "axios";
 
 function PostView() {
   const navigate = useNavigate();
   const location = useLocation();
   const { state } = location;
+  const brdNo = location.state?.brdNo;
   const [post, setPost] = useState(null); // 글
   const [comments, setComments] = useState([]); // 댓글
+  const [email, setEmail] = useState();
+  const [isCommentDeleted, setIsCommentDeleted] = useState(false);
 
-  // 글 불러오기
+  // 이메일 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      const session = data.session;
+
+      if (session === null) {
+        alert("로그인을 먼저 해주세요.");
+        navigate("/login");
+      } else {
+        const email = session.user.email;
+        setEmail(email);
+      }
+    };
+    fetchData();
+  }, []);
+
+  // 게시글 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -25,6 +47,49 @@ function PostView() {
 
     fetchData();
   }, [state]);
+
+  // 게시글 수정
+  const handleEditPost = () => {
+    if (post.mem_email !== email) {
+      alert("본인의 게시글만 수정이 가능합니다.");
+      return;
+    } else {
+      navigate("/edit", {
+        state: { brdNo: post.brdNo },
+      });
+    }
+  };
+
+  // 게시글 삭제
+  const handleDeletePost = async () => {
+    try {
+      await axios.delete(`/toonder/board/${brdNo}`, {
+        data: { mem_email: email },
+      });
+      alert("삭제가 성공했습니다.");
+      navigate("/freeboard");
+    } catch (error) {
+      console.log(error);
+      alert("본인의 게시글만 삭제가 가능합니다.");
+    }
+  };
+
+  // 게시글 좋아요
+  const handleLike = async () => {
+    try {
+      const headers = {
+        mem_email: email,
+      };
+      await axios.post(`/toonder/board/${brdNo}/like`, null, {
+        headers,
+      });
+      alert("좋아요가 반영되었습니다.");
+      window.location.reload();
+    } catch (error) {
+      console.log(error);
+      alert("좋아요가 실패 했습니다.");
+    }
+  };
 
   // 댓글 불러오기
   useEffect(() => {
@@ -46,6 +111,38 @@ function PostView() {
     (comment) => comment.brdNo === post?.brdNo
   );
 
+  // 댓글 수정
+
+  // 댓글 삭제
+  const handleDeleteComment = async (cmtContent, cmtBno) => {
+    try {
+      await axios.delete(`/toonder/board/${brdNo}/comment/${cmtBno}`, {
+        data: { cmtContent: cmtContent, mem_email: email },
+      });
+      alert('댓글이 삭제되었습니다.');
+      setIsCommentDeleted(true);
+    } catch (error) {
+      console.log(error);
+      alert('본인의 댓글만 수정이 가능합니다.');
+    }
+  };
+
+  //댓글 좋아요
+  const handleLikeComment = async (cmtNo) => {
+    try {
+      const headers = {
+        mem_email: email,
+      };
+      await axios.post(`/toonder/board/${brdNo}/comment/${cmtNo}/like`, null, {
+        headers,
+      });
+      alert("댓글 좋아요가 반영되었습니다.");
+    } catch (error) {
+      console.log(error);
+      alert("좋아요가 실패 했습니다.");
+    }
+  };
+
   return (
     <>
       {/* 본문 */}
@@ -58,8 +155,8 @@ function PostView() {
                 {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
               </div>
               <PostActions>
-                <PostBtn>수정</PostBtn>
-                <PostBtn>삭제</PostBtn>
+                <PostBtn onClick={handleEditPost}>수정</PostBtn>
+                <PostBtn onClick={handleDeletePost}>삭제</PostBtn>
               </PostActions>
             </PostProperty>
           </>
@@ -72,7 +169,7 @@ function PostView() {
           <>
             <PostContentWrapper>{post.brdContent}</PostContentWrapper>
             <PostBtnWrapper>
-              <PostBtn>♡</PostBtn>
+              <PostBtn onClick={handleLike}>♡</PostBtn>
             </PostBtnWrapper>
           </>
         )}
@@ -92,12 +189,15 @@ function PostView() {
                 </CommentContentWrapper>
                 <CommentPropertyWrapper>
                   <span>{`${comment.cmtUpdateDate}`}</span>
-                  <CommentBtn style={{ padding: "0px 2px 0px 12px" }}>
+                  <CommentBtn
+                    style={{ padding: "0px 2px 0px 12px" }}
+                    onclick={handleLikeComment}
+                  >
                     ♡
                   </CommentBtn>
                   <span>{`${comment.cmtLike}`}</span>
                   <CommentBtn style={{ marginLeft: "10px" }}>수정</CommentBtn>
-                  <CommentBtn>삭제</CommentBtn>
+                  <CommentBtn onClick={handleDeleteComment}>삭제</CommentBtn>
                 </CommentPropertyWrapper>
               </div>
             </CommentInnerContainer>
