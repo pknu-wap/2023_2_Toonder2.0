@@ -185,7 +185,10 @@ function PostView() {
             <CommentInnerContainer>
               <div key={comment.cmtNo}>
                 <CommentContentWrapper style={{ fontSize: "14px" }}>
-                  <div>{`${comment.memName} : ${comment.cmtContent}`}</div>
+                  <div
+                    style={{ fontFamily: "NIXGONB-Vb-B" }}
+                  >{`${comment.memName}`}</div>
+                  <div>{`${comment.cmtContent}`}</div>
                 </CommentContentWrapper>
                 <CommentPropertyWrapper>
                   <span>{`${comment.cmtUpdateDate}`}</span>
@@ -295,6 +298,7 @@ const CommentContainer = styled.div`
   padding: 0px 15px 10px 15px; /* 내부 여백 */
   /* 모바일 화면에 맞게 너비 조정 */
   width: calc(100%); /* 좌우 패딩값을 고려하여 너비 조정 */
+  white-space: pre-line; /* 글 내용 줄바꿈 적용 */
 
   /* 미디어 쿼리 추가 */
   @media (max-width: 540px) {
@@ -308,7 +312,15 @@ const CommentInnerContainer = styled.div`
 `;
 
 const CommentContentWrapper = styled(PostProperty)`
+  display: flex;
+  flex-direction: column;
+  text-align: left;
+  line-height: 1.4;
   margin-bottom: 0px;
+  align-items: flex-start; /* Added to left-align content */
+  & > div {
+    margin: 2px 0; /* Added margin between the div elements */
+  }
 `;
 
 const CommentPropertyWrapper = styled.div`
