@@ -17,6 +17,7 @@ function PostView() {
   const [editingCommentNo, setEditingCommentNo] = useState("");
   const [email, setEmail] = useState();
   const [isCommentDeleted, setIsCommentDeleted] = useState(false);
+  const [submitCmtEditBtnText, setSubmitCmtEditBtnText] = useState("수정");
 
   // 이메일 불러오기
   useEffect(() => {
@@ -143,8 +144,69 @@ function PostView() {
     }
   };
 
+  // 댓글 수정
+  const handleEditComment = (cmtNo, cmtEmail) => {
+    if (cmtEmail !== email) {
+      alert("본인의 댓글만 수정이 가능합니다.");
+      return;
+    } else {
+      // 해당 댓글의 내용과 번호를 가져와서 상태에 설정합니다.
+      const targetComment = comments.find((comment) => comment.cmtNo === cmtNo);
+      // 수정할 댓글 내용을 textarea에 표시하기 위해 setEditedComment를 이용해 설정합니다.
+      setEditedComment(targetComment.cmtContent); // 수정 가능하도록 textarea에 댓글 내용 설정
+      setEditingCommentNo(cmtNo); // 수정 중인 댓글 번호 설정
+    }
+  };
+
+  // 댓글 수정 내용
+  const handleEditChange = (editedText, cmtNo) => {
+    // 수정 중인 댓글의 내용을 변경합니다.
+    setEditedComment(editedText);
+    // 현재 수정 중인 댓글 번호를 상태에 설정합니다.
+    setEditingCommentNo(cmtNo);
+  };
+
+  // 댓글 수정 등록
+  const handleSubmitEditedComment = async (e, cmtNo) => {
+    e.preventDefault();
+
+    if (!editedComment) {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+
+    try {
+      await axios.put(`/toonder/board/${brdNo}/comment/${cmtNo}`, {
+        cmtContent: editedComment,
+        mem_email: email,
+      });
+      alert("댓글이 성공적으로 수정되었습니다.");
+      // 수정이 완료되면 상태를 초기화
+      setEditedComment("");
+      setEditingCommentNo("");
+      // 서버에서 댓글을 다시 가져옴
+      const response = await axios.get(`/toonder/board/${brdNo}/comment`);
+      setComments(response.data);
+    } catch (error) {
+      console.log(editedComment);
+      console.error("댓글 수정에 실패했습니다:", error);
+      alert("댓글 수정에 실패했습니다.");
+    }
+  };
+
+  // 댓글 수정 취소
+  const handleCancelEditComment = (cmtNo) => {
+    setEditedComment("");
+    setEditingCommentNo("");
+  };
+
   // 댓글 삭제
-  const handleDeleteComment = async (cmtContent, cmtBno) => {
+  const handleDeleteComment = async (cmtContent, cmtBno, cmtEmail) => {
+    if (cmtEmail !== email) {
+      alert("본인의 댓글만 삭제가 가능합니다.");
+      return;
+    }
+
     try {
       await axios.delete(`/toonder/board/${brdNo}/comment/${cmtBno}`, {
         data: { cmtContent: cmtContent, mem_email: email },
@@ -153,7 +215,7 @@ function PostView() {
       setIsCommentDeleted(true);
     } catch (error) {
       console.log(error);
-      alert("본인의 댓글만 수정이 가능합니다.");
+      alert("댓글 삭제에 실패했습니다.");
     }
   };
 
@@ -211,30 +273,75 @@ function PostView() {
       </div>
       <CommentContainer>
         {filteredComments.map((comment) => (
-          <>
-            <CommentInnerContainer>
-              <div key={comment.cmtNo}>
+          <CommentInnerContainer key={comment.cmtNo}>
+            <>
+              {editingCommentNo === comment.cmtNo ? (
+                <>
+                  <CommentWriteForm
+                    value={
+                      editingCommentNo === comment.cmtNo
+                        ? editedComment
+                        : comment.cmtContent
+                    }
+                    onChange={(e) =>
+                      handleEditChange(e.target.value, comment.cmtNo)
+                    }
+                    placeholder="댓글을 입력하세요"
+                  ></CommentWriteForm>
+                  <CommentPropertyWrapper>
+                    <CommentBtn
+                      onClick={(e) =>
+                        handleSubmitEditedComment(e, comment.cmtNo)
+                      }
+                    >
+                      수정 완료
+                    </CommentBtn>
+                    <CommentBtn
+                      onClick={() => handleCancelEditComment(comment.cmtNo)}
+                    >
+                      취소
+                    </CommentBtn>
+                  </CommentPropertyWrapper>
+                </>
+              ) : (
                 <CommentContentWrapper style={{ fontSize: "14px" }}>
                   <div
                     style={{ fontFamily: "NIXGONB-Vb-B" }}
                   >{`${comment.memName}`}</div>
                   <div>{`${comment.cmtContent}`}</div>
+                  <CommentPropertyWrapper>
+                    <span>{`${comment.cmtUpdateDate}`}</span>
+                    <CommentBtn
+                      style={{ padding: "0px 2px 0px 12px" }}
+                      onclick={() => handleLikeComment(comment.cmtNo)}
+                    >
+                      ♡
+                    </CommentBtn>
+                    <span>{`${comment.cmtLike}`}</span>
+                    <CommentBtn
+                      style={{ marginLeft: "10px" }}
+                      onClick={() =>
+                        handleEditComment(comment.cmtNo, comment.mem_email)
+                      }
+                    >
+                      수정
+                    </CommentBtn>
+                    <CommentBtn
+                      onClick={() =>
+                        handleDeleteComment(
+                          comment.cmtContent,
+                          comment.cmtNo,
+                          comment.mem_email
+                        )
+                      }
+                    >
+                      삭제
+                    </CommentBtn>
+                  </CommentPropertyWrapper>
                 </CommentContentWrapper>
-                <CommentPropertyWrapper>
-                  <span>{`${comment.cmtUpdateDate}`}</span>
-                  <CommentBtn
-                    style={{ padding: "0px 2px 0px 12px" }}
-                    onclick={handleLikeComment}
-                  >
-                    ♡
-                  </CommentBtn>
-                  <span>{`${comment.cmtLike}`}</span>
-                  <CommentBtn style={{ marginLeft: "10px" }}>수정</CommentBtn>
-                  <CommentBtn onClick={handleDeleteComment}>삭제</CommentBtn>
-                </CommentPropertyWrapper>
-              </div>
-            </CommentInnerContainer>
-          </>
+              )}
+            </>
+          </CommentInnerContainer>
         ))}
         <CommentWriteFormContainer onSubmit={handleSubmitComment}>
           <CommentWriteForm
@@ -331,7 +438,7 @@ const CommentContainer = styled.div`
   border-radius: 10px;
   box-sizing: border-box;
   margin-top: 10px;
-  padding: 0px 15px 10px 15px; /* 내부 여백 */
+  padding: 10px 15px 10px 15px; /* 내부 여백 */
   /* 모바일 화면에 맞게 너비 조정 */
   width: calc(100%); /* 좌우 패딩값을 고려하여 너비 조정 */
   white-space: pre-line; /* 글 내용 줄바꿈 적용 */
@@ -343,7 +450,6 @@ const CommentContainer = styled.div`
 `;
 
 const CommentInnerContainer = styled.div`
-  margin-top: 10px;
   border-bottom: 1px solid grey;
 `;
 
@@ -365,7 +471,7 @@ const CommentPropertyWrapper = styled.div`
   align-items: center;
   font-size: 12px;
   color: #e2e2e2;
-  margin: 10px 0px 15px 0px;
+  margin: 10px 0px 10px 0px !important; /* margin 속성에 우선순위 부여 */
 `;
 
 const CommentBtn = styled.button`
