@@ -15,6 +15,9 @@ function PostForm() {
   // };
 
   const handleSubmit = async () => {
+    if (title.length >= 100)
+      alert("제목은 100글자를 넘을 수 없습니다.");
+    
     if (!title || !content) {
       alert("제목과 내용을 작성해주세요.");
       return;
