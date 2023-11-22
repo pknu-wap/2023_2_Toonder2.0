@@ -124,10 +124,10 @@ export const PostContent = styled.textarea`
   color: #e2e2e2;
   background: none;
   border: none;
-  font-size: 16px;
+  font-size: 14px;
   margin: 10px 0;
   width: 100%;
-  line-height: 1.5;
+  line-height: 1.8;
   min-height: 200px; /* 사용자가 글을 쓸 수 있는 높이를 지정 */
   resize: none; /* 사용자가 글 작성 영역을 조절하지 못하도록 함 */
 
