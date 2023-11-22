@@ -29,6 +29,7 @@ const ListContainer = styled.div`
   border: 1.5px solid #d8d8d8;
   border-radius: 10px;
   box-sizing: border-box;
+  margin-bottom: 50px; // Footer와의 간격
   width: 500px;
   margin-top: 10px;
   padding: 10px 20px 10px 20px; /* 내부 여백 */
