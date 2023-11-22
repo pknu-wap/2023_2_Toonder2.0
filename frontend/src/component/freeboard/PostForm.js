@@ -10,9 +10,9 @@ function PostForm() {
   const [content, setContent] = useState("");
 
   // 문자열 내의 모든 개행 문자를 @로 대체
-  const addConvertLine = (text) => {
-    return text.replace(/\n/g, "@d`}");
-  };
+  // const addConvertLine = (text) => {
+  //   return text.replace(/\n/g, "@d`}");
+  // };
 
   const handleSubmit = async () => {
     if (!title || !content) {
@@ -22,7 +22,7 @@ function PostForm() {
 
     const requestData = {
       brdTitle: title,
-      brdContent: addConvertLine(content),
+      brdContent: content, //addConvertLine(content),
       // mem_name: loggedUserName,
       // mem_email: email,
     };
