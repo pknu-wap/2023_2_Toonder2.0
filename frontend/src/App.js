@@ -17,6 +17,7 @@ import { AuthProvider } from "./AuthContext";
 import PostView from "./component/freeboard/PostView";
 import PostForm from "./component/freeboard/PostForm";
 import BoardLayout from "./component/freeboard/BoardLayout";
+import EditForm from "./component/freeboard/EditForm";
 
 function App() {
   document.title = "툰더";
@@ -60,6 +61,7 @@ function App() {
               <Route path="board" element={<BoardList />} />
               <Route path="postview" element={<PostView />} />
               <Route path="postform" element={<PostForm />} />
+              <Route path="/edit/:brdNo" element={<EditForm />} />
             </Route>
             <Route
               path="/user/kakao/callback"
