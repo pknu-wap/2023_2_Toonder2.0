@@ -276,8 +276,12 @@ function PostView() {
           <CommentInnerContainer key={comment.cmtNo}>
             <>
               {editingCommentNo === comment.cmtNo ? (
-                <>
+                <CommentContentWrapper style={{ fontSize: "14px" }}>
+                  <div
+                    style={{ fontFamily: "NIXGONB-Vb-B" }}
+                  >{`${comment.memName}`}</div>
                   <CommentWriteForm
+                    style={{marginTop:"0px"}}
                     value={
                       editingCommentNo === comment.cmtNo
                         ? editedComment
@@ -302,7 +306,7 @@ function PostView() {
                       취소
                     </CommentBtn>
                   </CommentPropertyWrapper>
-                </>
+                </CommentContentWrapper>
               ) : (
                 <CommentContentWrapper style={{ fontSize: "14px" }}>
                   <div
@@ -471,7 +475,7 @@ const CommentPropertyWrapper = styled.div`
   align-items: center;
   font-size: 12px;
   color: #e2e2e2;
-  margin: 10px 0px 10px 0px !important; /* margin 속성에 우선순위 부여 */
+  margin: 5px 0px 10px 0px !important; /* margin 속성에 우선순위 부여 */
 `;
 
 const CommentBtn = styled.button`
@@ -508,6 +512,7 @@ const CommentWriteForm = styled.textarea`
   margin: 20px 0px 10px 0px;
   padding: 10px 10px 50px 10px; /* 내부 여백 */
   resize: none;
+  overflow-y: auto; /* 내용이 넘칠 경우 스크롤바 표시 */
 
   &:focus {
     outline: none;
