@@ -70,15 +70,20 @@ function PostView() {
 
   // 게시글 삭제
   const handleDeletePost = async () => {
+    if (post.mem_email !== email) {
+      alert("본인의 댓글만 삭제가 가능합니다.");
+      return;
+    }
+  
     try {
       await axios.delete(`/toonder/board/${brdNo}`, {
         data: { mem_email: email },
       });
-      alert("삭제가 성공했습니다.");
+      alert("게시글을 성공적으로 삭제했습니다.");
       navigate("/freeboard");
     } catch (error) {
       console.log(error);
-      alert("본인의 게시글만 삭제가 가능합니다.");
+      alert("게시글 삭제에 실패했습니다.");
     }
   };
 
