@@ -12,6 +12,9 @@ function PostView() {
   const brdNo = location.state?.brdNo;
   const [post, setPost] = useState(null); // 글
   const [comments, setComments] = useState([]); // 댓글
+  const [comment, setComment] = useState("");
+  const [editedComment, setEditedComment] = useState("");
+  const [editingCommentNo, setEditingCommentNo] = useState("");
   const [email, setEmail] = useState();
   const [isCommentDeleted, setIsCommentDeleted] = useState(false);
 
@@ -115,7 +118,30 @@ function PostView() {
     (comment) => comment.brdNo === post?.brdNo
   );
 
-  // 댓글 수정
+  // 댓글 등록
+  const handleSubmitComment = async (e) => {
+    e.preventDefault();
+    if (!comment) {
+      alert("댓글을 입력하세요.");
+      return;
+    }
+    const name = localStorage.getItem("loggedUserName");
+    try {
+      await axios.post(`/toonder/board/${brdNo}/comment`, {
+        cmtContent: comment,
+        mem_name: name,
+        mem_email: email,
+      });
+      alert("댓글이 작성되었습니다.");
+      setComment("");
+
+      const response = await axios.get(`/toonder/board/${brdNo}/comment`);
+      setComment(response.data);
+    } catch (error) {
+      console.log(error);
+      alert("댓글 작성에 실패했습니다.");
+    }
+  };
 
   // 댓글 삭제
   const handleDeleteComment = async (cmtContent, cmtBno) => {
@@ -123,15 +149,15 @@ function PostView() {
       await axios.delete(`/toonder/board/${brdNo}/comment/${cmtBno}`, {
         data: { cmtContent: cmtContent, mem_email: email },
       });
-      alert('댓글이 삭제되었습니다.');
+      alert("댓글이 삭제되었습니다.");
       setIsCommentDeleted(true);
     } catch (error) {
       console.log(error);
-      alert('본인의 댓글만 수정이 가능합니다.');
+      alert("본인의 댓글만 수정이 가능합니다.");
     }
   };
 
-  //댓글 좋아요
+  // 댓글 좋아요
   const handleLikeComment = async (cmtNo) => {
     try {
       const headers = {
@@ -210,9 +236,15 @@ function PostView() {
             </CommentInnerContainer>
           </>
         ))}
-        <CommentWriteFormContainer>
-          <CommentWriteForm placeholder="댓글을 입력하세요"></CommentWriteForm>
-          <CommentSubmitBtn>등록</CommentSubmitBtn>
+        <CommentWriteFormContainer onSubmit={handleSubmitComment}>
+          <CommentWriteForm
+            value={comment}
+            onChange={(e) => setComment(e.target.value)}
+            placeholder="댓글을 입력하세요"
+          ></CommentWriteForm>
+          <CommentSubmitBtn type="submit" onClick={handleSubmitComment}>
+            등록
+          </CommentSubmitBtn>
         </CommentWriteFormContainer>
       </CommentContainer>
     </>
@@ -350,7 +382,7 @@ const CommentBtn = styled.button`
   font-size: 12px;
 `;
 
-const CommentWriteFormContainer = styled.div`
+const CommentWriteFormContainer = styled.form`
   position: relative;
   width: 100%;
   margin-top: 30px;
