@@ -18,8 +18,8 @@ function PostForm() {
       const session = data.session;
 
       if (session === null) {
-        alert('로그인을 먼저 해주세요.');
-        navigate('/login');
+        alert("로그인을 먼저 해주세요.");
+        navigate("/login");
       } else {
         const email = session.user.email;
         setLoggedUserEmail(email);
@@ -29,7 +29,7 @@ function PostForm() {
         };
 
         axios
-          .post('toonder/name', rdata)
+          .post("toonder/name", rdata)
           .then((loggedUserData) => {
             setLoggedUserName(loggedUserData.data.mem_name);
           })
@@ -45,8 +45,7 @@ function PostForm() {
   // };
 
   const handleSubmit = async () => {
-    if (title.length >= 100)
-      alert("제목은 100글자를 넘을 수 없습니다.");
+    if (title.length >= 100) alert("제목은 100글자를 넘을 수 없습니다.");
 
     if (!title || !content) {
       alert("제목과 내용을 작성해주세요.");
@@ -101,7 +100,7 @@ function PostForm() {
   );
 }
 
-const PostTitle = styled.input`
+export const PostTitle = styled.input`
   font-family: "NIXGONM-Vb";
   color: #e2e2e2;
   background: none;
@@ -120,7 +119,7 @@ const PostTitle = styled.input`
   }
 `;
 
-const PostContent = styled.textarea`
+export const PostContent = styled.textarea`
   font-family: "NIXGONM-Vb";
   color: #e2e2e2;
   background: none;
