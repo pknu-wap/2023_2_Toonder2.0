@@ -14,6 +14,7 @@ const SidebarContainer = styled.div`
   height: 100%;
   background-color: rgba(30, 30, 30, 0.95);
   transition: right 0.3s ease;
+  z-index: 1000;
 `;
 
 const Menu = styled.div`
