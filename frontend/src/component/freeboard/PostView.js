@@ -54,8 +54,12 @@ function PostView() {
       alert("본인의 게시글만 수정이 가능합니다.");
       return;
     } else {
-      navigate("/edit", {
-        state: { brdNo: post.brdNo },
+      navigate(`/edit/${brdNo}`, {
+        state: {
+          brdNo: post.brdNo,
+          title: post.brdTitle,
+          content: post.brdContent,
+        },
       });
     }
   };
