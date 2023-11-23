@@ -97,7 +97,7 @@ const BoardContainer = styled.div`
   align-items: center;
   max-width: 540px;
   margin: 0 auto;
-  margin-bottom: 30px; // Footer와의 간격
+  margin-bottom: 100px; // Footer와의 간격
   text-align: center;
   font-size: 20px;
   align-items: flex-start; /* 왼쪽 정렬로 변경 */
@@ -131,7 +131,7 @@ const ThumbnailWrapper = styled.img`
 `;
 
 const InfoWrapper = styled.div`
-  font-size: 16px;
+  font-size: 15px;
   text-align: left;
   margin-top: 10px;
 
@@ -143,15 +143,16 @@ const InfoWrapper = styled.div`
 const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
-  font-size: 16px;
+  font-size: 15px;
   text-align: left;
+  white-space: pre-line; /* 글 내용 줄바꿈 적용 */
   border: 1.5px solid #d8d8d8;
   border-radius: 10px;
   box-sizing: border-box;
   margin-bottom: 0px; // Footer와의 간격
   width: 500px;
   margin-top: 10px;
-  max-height: 160px;
+  max-height: 200px;
   padding: 20px 15px 20px 15px; /* 내부 여백 */
   overflow-y: auto;
 
@@ -182,7 +183,7 @@ export const BoardBtn = styled.button`
 const ReviewWriteFormContainer = styled.form`
   position: relative;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 20px;
   margin-bottom: 10px; /* 버튼과의 간격 조정 */
 `;
 
@@ -190,7 +191,7 @@ const ReviewWriteForm = styled.textarea`
   font-family: "NIXGONM-Vb";
   display: flex;
   border: 1.5px solid #808080;
-  font-size: 14px;
+  font-size: 15px;
   color: #efefef;
   background: #808080;
   width: 100%;
@@ -213,7 +214,7 @@ const ReviewWriteForm = styled.textarea`
 
 const ReviewSubmitBtn = styled.button`
   font-family: "NIXGONM-Vb";
-  font-size: 14px;
+  font-size: 15px;
   width: 100%;
   padding: 8px 16px;
   background-color: #808080;
@@ -227,19 +228,15 @@ const ReviewWrapper = styled.div`
   color: #e2e2e2;
   border-bottom: 1px solid #ccc;
   width: 100%;
-  height: 50px;
   margin-bottom: 10px;
-
   text-align: left;
 `;
 
 const ReviewContent = styled.div`
   font-size: 16px;
+
   @media (max-width: 540px) {
     font-size: 16px; /* 모바일에서 글제목 크기 */
-  }
-  &:hover {
-    cursor: pointer;
   }
 `;
 
