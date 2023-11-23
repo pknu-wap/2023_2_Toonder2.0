@@ -2,9 +2,56 @@ import Header from "../background/Header";
 import Navbar from "../background/Navbar";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
+import supabase from "../supabase";
+import axios from "axios";
 
 function WebtoonInfo() {
   const [jsonData, setJsonData] = useState([]);
+  const { state } = useLocation();
+  // const { mastrId } = state;
+  const [userEmail, setUserEmail] = useState("");
+  const [userName, setUserName] = useState("");
+  const [inputReviewText, setInputReviewText] = useState("");
+
+  useEffect(() => {
+    setUserEmailForStart();
+  }, []);
+
+  // 사용자 이메일, 닉네임 불러오기
+  const setUserEmailForStart = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    const session = data.session;
+    setUserEmail(session.user.email);
+    setUserName(session.user.name);
+    console.log(userName);
+  };
+
+  // 작성한 리뷰 백엔드로 전송
+  const sendingReviewToBackEnd = () => {
+    const sendingReviewData = {
+      revContent: inputReviewText,
+      // revRating: regRateValue, 별점
+      memName: userName,
+      mem_email: userEmail,
+    };
+
+    //console.log(sendingReviewData);
+
+    // axios
+    //   .post("toonder/webtoon/" + mastrId + "/review", sendingReviewData)
+    //   .then((res) => {
+    //     //console.log(res.data);
+    //     // setReviewList(reviewList.concat(res.data));
+    //   })
+    //   .catch((error) => console.log(error));
+
+    setInputReviewText("");
+
+    // setRegRateValue(5.0);
+    // setOpenModalForConfirm(false);
+    // setOpenModalConfirmMessage(true);
+  };
 
   useEffect(() => {
     const fetchData = async () => {
@@ -35,7 +82,7 @@ function WebtoonInfo() {
           <InfoWrapper>
             <div style={{ fontSize: "24px" }}>{jsonData.title}</div>
             <div>
-                {/* 글 작가가 따로 없는 경우 '글/그림 | 작가명' 출력 */}
+              {/* 글 작가가 따로 없는 경우 '글/그림 | 작가명' 출력 */}
               {jsonData.sntncWritrNm === "" ? (
                 <div>글/그림 | {jsonData.pictrWritrNm}</div>
               ) : (
@@ -73,6 +120,12 @@ function WebtoonInfo() {
                 <ReviewContent>{review.revContent}</ReviewContent>
                 <ReviewProperty>
                   <div>{review.memName}</div>
+                  {review.memName === userName && (
+                    <div>
+                      <button>수정</button>
+                      <button>삭제</button>
+                    </div>
+                  )}
                   <div>{`별점: ${review.revRating}`}</div>
                 </ReviewProperty>
               </ReviewWrapper>
@@ -81,8 +134,14 @@ function WebtoonInfo() {
 
         {/* 리뷰 작성 폼 */}
         <ReviewWriteFormContainer>
-          <ReviewWriteForm placeholder="리뷰를 작성해보세요!"></ReviewWriteForm>
-          <ReviewSubmitBtn>등록</ReviewSubmitBtn>
+          <ReviewWriteForm
+            type="text"
+            value={inputReviewText}
+            placeholder="리뷰를 작성해보세요!"
+          ></ReviewWriteForm>
+          <ReviewSubmitBtn onClick={sendingReviewToBackEnd}>
+            등록
+          </ReviewSubmitBtn>
         </ReviewWriteFormContainer>
       </BoardContainer>
     </>
@@ -101,7 +160,7 @@ const BoardContainer = styled.div`
   text-align: center;
   font-size: 20px;
   align-items: flex-start; /* 왼쪽 정렬로 변경 */
-  color: white; /* 글자 색을 흰색으로 설정 */
+  color: #efefef;
   transition: box-shadow 0.3s ease;
   overflow-x: hidden;
   overflow-y: hidden;
