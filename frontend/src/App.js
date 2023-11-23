@@ -11,7 +11,7 @@ import { Routes, Route, Link } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
-
+import WebtoonInfo from "./component/main/WebtoonInfo";
 
 function App() {
   document.title = "툰더";
@@ -56,6 +56,7 @@ function App() {
           <Route path="/findpw" element={<FindPwPage />}></Route>
           <Route path="/newpw" element={<NewPwPage />}></Route>
           <Route path="/user/kakao/callback" element={<LoginHandler />}></Route>
+          <Route path="/webtooninfo" element={<WebtoonInfo />}></Route>
         </Routes>
         <Footer/>
       </Container>
