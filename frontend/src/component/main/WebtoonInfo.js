@@ -35,10 +35,27 @@ function WebtoonInfo() {
           <InfoWrapper>
             <div style={{ fontSize: "24px" }}>{jsonData.title}</div>
             <div>
-              글/그림작가 | {jsonData.pictrWritrNm}/{jsonData.sntncWritrNm}
+                {/* 글 작가가 따로 없는 경우 '글/그림 | 작가명' 출력 */}
+              {jsonData.sntncWritrNm === "" ? (
+                <div>글/그림 | {jsonData.pictrWritrNm}</div>
+              ) : (
+                <div>
+                  글 | {jsonData.sntncWritrNm} · 그림 | {jsonData.pictrWritrNm}
+                </div>
+              )}
             </div>
             <div>장르 | {jsonData.mainGenreCdNm}</div>
             <div>연재처 | {jsonData.pltfomCdNm}</div>
+            <div>
+              평균별점 |{" "}
+              {jsonData.review &&
+                (
+                  jsonData.review.reduce(
+                    (acc, curr) => acc + curr.revRating,
+                    0
+                  ) / jsonData.review.length
+                ).toFixed(1)}
+            </div>
             <BoardBtn>즐겨찾기</BoardBtn>
           </InfoWrapper>
         </InfoContainer>
@@ -50,15 +67,16 @@ function WebtoonInfo() {
         {/* 리뷰 */}
         <div style={{ marginTop: "30px" }}>리뷰</div>
         <ContentWrapper>
-          {jsonData.review && jsonData.review.map((review) => (
-            <ReviewWrapper key={review.revNo}>
-              <ReviewContent>{review.revContent}</ReviewContent>
-              <ReviewProperty>
-                <div>{review.memName}</div>
-                <div>{`별점: ${review.revRating}`}</div>
-              </ReviewProperty>
-            </ReviewWrapper>
-          ))}
+          {jsonData.review &&
+            jsonData.review.map((review) => (
+              <ReviewWrapper key={review.revNo}>
+                <ReviewContent>{review.revContent}</ReviewContent>
+                <ReviewProperty>
+                  <div>{review.memName}</div>
+                  <div>{`별점: ${review.revRating}`}</div>
+                </ReviewProperty>
+              </ReviewWrapper>
+            ))}
         </ContentWrapper>
 
         {/* 리뷰 작성 폼 */}
@@ -71,6 +89,7 @@ function WebtoonInfo() {
   );
 }
 
+// PostView 컴포넌트에서 styled component import
 
 const BoardContainer = styled.div`
   display: flex;
@@ -112,9 +131,9 @@ const ThumbnailWrapper = styled.img`
 `;
 
 const InfoWrapper = styled.div`
-  flex-direction: column;
   font-size: 16px;
   text-align: left;
+  margin-top: 10px;
 
   > div {
     margin-bottom: 15px; /* 각 div 요소의 아래쪽 여백 설정 */
@@ -210,7 +229,7 @@ const ReviewWrapper = styled.div`
   width: 100%;
   height: 50px;
   margin-bottom: 10px;
-  
+
   text-align: left;
 `;
 
