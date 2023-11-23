@@ -46,6 +46,9 @@ function App() {
       <button>
         <Link to="/findpw">비밀번호 초기화</Link>
       </button>
+      <button>
+        <Link to="/webtooninfo">웹툰 정보</Link>
+      </button>
 
       <Container>
         <Routes>
