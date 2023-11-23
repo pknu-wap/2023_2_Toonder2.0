@@ -29,6 +29,36 @@
             "revRating": 2.0,
             "memName": "김툰더",
             "mastrId": "2017027612"
+        },
+        {
+            "revNo": 3,
+            "revContent": "꿀잼이에요",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 2.0,
+            "memName": "김삿갓",
+            "mastrId": "2017027612"
+        },
+        {
+            "revNo": 4,
+            "revContent": "너무 재밌다",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 2.0,
+            "memName": "김바보",
+            "mastrId": "2017027612"
+        },
+        {
+            "revNo": 5,
+            "revContent": "추천합니다",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 2.0,
+            "memName": "안시현",
+            "mastrId": "2017027612"
         }
     ]
 }
