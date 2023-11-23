@@ -29,7 +29,7 @@ function WebtoonInfo() {
           <ThumbnailWrapper
             src={process.env.PUBLIC_URL + "/webtoon_thumbnail.jpg"}
             alt="webtoon_thumbnail"
-            width="160px"
+            width="150px"
             height="auto"
           />
           <InfoWrapper>
