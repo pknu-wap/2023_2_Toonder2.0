@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import supabase from "../supabase";
 import axios from "axios";
+import HoverRating from "./HoverRating";
 
 function WebtoonInfo() {
   const [jsonData, setJsonData] = useState([]);
@@ -166,7 +167,13 @@ function WebtoonInfo() {
                       </div>
                     )}
                   </div>
-                  <div>{`별점: ${review.revRating}`}</div>
+                  <div>
+                    <HoverRating
+                      value={review.revRating}
+                      size="small"
+                      readOnly={true}
+                    />
+                  </div>
                 </ReviewProperty>
               </ReviewWrapper>
             ))}
@@ -174,6 +181,10 @@ function WebtoonInfo() {
 
         {/* 리뷰 작성 폼 */}
         <ReviewWriteFormContainer onSubmit={handleSubmitReview}>
+          <RatingWrapper>
+            <span style={{ marginRight: "10px" }}>내 별점</span>
+            <HoverRating />
+          </RatingWrapper>
           <ReviewWriteForm
             type="text"
             value={review}
@@ -350,12 +361,18 @@ const ReviewContent = styled.div`
 const ReviewProperty = styled.div`
   display: flex;
   justify-content: space-between;
+  align-items: center;
   color: #d8d8d8;
   font-size: 14px;
   margin: 10px 0px 10px 0;
   @media (max-width: 540px) {
     font-size: 12px; /* 모바일에서 글 속성 크기 */
   }
+`;
+
+const RatingWrapper = styled(ReviewProperty)`
+  font-size: 16px;
+  justify-content: flex-start;
 `;
 
 export default WebtoonInfo;
