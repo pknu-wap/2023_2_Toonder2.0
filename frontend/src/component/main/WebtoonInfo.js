@@ -31,7 +31,11 @@ function WebtoonInfo() {
 
   // 리뷰 등록 - 작성한 리뷰 백엔드로 전송 sendingReviewToBackEnd
   const handleSubmitReview = async (e) => {
-    
+    if (!reviewRating) {
+      alert("별점을 매겨주세요.");
+      return;
+    }
+
     if (!review) {
       alert("리뷰를 입력하세요.");
       return;
@@ -195,9 +199,7 @@ function WebtoonInfo() {
             onChange={(e) => setReview(e.target.value)}
             placeholder="리뷰를 작성해보세요!"
           ></ReviewWriteForm>
-          <ReviewSubmitBtn type="submit">
-            등록
-          </ReviewSubmitBtn>
+          <ReviewSubmitBtn type="submit">등록</ReviewSubmitBtn>
         </ReviewWriteFormContainer>
       </BoardContainer>
     </>
