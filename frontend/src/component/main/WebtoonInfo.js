@@ -14,6 +14,7 @@ function WebtoonInfo() {
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("안시현");
   const [review, setReview] = useState("");
+  const [reviewRating, setReviewRating] = useState(0); // 별점 상태 관리를 위한 useState 추가
 
   useEffect(() => {
     setUserEmailForStart();
@@ -24,13 +25,13 @@ function WebtoonInfo() {
     const { data, error } = await supabase.auth.getSession();
     const session = data.session;
     setUserEmail(session.user.email);
+    // setUserName(localStorage.getItem('loggedUserName'));
     console.log(userName); // 테스트
   };
 
   // 리뷰 등록 - 작성한 리뷰 백엔드로 전송 sendingReviewToBackEnd
   const handleSubmitReview = async (e) => {
-    e.preventDefault();
-
+    
     if (!review) {
       alert("리뷰를 입력하세요.");
       return;
@@ -38,7 +39,7 @@ function WebtoonInfo() {
 
     const reviewData = {
       revContent: review,
-      // revRating: regRateValue, 별점
+      revRating: reviewRating,
       // memName: localStorage.getItem('loggedUserName'),
       mem_email: userEmail,
     };
@@ -183,7 +184,10 @@ function WebtoonInfo() {
         <ReviewWriteFormContainer onSubmit={handleSubmitReview}>
           <RatingWrapper>
             <span style={{ marginRight: "10px" }}>내 별점</span>
-            <HoverRating />
+            <HoverRating
+              value={reviewRating}
+              onChange={(e) => setReviewRating(e)} // 상위 컴포넌트의 상태 업데이트
+            />
           </RatingWrapper>
           <ReviewWriteForm
             type="text"
@@ -191,7 +195,7 @@ function WebtoonInfo() {
             onChange={(e) => setReview(e.target.value)}
             placeholder="리뷰를 작성해보세요!"
           ></ReviewWriteForm>
-          <ReviewSubmitBtn type="submit" onClick={handleSubmitReview}>
+          <ReviewSubmitBtn type="submit">
             등록
           </ReviewSubmitBtn>
         </ReviewWriteFormContainer>
