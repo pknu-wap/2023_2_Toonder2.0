@@ -11,8 +11,8 @@ function WebtoonInfo() {
   const { state } = useLocation();
   // const { mastrId } = state;
   const [userEmail, setUserEmail] = useState("");
-  const [userName, setUserName] = useState("");
-  const [inputReviewText, setInputReviewText] = useState("");
+  const [userName, setUserName] = useState("안시현");
+  const [review, setReview] = useState("");
 
   useEffect(() => {
     setUserEmailForStart();
@@ -23,36 +23,68 @@ function WebtoonInfo() {
     const { data, error } = await supabase.auth.getSession();
     const session = data.session;
     setUserEmail(session.user.email);
-    setUserName(session.user.name);
-    console.log(userName);
+    console.log(userName); // 테스트
   };
 
-  // 작성한 리뷰 백엔드로 전송
-  const sendingReviewToBackEnd = () => {
-    const sendingReviewData = {
-      revContent: inputReviewText,
+  // 리뷰 등록 - 작성한 리뷰 백엔드로 전송 sendingReviewToBackEnd
+  const handleSubmitReview = async (e) => {
+    e.preventDefault();
+
+    if (!review) {
+      alert("리뷰를 입력하세요.");
+      return;
+    }
+
+    const reviewData = {
+      revContent: review,
       // revRating: regRateValue, 별점
-      memName: userName,
+      // memName: localStorage.getItem('loggedUserName'),
       mem_email: userEmail,
     };
 
-    //console.log(sendingReviewData);
+    console.log(reviewData);
 
+    // 백엔드 서버 연결 후 주석 해제
     // axios
-    //   .post("toonder/webtoon/" + mastrId + "/review", sendingReviewData)
+    //   .post("toonder/webtoon/" + mastrId + "/review", reviewData)
     //   .then((res) => {
     //     //console.log(res.data);
     //     // setReviewList(reviewList.concat(res.data));
     //   })
     //   .catch((error) => console.log(error));
 
-    setInputReviewText("");
+    setReview("");
 
     // setRegRateValue(5.0);
     // setOpenModalForConfirm(false);
     // setOpenModalConfirmMessage(true);
   };
 
+  // 리뷰 수정
+
+  // 리뷰 삭제
+  const handleDeleteReview = (revNo, review) => {
+    const reviewData = {
+      revContent: review.revContent,
+      revRating: review.revRating,
+      mem_name: review.memName,
+      mem_email: review.memEmail,
+    };
+    console.log(revNo);
+    console.log(reviewData);
+    // console.log('toonder/webtoon/' + mastrId + '/review/' + revNo);
+
+    // 백엔드 서버 연결 후 주석 해제
+    // axios
+    //   .delete('toonder/webtoon/' + mastrId + '/review/' + revNo, {
+    //     data: reviewData,
+    //   })
+    //   .catch((error) => console.log(error));
+
+    // setReviewList(reviewList.filter((review) => review.revNo !== revNo));
+  };
+
+  // 테스트용 정적 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -119,13 +151,21 @@ function WebtoonInfo() {
               <ReviewWrapper key={review.revNo}>
                 <ReviewContent>{review.revContent}</ReviewContent>
                 <ReviewProperty>
-                  <div>{review.memName}</div>
-                  {review.memName === userName && (
-                    <div>
-                      <button>수정</button>
-                      <button>삭제</button>
-                    </div>
-                  )}
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    <div>{review.memName}</div>
+                    {review.memName === userName && (
+                      <div style={{ marginLeft: "10px" }}>
+                        <ReviewActionBtn>수정</ReviewActionBtn>
+                        <ReviewActionBtn
+                          onClick={() =>
+                            handleDeleteReview(review.revNo, review)
+                          }
+                        >
+                          삭제
+                        </ReviewActionBtn>
+                      </div>
+                    )}
+                  </div>
                   <div>{`별점: ${review.revRating}`}</div>
                 </ReviewProperty>
               </ReviewWrapper>
@@ -133,13 +173,14 @@ function WebtoonInfo() {
         </ContentWrapper>
 
         {/* 리뷰 작성 폼 */}
-        <ReviewWriteFormContainer>
+        <ReviewWriteFormContainer onSubmit={handleSubmitReview}>
           <ReviewWriteForm
             type="text"
-            value={inputReviewText}
+            value={review}
+            onChange={(e) => setReview(e.target.value)}
             placeholder="리뷰를 작성해보세요!"
           ></ReviewWriteForm>
-          <ReviewSubmitBtn onClick={sendingReviewToBackEnd}>
+          <ReviewSubmitBtn type="submit" onClick={handleSubmitReview}>
             등록
           </ReviewSubmitBtn>
         </ReviewWriteFormContainer>
@@ -226,7 +267,7 @@ export const BoardBtn = styled.button`
   font-family: "NIXGONM-Vb";
   background-color: #6e6e6e;
   border: none;
-  color: #e2e2e2;
+  color: #efefef;
   font-size: 14px;
   cursor: pointer;
   border-radius: 10px;
@@ -263,7 +304,7 @@ const ReviewWriteForm = styled.textarea`
 
   &:focus {
     outline: none;
-    color: #e2e2e2;
+    color: #efefef;
   }
 
   &::placeholder {
@@ -271,6 +312,13 @@ const ReviewWriteForm = styled.textarea`
   }
 `;
 
+const ReviewActionBtn = styled.button`
+  font-family: "NIXGONM-Vb";
+  color: #d8d8d8;
+  border: none;
+  background: none;
+  cursor: pointer;
+`;
 const ReviewSubmitBtn = styled.button`
   font-family: "NIXGONM-Vb";
   font-size: 15px;
@@ -284,7 +332,7 @@ const ReviewSubmitBtn = styled.button`
 `;
 
 const ReviewWrapper = styled.div`
-  color: #e2e2e2;
+  color: #efefef;
   border-bottom: 1px solid #ccc;
   width: 100%;
   margin-bottom: 10px;
