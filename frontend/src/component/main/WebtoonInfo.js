@@ -24,7 +24,7 @@ function WebtoonInfo() {
   const setUserEmailForStart = async () => {
     const { data, error } = await supabase.auth.getSession();
     const session = data.session;
-    setUserEmail(session.user.email);
+    // setUserEmail(session.user.email); -> Cannot read properties of null (reading 'user') 에러
     // setUserName(localStorage.getItem('loggedUserName'));
     console.log(userName); // 테스트
   };
@@ -107,7 +107,6 @@ function WebtoonInfo() {
 
   return (
     <>
-      <Navbar />
       <Header title="웹툰 정보" />
       <BoardContainer>
         <InfoContainer>
