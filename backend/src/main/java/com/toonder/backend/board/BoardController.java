@@ -6,6 +6,9 @@ import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.web.PageableDefault;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -17,7 +20,7 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-
+import org.springframework.data.domain.Sort;
 
 @RestController
 @RequestMapping("/toonder") 
@@ -28,10 +31,18 @@ public class BoardController {
     
 
     @GetMapping("/board")
-    public ResponseEntity<List<BoardResponseDto>> getAllBoards(@RequestParam(value = "p_num", required = false) Integer p_num) {
-        if (p_num == null || p_num <= 0) p_num = 1;
-    
-        ResponseEntity<Map<String, Object>> response = boardService.getPagingBoard(p_num);
+    public ResponseEntity<List<BoardResponseDto>> getAllBoards(
+        @RequestParam(value = "page", required = false) Integer page,
+        @PageableDefault(size = 5, direction = Sort.Direction.DESC) Pageable pageable) {
+        
+        if (page == null) {
+            page = 1;
+        }
+
+        Pageable modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
+
+
+        ResponseEntity<Map<String, Object>> response = boardService.getPagingBoard(modifiedPageable);
         if (response == null || response.getBody() == null) {
             return ResponseEntity.ok(Collections.emptyList());
         }

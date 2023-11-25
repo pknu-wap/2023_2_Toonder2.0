@@ -3,11 +3,9 @@ package com.toonder.backend.webtoon;
 import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
 import java.util.ArrayList;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -21,7 +19,6 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 
 import com.toonder.backend.ResourceNotFoundException;
-import com.toonder.backend.board.PagingUtil;
 import com.toonder.backend.review.Review;
 import com.toonder.backend.review.ReviewRepository;
 import com.toonder.backend.review.ReviewRequestDto;
@@ -59,27 +56,23 @@ public class WebtoonService {
     }
     
     // 페이징 처리된 웹툰목록 데이터를 리턴
-	public ResponseEntity<Map<String, Object>> getPagingWebtoon(Integer p_num) {
-		Map<String, Object> result = new HashMap<>();
+	public ResponseEntity<Map<String, Object>> getPagingWebtoon(String type, Pageable pageable) {
+        Map<String, Object> result = new HashMap<>();
+        List<Webtoon> webtoonList;
 
-		int totalObjectCount = findAllCount(); // 전체 글 수 조회
+        if ("title".equals(type)) {
+            webtoonList = webtoonRepository.findAllByOrderByTitleAsc(pageable); 
+        } else {
+            webtoonList = webtoonRepository.findAllByOrderByMastrIdDesc(pageable); 
+        }
 
-		PagingUtil pu = new PagingUtil(p_num, 64, 10);
-		List<Webtoon> webtoonList = webtoonRepository.findFromTo(pu.getObjectStartNum(), pu.getObjectCountPerPage());
-		pu.setObjectCountTotal(totalObjectCount);
-		pu.setCalcForPaging();
-
-		if (webtoonList == null || webtoonList.size() == 0) {
-			return ResponseEntity.ok(Collections.emptyMap());
-		}
-
-		List<WebtoonResponseDto> webtoonResponseDtoList = webtoonList.stream()
-				.map(WebtoonResponseDto::new)
-				.collect(Collectors.toList());
-
-		result.put("pagingData", pu);
-		result.put("list", webtoonResponseDtoList);
-		return ResponseEntity.ok(result);
+        List<WebtoonResponseDto> dtoList = new ArrayList<>();
+        for (Webtoon webtoon : webtoonList) {
+            WebtoonResponseDto dto = new WebtoonResponseDto(webtoon);
+            dtoList.add(dto);
+        }
+        result.put("list", dtoList);
+        return ResponseEntity.ok(result);
 	}
 
     // id값에 해당하는 웹툰 불러오기
