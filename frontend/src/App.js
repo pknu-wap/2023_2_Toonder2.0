@@ -7,12 +7,17 @@ import FindPwPage from "./component/find/FindPwPage";
 import NewPwPage from "./component/find/NewPwPage";
 import JoinPageStep1 from "./component/join/JoinPageStep1";
 import JoinPageStep2 from "./component/join/JoinPageStep2";
+import BoardList from "./component/freeboard/BoardList";
 import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
 import Navbar from "./component/background/Navbar";
 import { AuthProvider } from "./AuthContext";
+import PostView from "./component/freeboard/PostView";
+import PostForm from "./component/freeboard/PostForm";
+import BoardLayout from "./component/freeboard/BoardLayout";
+import EditForm from "./component/freeboard/EditForm";
 
 function App() {
   document.title = "툰더";
@@ -52,6 +57,12 @@ function App() {
             <Route path="/join/step2" element={<JoinPageStep2 />} />
             <Route path="/findpw" element={<FindPwPage />}></Route>
             <Route path="/newpw" element={<NewPwPage />}></Route>
+            <Route element={<BoardLayout />}>
+              <Route path="board" element={<BoardList />} />
+              <Route path="postview" element={<PostView />} />
+              <Route path="postform" element={<PostForm />} />
+              <Route path="/edit/:brdNo" element={<EditForm />} />
+            </Route>
             <Route
               path="/user/kakao/callback"
               element={<LoginHandler />}
