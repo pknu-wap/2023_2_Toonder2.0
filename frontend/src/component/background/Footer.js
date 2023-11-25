@@ -4,7 +4,7 @@ import { Link } from "react-router-dom";
 
 const FooterContainer = styled.div`
   position: fixed;
-  bottom: 0;
+  bottom: 0; /* 브라우저 가장 하단에 위치시킴 */
   width: 100%; /* 모바일 화면에 맞게 설정 */
   max-width: 540px; /* 컴퓨터 브라우저에서 Container의 너비에 딱 맞도록 설정 */
   background: #121212;
