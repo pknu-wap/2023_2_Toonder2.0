@@ -14,7 +14,7 @@ import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
 import WebtoonInfo from "./component/main/WebtoonInfo";
 import Navbar from "./component/background/Navbar";
-import { AuthProvider } from "./AuthContext";
+// import { AuthProvider } from "./AuthContext";
 import PostView from "./component/freeboard/PostView";
 import PostForm from "./component/freeboard/PostForm";
 import BoardLayout from "./component/freeboard/BoardLayout";
@@ -23,33 +23,33 @@ import EditForm from "./component/freeboard/EditForm";
 function App() {
   document.title = "툰더";
 
-  const [isLoggedIn, setLoggedIn] = useState(false);
-  const navigate = useNavigate();
+  // const [isLoggedIn, setLoggedIn] = useState(false);
+  // const navigate = useNavigate();
 
-  useEffect(() => {
-    // 이미 로그인된 상태인지 확인
-    const checkLoggedIn = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      const session = data.session;
+  // useEffect(() => {
+  //   // 이미 로그인된 상태인지 확인
+  //   const checkLoggedIn = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     const session = data.session;
 
-      if (session !== null) {
-        // 이미 로그인된 상태라면 메인 페이지로 이동
-        console.log("로그인되어 있습니다.");
-        setLoggedIn(true);
-      } else {
-        console.log("로그아웃되어 있습니다.");
-        setLoggedIn(false);
-      }
-    };
+  //     if (session !== null) {
+  //       // 이미 로그인된 상태라면 메인 페이지로 이동
+  //       console.log("로그인되어 있습니다.");
+  //       setLoggedIn(true);
+  //     } else {
+  //       console.log("로그아웃되어 있습니다.");
+  //       setLoggedIn(false);
+  //     }
+  //   };
 
-    checkLoggedIn();
-  }, []);
+  //   checkLoggedIn();
+  // }, []);
 
   return (
     <div className="App">
-      <AuthProvider>
+      <>
         <Container>
-          <Navbar isLoggedIn={isLoggedIn} />
+          <Navbar />
 
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
@@ -72,7 +72,7 @@ function App() {
           </Routes>
           <Footer />
         </Container>
-      </AuthProvider>
+      </>
     </div>
   );
 }
