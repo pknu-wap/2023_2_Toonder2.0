@@ -12,6 +12,7 @@ import { Routes, Route, Link, useNavigate } from "react-router-dom";
 import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
+import WebtoonInfo from "./component/main/WebtoonInfo";
 import Navbar from "./component/background/Navbar";
 import { AuthProvider } from "./AuthContext";
 import PostView from "./component/freeboard/PostView";
@@ -67,6 +68,7 @@ function App() {
               path="/user/kakao/callback"
               element={<LoginHandler />}
             ></Route>
+            <Route path="/webtooninfo" element={<WebtoonInfo />}></Route>
           </Routes>
           <Footer />
         </Container>

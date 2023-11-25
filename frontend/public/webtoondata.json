@@ -1,0 +1,64 @@
+{
+    "mastrId": "2017027612",
+    "title": "연애혁명",
+    "pictrWritrNm": "232",
+    "sntncWritrNm": "test",
+    "mainGenreCdNm": "이성애",
+    "outline": "\"로맨스, 그런 건 우리에게 있을 수가 없어!\r\n\r\n신개념 개그 로맨스\"",
+    "pltfomCdNm": "네이버웹툰",
+    "fnshYn": "N",
+    "webtoonPusryYn": "",
+    "imageDownloadUrl": "https://www.kmas.or.kr:443/common/file/atchmnflDownload.ajax?fileImageId=3000022202",
+    "review": [
+        {
+            "revNo": 1,
+            "revContent": "재미없어요 수정",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 2.0,
+            "memName": "김일이",
+            "mastrId": "2017027612"
+        },
+        {
+            "revNo": 2,
+            "revContent": "그냥 그래요",
+            "revRegDate": "2023-06-03T14:58:50.044+00:00",
+            "revUpdateDate": "2023-06-03T14:58:50.044+00:00",
+            "revLike": null,
+            "revRating": 2.5,
+            "memName": "김툰더",
+            "mastrId": "2017027612"
+        },
+        {
+            "revNo": 3,
+            "revContent": "꿀잼이에요",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 3.0,
+            "memName": "김삿갓",
+            "mastrId": "2017027612"
+        },
+        {
+            "revNo": 4,
+            "revContent": "줄바꿈 테스트 줄바꿈 테스트 줄바꿈 테스트 줄바꿈 테스트 줄바꿈 테스트 줄바꿈 테스트 줄바꿈 테스트",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 4.0,
+            "memName": "김바보",
+            "mastrId": "2017027612"
+        },
+        {
+            "revNo": 5,
+            "revContent": "추천합니다",
+            "revRegDate": "2023-06-03T14:54:47.016+00:00",
+            "revUpdateDate": "2023-06-03T14:55:59.776+00:00",
+            "revLike": 0,
+            "revRating": 2.0,
+            "memName": "안시현",
+            "mastrId": "2017027612"
+        }
+    ]
+}
