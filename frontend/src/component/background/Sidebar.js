@@ -4,10 +4,7 @@ import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import supabase from "../supabase";
 import { useAuth } from "../../AuthContext";
-<<<<<<< HEAD
-=======
 import { useState } from "react";
->>>>>>> main
 
 const SidebarContainer = styled.div`
   position: absolute;
@@ -17,11 +14,7 @@ const SidebarContainer = styled.div`
   height: 100%;
   background-color: rgba(30, 30, 30, 0.95);
   transition: right 0.3s ease;
-<<<<<<< HEAD
-  z-index: 1000; /* Set a high z-index */
-=======
   z-index: 1000;
->>>>>>> main
 `;
 
 const Menu = styled.div`
@@ -31,8 +24,6 @@ const Menu = styled.div`
   font-size: 14px;
 `;
 
-<<<<<<< HEAD
-=======
 const ToggleSwitch = styled.label`
   display: flex;
   align-items: center;
@@ -77,7 +68,6 @@ const Input = styled.input`
   }
 `;
 
->>>>>>> main
 const menuItems = [
   { to: "/mypage", text: "마이페이지" },
   { to: "/board", text: "자유게시판" },
@@ -89,10 +79,6 @@ const menuItems = [
 const Sidebar = ({ isOpen, onMenuClick }) => {
   const navigate = useNavigate();
   const { isLoggedIn, logout } = useAuth();
-<<<<<<< HEAD
-
-  const sidebarRef = useRef(null);
-=======
   const sidebarRef = useRef(null);
   const [darkMode, setDarkMode] = useState(false); // 다크 모드를 위한 상태
   const [adultFilter, setAdultFilter] = useState(false); // 19금 필터를 위한 상태
@@ -106,7 +92,6 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
     setAdultFilter(!adultFilter); // 19금 필터 상태 변경
     // 여기에 19금 필터를 적용하거나 설정을 처리하는 로직을 추가할 수 있어요.
   };
->>>>>>> main
 
   const handleOutsideClick = (event) => {
     if (sidebarRef.current && !sidebarRef.current.contains(event.target)) {
@@ -138,11 +123,7 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
     checkLoginStatus();
   }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
 
-<<<<<<< HEAD
-  const handleLogout = async () => {
-=======
   const handleLogoutClick = async () => {
->>>>>>> main
     await logout();
   };
 
@@ -160,10 +141,6 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
         </Link>
       ))}
 
-<<<<<<< HEAD
-      {isLoggedIn ? (
-        <Menu style={{ fontSize: "12px", textDecoration: "none" }} onClick={handleLogout}>
-=======
       {/* 다크 모드 토글 스위치 */}
       <Menu>
         <ToggleSwitch>
@@ -196,7 +173,6 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
           style={{ fontSize: "12px", textDecoration: "none" }}
           onClick={handleLogoutClick}
         >
->>>>>>> main
           로그아웃
         </Menu>
       ) : (
