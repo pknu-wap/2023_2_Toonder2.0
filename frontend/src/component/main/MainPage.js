@@ -9,30 +9,30 @@ function MainPage() {
     localStorage.getItem("loggedUserName")
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await supabase.auth.getSession();
-      const email = data.session.user.email;
-      const requestData = {
-        email: email,
-      };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data } = await supabase.auth.getSession();
+  //     const email = data.session.user.email;
+  //     const requestData = {
+  //       email: email,
+  //     };
 
-      if (!localStorage.getItem("loggedUserName")) {
-        axios
-          .post("toonder/name", requestData)
-          .then((loggedUserData) => {
-            setLoggedUserName(loggedUserData.data.mem_name);
-            localStorage.setItem(
-              "loggedUserName",
-              loggedUserData.data.mem_name
-            );
-          })
-          .catch((error) => console.log(error));
-      }
-    };
+  //     if (!localStorage.getItem("loggedUserName")) {
+  //       axios
+  //         .post("toonder/name", requestData)
+  //         .then((loggedUserData) => {
+  //           setLoggedUserName(loggedUserData.data.mem_name);
+  //           localStorage.setItem(
+  //             "loggedUserName",
+  //             loggedUserData.data.mem_name
+  //           );
+  //         })
+  //         .catch((error) => console.log(error));
+  //     }
+  //   };
 
-    fetchData();
-  }, []);
+  //   fetchData();
+  // }, []);
 
   return (
     <>
