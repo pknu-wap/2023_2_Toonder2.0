@@ -1,3 +1,4 @@
+// Header.js
 import React from "react";
 import { Link } from "react-router-dom";
 import styled from "styled-components";
@@ -7,6 +8,7 @@ const HeaderContainer = styled.div`
 `;
 
 const Title = styled.div`
+font-family: "NIXGONB-Vb-B";
   font-size: 24px;
   color: #efefef;
   letter-spacing: 2px;
@@ -21,6 +23,7 @@ const Subtitle = styled.div`
 
 function Header(props) {
   return (
+    
     <HeaderContainer>
       <Link to="/">
         <img

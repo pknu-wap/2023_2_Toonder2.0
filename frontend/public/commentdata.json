@@ -1,0 +1,93 @@
+[
+    {
+        "cmtNo": 1,
+        "cmtContent": "첫번째 게시글에 대한 첫번째 댓글 아무말 아무말~~~~~~~\n줄바꿈 테스트용 개행",
+        "cmtRegDate": "2023-06-02",
+        "cmtUpdateDate": "2023-06-02",
+        "cmtLike": 3,
+        "memName": "사용자1",
+        "mem_email": "hyeonsian23@gmail.com",
+        "brdNo": 1
+    },
+    {
+        "cmtNo": 2,
+        "cmtContent": "첫번째 게시글에 대한 두번째 댓글",
+        "cmtRegDate": "2023-06-03",
+        "cmtUpdateDate": "2023-06-03",
+        "cmtLike": 1,
+        "memName": "사용자2",
+        "brdNo": 1
+    },
+    {
+        "cmtNo": 3,
+        "cmtContent": "두번째 게시글에 대한 첫번째 댓글",
+        "cmtRegDate": "2023-06-04",
+        "cmtUpdateDate": "2023-06-04",
+        "cmtLike": 2,
+        "memName": "사용자3",
+        "brdNo": 2
+    },
+    {
+        "cmtNo": 4,
+        "cmtContent": "두번째 게시글에 대한 두번째 댓글",
+        "cmtRegDate": "2023-06-05",
+        "cmtUpdateDate": "2023-06-05",
+        "cmtLike": 0,
+        "memName": "사용자4",
+        "brdNo": 2
+    },
+    {
+        "cmtNo": 5,
+        "cmtContent": "세번째 게시글에 대한 첫번째 댓글",
+        "cmtRegDate": "2023-06-06",
+        "cmtUpdateDate": "2023-06-06",
+        "cmtLike": 5,
+        "memName": "사용자5",
+        "brdNo": 3
+    },
+    {
+        "cmtNo": 6,
+        "cmtContent": "세번째 게시글에 대한 두번째 댓글",
+        "cmtRegDate": "2023-06-07",
+        "cmtUpdateDate": "2023-06-07",
+        "cmtLike": 0,
+        "memName": "사용자6",
+        "brdNo": 3
+    },
+    {
+        "cmtNo": 7,
+        "cmtContent": "네번째 게시글에 대한 첫번째 댓글",
+        "cmtRegDate": "2023-06-08",
+        "cmtUpdateDate": "2023-06-08",
+        "cmtLike": 1,
+        "memName": "사용자7",
+        "brdNo": 4
+    },
+    {
+        "cmtNo": 8,
+        "cmtContent": "네번째 게시글에 대한 두번째 댓글",
+        "cmtRegDate": "2023-06-09",
+        "cmtUpdateDate": "2023-06-09",
+        "cmtLike": 0,
+        "memName": "사용자8",
+        "brdNo": 4
+    },
+    {
+        "cmtNo": 9,
+        "cmtContent": "다섯번째 게시글에 대한 첫번째 댓글",
+        "cmtRegDate": "2023-06-10",
+        "cmtUpdateDate": "2023-06-10",
+        "cmtLike": 2,
+        "memName": "사용자9",
+        "brdNo": 5
+    },
+    {
+        "cmtNo": 10,
+        "cmtContent": "다섯번째 게시글에 대한 두번째 댓글",
+        "cmtRegDate": "2023-06-11",
+        "cmtUpdateDate": "2023-06-11",
+        "cmtLike": 0,
+        "memName": "사용자10",
+        "brdNo": 5
+    }
+]
