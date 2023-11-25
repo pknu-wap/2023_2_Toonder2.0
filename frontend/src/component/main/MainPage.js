@@ -1,10 +1,7 @@
 import Header from "../background/Header";
-<<<<<<< HEAD
 import { useEffect, useState } from "react";
 import axios from "axios";
 import supabase from "../supabase";
-=======
->>>>>>> main
 
 function MainPage() {
   // 접속한 사용자 이메일 불러오기
