@@ -78,7 +78,7 @@ const menuItems = [
 
 const Sidebar = ({ isOpen, onMenuClick }) => {
   const navigate = useNavigate();
-  const { isLoggedIn, logout } = useAuth();
+  // const { isLoggedIn, logout } = useAuth();
   const sidebarRef = useRef(null);
   const [darkMode, setDarkMode] = useState(false); // 다크 모드를 위한 상태
   const [adultFilter, setAdultFilter] = useState(false); // 19금 필터를 위한 상태
@@ -107,31 +107,31 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
     };
   }, [onMenuClick]);
 
-  useEffect(() => {
-    // 로그인 상태 변경될 때마다 확인
-    const checkLoginStatus = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      const session = data?.session;
+  // useEffect(() => {
+  //   // 로그인 상태 변경될 때마다 확인
+  //   const checkLoginStatus = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     const session = data?.session;
 
-      if (session !== null) {
-        console.log("로그인되어 있습니다.");
-      } else {
-        console.log("로그아웃되어 있습니다.");
-      }
-    };
+  //     if (session !== null) {
+  //       console.log("로그인되어 있습니다.");
+  //     } else {
+  //       console.log("로그아웃되어 있습니다.");
+  //     }
+  //   };
 
-    checkLoginStatus();
-  }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
+  //   checkLoginStatus();
+  // }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
 
-  const handleLogoutClick = async () => {
-    await logout();
-  };
+  // const handleLogoutClick = async () => {
+  //   await logout();
+  // };
 
-  const handleLoginClick = () => {
-    // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
-    navigate("/login");
-    onMenuClick();
-  };
+  // const handleLoginClick = () => {
+  //   // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
+  //   navigate("/login");
+  //   onMenuClick();
+  // };
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
@@ -168,16 +168,13 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
       </Menu>
 
       {/* 로그인 상태면 로그아웃 버튼, 로그아웃 상태면 로그인 버튼 보이도록 함 */}
-      {isLoggedIn ? (
-        <Menu
-          style={{ fontSize: "12px", textDecoration: "none" }}
-          onClick={handleLogoutClick}
-        >
-          로그아웃
-        </Menu>
-      ) : (
-        <Menu onClick={handleLoginClick}>로그인</Menu>
-      )}
+
+      <Menu
+        style={{ fontSize: "12px", textDecoration: "none" }}
+        // onClick={handleLogoutClick}
+      >
+        로그인
+      </Menu>
     </SidebarContainer>
   );
 };
