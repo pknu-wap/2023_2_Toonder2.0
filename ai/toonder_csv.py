@@ -1,5 +1,4 @@
 import pandas as pd
-import numpy as np
 import matplotlib.pyplot as plt
 from konlpy.tag import Okt
 from sklearn.metrics.pairwise import cosine_similarity
@@ -10,7 +9,7 @@ from soyspacing.countbase import CountSpace
 import re
 
 # file_path = '/Users/choedohyeon/desktop/workarea/summery/webtoon.csv'
-file_path = '/ai/data/data.csv'
+file_path = 'ai/data/data.csv'
 
 model = CountSpace()
 okt = Okt()
@@ -91,3 +90,5 @@ def recommendations(outline, similarity=similarity):
 df['outline_recommendations'] = df['filtered_outline'].apply(lambda x: recommendations(x))
 columns_to_display = ['title', 'outline','mastrId', 'imageDownloadUrl', 'mainGenreCdNm', 'pictrWritrNm', 'pltfomCdNm','adult','outline_recommendations']
 print(df[columns_to_display])
+
+df.to_csv("ai/data/data.csv", index=False)

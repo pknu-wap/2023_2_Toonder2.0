@@ -18,10 +18,10 @@ from tensorflow.keras.preprocessing import image_dataset_from_directory
 
 import pathlib
 
-image_dir = "/Users/kite/Desktop/flask/toonder_ai/toonder_img"
-
+image_dir = "ai/data/toonder_img"
 batch_size = 32
 image_size = (64, 64)
+
 train_ds = image_dataset_from_directory(
     directory=image_dir,
     labels="inferred",
@@ -33,12 +33,21 @@ train_ds = image_dataset_from_directory(
     )
 
 class_names = train_ds.class_names
-print(class_names)
+take = train_ds.take(1)
 
-plt.figure(figsize=(10, 10))
-for images, labels in train_ds.take(1):
-  for i in range(9):
-    ax = plt.subplot(3, 3, i + 1)
-    plt.imshow(images[i].numpy().astype("uint8"), cmap='gray')
-    plt.title(class_names[labels[i]])
-    plt.axis("off")
+print(train_ds.element_spec)
+print("class_names : ", class_names)
+print("data_mode   : ", take)
+
+for images in train_ds.take(10):
+  print('images.shape: ', images.shape)
+
+# for images, labels in train_ds.take(1):
+#     # 첫 번째 이미지를 선택합니다.
+#     first_image = images.numpy()
+    
+#     # 이미지를 출력합니다.
+#     plt.figure()
+#     plt.imshow(first_image, cmap='gray')  # grayscale 이미지이므로 cmap='gray'로 설정합니다.
+#     plt.axis('off')  # 축을 제거합니다.
+#     plt.show()
