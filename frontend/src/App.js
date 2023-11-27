@@ -26,8 +26,8 @@ import { lightTheme, darkTheme } from "./theme/theme";
 function App() {
   document.title = "툰더";
 
-  // const [isLoggedIn, setLoggedIn] = useState(false);
-  // const navigate = useNavigate();
+  const [isLoggedIn, setLoggedIn] = useState(false);
+  const navigate = useNavigate();
 
   // useEffect(() => {
   //   // 이미 로그인된 상태인지 확인
@@ -35,7 +35,7 @@ function App() {
   //     const { data, error } = await supabase.auth.getSession();
   //     const session = data.session;
 
-  //     if (session !== null) {
+  //     if (session) {
   //       // 이미 로그인된 상태라면 메인 페이지로 이동
   //       console.log("로그인되어 있습니다.");
   //       setLoggedIn(true);
