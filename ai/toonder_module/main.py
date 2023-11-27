@@ -31,7 +31,7 @@ db, cursor, api_url, api_key = connect_to_db()
 # delete_data_folder() # 매일마다 데이터 폴더를 삭제하고 다시 시작함
 # api_to_csv() # api -> csv
 # csv_to_data() # csv에서 중복 제거
-# data_to_img(url) # csv의 이미지 url에서 jpeg로 파일 변경
+data_to_img(url) # csv의 이미지 url에서 jpeg로 파일 변경
 #
 # img ai
 # outline ai
