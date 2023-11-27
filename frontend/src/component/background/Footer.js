@@ -1,6 +1,7 @@
 import React from "react";
-import styled from "styled-components";
 import { Link } from "react-router-dom";
+import styled from "styled-components";
+import { lightTheme, darkTheme } from "../../theme/theme";
 
 const FooterContainer = styled.div`
   position: fixed;
@@ -32,56 +33,66 @@ const FooterIconText = styled.div`
   letter-spacing: 1px;
 `;
 
-export const Footer = () => {
+export const Footer = ({ isDarkTheme }) => {
+  const theme = isDarkTheme ? darkTheme : lightTheme;
+
+  const getImagePath = (imageName) => {
+    return isDarkTheme
+      ? `/dark_theme/${imageName}.png`
+      : `/light_theme/${imageName}.png`;
+  };
+
   return (
-    <FooterContainer>
-      <Link to="/" style={{ textDecoration: "none" }}> {/* textDecoration: "none" : 텍스트 클릭 시 밑줄 안 보이게*/}
-        <FooterItem>
-          <img
-            src={process.env.PUBLIC_URL + "/home_icon_dark.png"}
-            alt="logo"
-            width="28px"
-            height="auto"
-          />
-          <FooterIconText>홈</FooterIconText>
-        </FooterItem>
-      </Link>
+      <FooterContainer>
+        <Link to="/" style={{ textDecoration: "none" }}>
+          {" "}
+          {/* textDecoration: "none" : 텍스트 클릭 시 밑줄 안 보이게*/}
+          <FooterItem>
+            <img
+              src={process.env.PUBLIC_URL + getImagePath("home_icon")}
+              alt="logo"
+              width="28px"
+              height="auto"
+            />
+            <FooterIconText>홈</FooterIconText>
+          </FooterItem>
+        </Link>
 
-      <Link to="/webtoonlist" style={{ textDecoration: "none" }}>
-        <FooterItem>
-          <img
-            src={process.env.PUBLIC_URL + "/webtoonlist_icon_dark.png"}
-            alt="logo"
-            width="26px"
-            height="auto"
-          />
-          <FooterIconText>웹툰목록</FooterIconText>
-        </FooterItem>
-      </Link>
+        <Link to="/webtoonlist" style={{ textDecoration: "none" }}>
+          <FooterItem>
+            <img
+              src={process.env.PUBLIC_URL + getImagePath("webtoonlist_icon")}
+              alt="logo"
+              width="26px"
+              height="auto"
+            />
+            <FooterIconText>웹툰목록</FooterIconText>
+          </FooterItem>
+        </Link>
 
-      <Link to="/mywebtoon" style={{ textDecoration: "none" }}>
-        <FooterItem>
-          <img
-            src={process.env.PUBLIC_URL + "/mywebtoon_icon_dark.png"}
-            alt="logo"
-            width="26px"
-            height="auto"
-          />
-          <FooterIconText>마이웹툰</FooterIconText>
-        </FooterItem>
-      </Link>
+        <Link to="/mywebtoon" style={{ textDecoration: "none" }}>
+          <FooterItem>
+            <img
+              src={process.env.PUBLIC_URL + getImagePath("mywebtoon_icon")}
+              alt="logo"
+              width="26px"
+              height="auto"
+            />
+            <FooterIconText>마이웹툰</FooterIconText>
+          </FooterItem>
+        </Link>
 
-      <Link to="/mypage" style={{ textDecoration: "none" }}>
-        <FooterItem>
-          <img
-            src={process.env.PUBLIC_URL + "/mypage_icon_dark.png"}
-            alt="logo"
-            width="26px"
-            height="auto"
-          />
-          <FooterIconText>마이페이지</FooterIconText>
-        </FooterItem>
-      </Link>
-    </FooterContainer>
+        <Link to="/mypage" style={{ textDecoration: "none" }}>
+          <FooterItem>
+            <img
+              src={process.env.PUBLIC_URL + getImagePath("mypage_icon")}
+              alt="logo"
+              width="26px"
+              height="auto"
+            />
+            <FooterIconText>마이페이지</FooterIconText>
+          </FooterItem>
+        </Link>
+      </FooterContainer>
   );
 };
