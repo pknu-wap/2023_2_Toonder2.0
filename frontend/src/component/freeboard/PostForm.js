@@ -21,7 +21,7 @@ function PostForm() {
         alert("로그인을 먼저 해주세요.");
         navigate("/login");
       } else {
-        const email = session.user.email;
+        const email = data.session.user.email;
         setLoggedUserEmail(email);
 
         const rdata = {
