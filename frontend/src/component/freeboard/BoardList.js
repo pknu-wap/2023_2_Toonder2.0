@@ -4,7 +4,7 @@ import styled from "styled-components";
 import Pagination from "./Pagination";
 
 const PostContainer = styled.div`
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.text};
   border-bottom: 1px solid #ccc;
   width: 100%;
   text-align: left;
@@ -23,7 +23,7 @@ const PostTitle = styled.div`
 `;
 
 const PostProperty = styled.div`
-  color: #d8d8d8;
+  color: ${({ theme }) => theme.postProperty};
   font-size: 12px;
   margin: 10px 0px 20px 0;
   @media (max-width: 540px) {

@@ -7,7 +7,7 @@ const FooterContainer = styled.div`
   bottom: 0; /* 브라우저 가장 하단에 위치시킴 */
   width: 100%; /* 모바일 화면에 맞게 설정 */
   max-width: 540px; /* 컴퓨터 브라우저에서 Container의 너비에 딱 맞도록 설정 */
-  background: #121212;
+  background: ${({ theme }) => theme.footerBackground};
   display: flex;
   justify-content: space-evenly; /* 아이콘들을 동일한 간격으로 정렬합니다. */
   align-items: center;
@@ -27,7 +27,7 @@ const FooterItem = styled.div`
 const FooterIconText = styled.div`
   font-size: 10px;
   align-items: center;
-  color: #efefef;
+  color: ${({ theme }) => theme.footerText};
   padding-top: 6px;
   letter-spacing: 1px;
 `;

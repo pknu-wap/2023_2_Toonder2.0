@@ -26,7 +26,8 @@ const BoardContainer = styled.div`
 const ListContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1.5px solid #d8d8d8;
+  border: 1.5px solid;
+  border-color: ${({ theme }) => theme.containerBorder};
   border-radius: 10px;
   box-sizing: border-box;
   margin-bottom: 50px; // Footer와의 간격
