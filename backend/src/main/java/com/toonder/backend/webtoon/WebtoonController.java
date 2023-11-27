@@ -4,6 +4,8 @@ import java.util.Collections;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
@@ -82,8 +84,21 @@ public class WebtoonController {
 
     // 웹툰 상세보기
     @GetMapping("/webtoon/{mastrId}")
-    public ResponseEntity<WebtoonResponseDto> getWebtoon(@PathVariable String mastrId) {
+    public ResponseEntity<WebtoonResponseDto> getWebtoon(@PathVariable String mastrId,  HttpSession session) {
+
+        //최근 본 웹툰
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
+
+        if (userSession == null) {
+            userSession = new UserSession();
+            session.setAttribute("userSession", userSession);
+        }
+
+        userSession.setRecentlyViewedMastrId(mastrId);
+
+        //웹툰 상세보기
         WebtoonResponseDto webtoonResponseDto = webtoonService.getWebtoon(mastrId);
+
         return ResponseEntity.ok(webtoonResponseDto);
     } 
 
