@@ -29,26 +29,26 @@ function App() {
   const [isLoggedIn, setLoggedIn] = useState(false);
   const navigate = useNavigate();
 
-  // useEffect(() => {
-  //   // 이미 로그인된 상태인지 확인
-  //   const checkLoggedIn = async () => {
-  //     const { data, error } = await supabase.auth.getSession();
-  //     const session = data.session;
+  useEffect(() => {
+    // 이미 로그인된 상태인지 확인
+    const checkLoggedIn = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      const session = data.session;
 
-  //     if (session) {
-  //       // 이미 로그인된 상태라면 메인 페이지로 이동
-  //       console.log("로그인되어 있습니다.");
-  //       setLoggedIn(true);
-  //     } else {
-  //       console.log("로그아웃되어 있습니다.");
-  //       setLoggedIn(false);
-  //     }
-  //   };
+      if (session) {
+        // 이미 로그인된 상태라면 메인 페이지로 이동
+        console.log("로그인되어 있습니다.");
+        setLoggedIn(true);
+      } else {
+        console.log("로그아웃되어 있습니다.");
+        setLoggedIn(false);
+      }
+    };
 
-  //   checkLoggedIn();
-  // }, []);
+    checkLoggedIn();
+  }, []);
 
-  const [isDarkTheme, setIsDarkTheme] = useState(false);
+  const [isDarkTheme, setIsDarkTheme] = useState(true);
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
@@ -78,7 +78,7 @@ function App() {
             ></Route>
             <Route path="/webtooninfo" element={<WebtoonInfo />}></Route>
           </Routes>
-          <Footer />
+          <Footer isDarkTheme={isDarkTheme} />
         </Container>
       </div>
     </ThemeProvider>
