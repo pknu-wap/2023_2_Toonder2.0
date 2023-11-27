@@ -9,7 +9,8 @@ from collections import Counter
 from soyspacing.countbase import CountSpace
 import re
 
-file_path = '/Users/choedohyeon/desktop/workarea/summery/webtoon.csv'
+# file_path = '/Users/choedohyeon/desktop/workarea/summery/webtoon.csv'
+file_path = '/ai/data/data.csv'
 
 model = CountSpace()
 okt = Okt()
@@ -51,9 +52,9 @@ df['filtered_outline'] = df['outline'].apply(filter_pos)
 unique_genres = df['mainGenreCdNm'].unique()
 
 df['adult'] = 0
-adult_genres = ['¼ºÀÎ', 'BL', 'GL', 'µ¿¼º¾Ö']
+adult_genres = ['ï¿½ï¿½ï¿½ï¿½', 'BL', 'GL', 'ï¿½ï¿½ï¿½ï¿½ï¿½ï¿½']
 df.loc[df['mainGenreCdNm'].isin(adult_genres), 'adult'] = 1
-keywords = ['¼½½º', 'ºÒ·û', '¾ßµ¿', '¾ÏÄÆ', '¼öÄÆ']
+keywords = ['ï¿½ï¿½ï¿½ï¿½', 'ï¿½Ò·ï¿½', 'ï¿½ßµï¿½', 'ï¿½ï¿½ï¿½ï¿½', 'ï¿½ï¿½ï¿½ï¿½']
 pattern = re.compile('|'.join(keywords))
 
 df.loc[(df['outline'].str.contains(pattern)) & (df['adult'] == 0), 'adult'] = 1
