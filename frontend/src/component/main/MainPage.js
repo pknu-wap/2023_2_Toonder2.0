@@ -9,30 +9,33 @@ function MainPage() {
     localStorage.getItem("loggedUserName")
   );
 
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data } = await supabase.auth.getSession();
-      const email = data.session.user.email;
-      const requestData = {
-        email: email,
-      };
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data } = await supabase.auth.getSession();
+  //     const email = data.session.user.email;
+  //     console.log("로그인한 이메일:", email);
 
-      if (!localStorage.getItem("loggedUserName")) {
-        axios
-          .post("toonder/name", requestData)
-          .then((loggedUserData) => {
-            setLoggedUserName(loggedUserData.data.mem_name);
-            localStorage.setItem(
-              "loggedUserName",
-              loggedUserData.data.mem_name
-            );
-          })
-          .catch((error) => console.log(error));
-      }
-    };
+  //     const requestData = {
+  //       email: email,
+  //     };
 
-    fetchData();
-  }, []);
+
+  //     if (!localStorage.getItem("loggedUserName")) {
+  //       axios
+  //         .post("toonder/name", requestData)
+  //         .then((loggedUserData) => {
+  //           setLoggedUserName(loggedUserData.data.mem_name);
+  //           localStorage.setItem(
+  //             "loggedUserName",
+  //             loggedUserData.data.mem_name
+  //           );
+  //         })
+  //         .catch((error) => console.log(error));
+  //     }
+  //   };
+
+  //   fetchData();
+  // }, []);
 
   return (
     <>
