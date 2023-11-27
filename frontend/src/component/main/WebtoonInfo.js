@@ -107,7 +107,6 @@ function WebtoonInfo() {
 
   return (
     <>
-      <Navbar />
       <Header title="웹툰 정보" />
       <BoardContainer>
         <InfoContainer>
@@ -218,7 +217,7 @@ const BoardContainer = styled.div`
   text-align: center;
   font-size: 20px;
   align-items: flex-start; /* 왼쪽 정렬로 변경 */
-  color: #efefef;
+  color: ${({ theme }) => theme.text};
   transition: box-shadow 0.3s ease;
   overflow-x: hidden;
   overflow-y: hidden;
@@ -263,7 +262,8 @@ const ContentWrapper = styled.div`
   font-size: 15px;
   text-align: left;
   white-space: pre-line; /* 글 내용 줄바꿈 적용 */
-  border: 1.5px solid #d8d8d8;
+  border: 1.5px solid;
+  border-color: ${({ theme }) => theme.containerBorder};
   border-radius: 10px;
   box-sizing: border-box;
   margin-bottom: 0px; // Footer와의 간격
@@ -307,10 +307,11 @@ const ReviewWriteFormContainer = styled.form`
 const ReviewWriteForm = styled.textarea`
   font-family: "NIXGONM-Vb";
   display: flex;
-  border: 1.5px solid #808080;
+  border: 1.5px solid;
+  border-color: ${({ theme }) => theme.commentForm};
   font-size: 15px;
   color: #efefef;
-  background: #808080;
+  background: ${({ theme }) => theme.commentForm};
   width: 100%;
   border-radius: 10px;
   box-sizing: border-box;
@@ -325,7 +326,7 @@ const ReviewWriteForm = styled.textarea`
   }
 
   &::placeholder {
-    color: #cccccc;
+    color: ${({ theme }) => theme.placeholderText};
   }
 `;
 
@@ -341,15 +342,15 @@ const ReviewSubmitBtn = styled.button`
   font-size: 15px;
   width: 100%;
   padding: 8px 16px;
-  background-color: #808080;
-  color: white;
+  background-color: ${({ theme }) => theme.commentForm};
+  color: ${({ theme }) => theme.text};
   border: none;
   border-radius: 5px;
   cursor: pointer;
 `;
 
 const ReviewWrapper = styled.div`
-  color: #efefef;
+  color: ${({ theme }) => theme.text};
   border-bottom: 1px solid #ccc;
   width: 100%;
   margin-bottom: 10px;
@@ -368,7 +369,7 @@ const ReviewProperty = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  color: #d8d8d8;
+  color: ${({ theme }) => theme.postProperty};
   font-size: 14px;
   margin: 10px 0px 10px 0;
   @media (max-width: 540px) {

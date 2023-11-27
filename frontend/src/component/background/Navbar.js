@@ -19,10 +19,10 @@ const NavbarIcons = styled.div`
 const Icon = styled.div`
   margin-right: 16px;
   font-size: 18px;
-  cursor : pointer;
+  cursor: pointer;
 `;
 
-export const Navbar = () => {
+export const Navbar = ({ isDarkTheme, setIsDarkTheme }) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -46,9 +46,14 @@ export const Navbar = () => {
         </NavbarIcons>
       </NavbarContainer>
 
-      <Sidebar isOpen={sidebarOpen} onMenuClick={handleMenuClick} />
+      <Sidebar
+        isOpen={sidebarOpen}
+        onMenuClick={handleMenuClick}
+        isDarkTheme={isDarkTheme}
+        setIsDarkTheme={setIsDarkTheme}
+      />
     </>
   );
-}
+};
 
 export default Navbar;

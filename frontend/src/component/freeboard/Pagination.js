@@ -42,17 +42,17 @@ const Button = styled.button`
   padding: 8px;
   margin: 0;
   background: none;
-  color: white;
+  color: ${({ theme }) => theme.text};
   font-size: 1rem;
 
   &:hover {
-    background: #121212;
+    background: ${({ theme }) => theme.paginationHover};
     cursor: pointer;
     transform: translateY(-2px);
   }
 
   &[disabled] {
-    background: grey;
+    background: ${({ theme }) => theme.paginationDefault};
     cursor: revert;
     transform: revert;
   }
