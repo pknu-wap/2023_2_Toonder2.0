@@ -7,9 +7,9 @@ import supabase from "../supabase";
 
 // 아이디 input - 필드
 export const Input = styled.input`
-  background-color: #414141;
+  background-color: ${({ theme }) => theme.inputFormBackground};
   font-family: "NIXGONM-Vb";
-  color: #efefef;
+  color: ${({ theme }) => theme.text};
   border: none;
   border-radius: 0px;
   border-bottom: 1px solid grey;
@@ -21,7 +21,7 @@ export const Input = styled.input`
 
   &::placeholder {
     font-family: "NIXGONM-Vb"; /* placeholder에 폰트 스타일 적용 */
-    color: #bfbfbf;
+    color: ${({ theme }) => theme.inputFormPlaceholder};
   }
 `;
 
@@ -35,7 +35,7 @@ export const PwInput = styled(Input)`
 // submit 버튼
 export const Btn = styled.button`
   font-family: "NIXGONM-Vb";
-  background-color: #6e6e6e;
+  background-color: ${({ theme }) => theme.btnBackground};
   border: none;
   color: white;
   font-size: 16px;
@@ -56,7 +56,7 @@ export const BtnText = styled.button`
   cursor: pointer;
   font-family: "NIXGONM-Vb";
   font-size: 16px;
-  color: #efefef;
+  color: ${({ theme }) => theme.text};
   background: none;
   border: none;
   margin: 5px;
@@ -67,7 +67,7 @@ const Line = styled.div`
   display: flex;
   flex-basis: 100%;
   align-items: center;
-  color: #efefef;
+  color: ${({ theme }) => theme.inputFormPlaceholder};
   font-size: 14px;
   margin-top: 20px;
 
