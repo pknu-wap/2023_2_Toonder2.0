@@ -1,13 +1,16 @@
 import requests
 import os
 import pandas as pd
+import shutil
+
 
 # 이미지 저장 함수
 def save_image_from_url(url, title ):
+    directory = "ai/data/toonder_img"
+        
     response = requests.get(url)
     if response.status_code == 200:
         # 디렉토리 경로 생성
-        directory = f"/Users/kite/Desktop/flask/toonder_ai/toonder_img/class"
 
         # 디렉토리가 존재하지 않으면 생성
         if not os.path.exists(directory):
