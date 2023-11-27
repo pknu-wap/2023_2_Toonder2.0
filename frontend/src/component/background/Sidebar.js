@@ -157,7 +157,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
           <span>{theme}</span>
           <Input
             type="checkbox"
-            checked={isDarkTheme}
+            checked={!isDarkTheme}
             onChange={handleDarkModeToggle}
           />
           <Slider />
