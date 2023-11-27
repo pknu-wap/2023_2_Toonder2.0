@@ -116,7 +116,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
       const { data, error } = await supabase.auth.getSession();
       const session = data.session;
 
-      if (session !== null) {
+      if (session) {
         setIsLoggedIn(true); // 로그인 상태인 경우 true로 설정
       } else {
         setIsLoggedIn(false); // 로그아웃 상태인 경우 false로 설정
@@ -132,7 +132,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
     if (error) {
       console.error("로그아웃 중 오류가 발생했습니다.", error);
     } else {
-      // 로그아웃 성공시 메인으로 리다이렉트
+      navigate("/"); // 로그아웃 성공시 메인으로 리다이렉트
       alert("로그아웃되었습니다.");
       window.location.replace("/");
     }
