@@ -17,6 +17,7 @@ const NavbarIcons = styled.div`
 `;
 
 const Icon = styled.div`
+  color: ${({ theme }) => theme.icon};
   margin-right: 16px;
   font-size: 18px;
   cursor: pointer;
