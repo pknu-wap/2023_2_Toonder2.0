@@ -74,7 +74,7 @@ function PostView() {
       alert("본인의 댓글만 삭제가 가능합니다.");
       return;
     }
-  
+
     try {
       await axios.delete(`/toonder/board/${brdNo}`, {
         data: { mem_email: email },
@@ -273,9 +273,7 @@ function PostView() {
       </PostContentContainer>
 
       {/* 댓글 */}
-      <div style={{ color: "#e2e2e2", textAlign: "left", fontSize: "18px" }}>
-        댓글
-      </div>
+      <Text>댓글</Text>
       <CommentContainer>
         {filteredComments.map((comment) => (
           <CommentInnerContainer key={comment.cmtNo}>
@@ -286,7 +284,7 @@ function PostView() {
                     style={{ fontFamily: "NIXGONB-Vb-B" }}
                   >{`${comment.memName}`}</div>
                   <CommentWriteForm
-                    style={{marginTop:"0px"}}
+                    style={{ marginTop: "0px" }}
                     value={
                       editingCommentNo === comment.cmtNo
                         ? editedComment
@@ -513,7 +511,7 @@ const CommentWriteForm = styled.textarea`
   border-color: ${({ theme }) => theme.commentWriteForm};
   background: ${({ theme }) => theme.commentWriteForm};
   font-size: 14px;
-  color: #efefef;
+  color:  ${({ theme }) => theme.text};
   width: 100%;
   border-radius: 10px;
   box-sizing: border-box;
@@ -528,7 +526,7 @@ const CommentWriteForm = styled.textarea`
   }
 
   &::placeholder {
-    color: #cccccc;
+    color: ${({ theme }) => theme.placeholder};
   }
 `;
 
@@ -542,6 +540,12 @@ const CommentSubmitBtn = styled.button`
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+const Text = styled.div`
+  color: ${({ theme }) => theme.text};
+  text-align: left;
+  font-size: 18px;
 `;
 
 export default PostView;
