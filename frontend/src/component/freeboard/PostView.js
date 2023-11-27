@@ -20,21 +20,21 @@ function PostView() {
   const [submitCmtEditBtnText, setSubmitCmtEditBtnText] = useState("수정");
 
   // 이메일 불러오기
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      const session = data.session;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     const session = data.session;
 
-      if (session === null) {
-        alert("로그인을 먼저 해주세요.");
-        navigate("/login");
-      } else {
-        const email = session.user.email;
-        setEmail(email);
-      }
-    };
-    fetchData();
-  }, []);
+  //     if (session === null) {
+  //       alert("로그인을 먼저 해주세요.");
+  //       navigate("/login");
+  //     } else {
+  //       // const email = session.user.email; -> 에러 발생
+  //       setEmail(email);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   // 게시글 불러오기
   useEffect(() => {
