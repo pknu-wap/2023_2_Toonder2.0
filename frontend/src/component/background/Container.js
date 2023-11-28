@@ -1,6 +1,8 @@
 import styled from "styled-components";
 
 export const Container = styled.div`
+  font-family: ${({ theme }) => theme.font};
+  background: ${({ theme }) => theme.body};
   display: flex;
   flex-direction: column;
   align-items: center;
