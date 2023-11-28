@@ -1,12 +1,14 @@
 package com.toonder.backend.webtoon;
 
-import java.util.List;
+import java.util.*;
 
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 
 public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
+
+	Optional<Webtoon> findByMastrId(String mastrId);
 
 	//nativeQuery = true 이면 기본 SQL 쿼리
 	//nativeQuery = false 이면 JPQL 쿼리로 처리

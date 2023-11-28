@@ -1,0 +1,9 @@
+# table의 내용 조회용 쿼리문
+use toonderDB;
+SHOW tables;
+select * from wbtnInfo;
+
+# table의 행의 수를 확인하는 쿼리문
+SELECT COUNT(*) AS row_count FROM wbtnInfo;
+
+# table의 중복행을 삭제하는 쿼리문
