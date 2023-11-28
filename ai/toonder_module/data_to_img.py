@@ -17,7 +17,7 @@ def save_image_from_url(url, title ):
             os.makedirs(directory)
         
         # 파일 저장
-        with open(f"{directory}/{title}.png", 'wb') as file:
+        with open(f"{directory}/{title}.PNG", 'wb') as file:
             file.write(response.content)
     else:
         print(f"이미지 다운로드 실패: {url} ({title})")

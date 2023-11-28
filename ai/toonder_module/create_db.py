@@ -9,6 +9,12 @@ def create_db(csv_file_path):
             reader = csv.reader(file)
             headers = next(reader)
             
+            delete_table_query = f"""
+            DROP TABLE wbtnInfo 
+            """
+            cursor.execute(delete_table_query)
+
+            
             # 테이블 생성
             create_table_query = f"""
             CREATE TABLE IF NOT EXISTS wbtnInfo (
