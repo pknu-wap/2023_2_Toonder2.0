@@ -16,18 +16,18 @@ function WebtoonInfo() {
   const [review, setReview] = useState("");
   const [reviewRating, setReviewRating] = useState(0); // 별점 상태 관리를 위한 useState 추가
 
-  useEffect(() => {
-    setUserEmailForStart();
-  }, []);
+  // useEffect(() => {
+  //   setUserEmailForStart();
+  // }, []);
 
   // 사용자 이메일, 닉네임 불러오기
-  const setUserEmailForStart = async () => {
-    const { data, error } = await supabase.auth.getSession();
-    const session = data.session;
-    setUserEmail(session.user.email);
-    // setUserName(localStorage.getItem('loggedUserName'));
-    console.log(userName); // 테스트
-  };
+  // const setUserEmailForStart = async () => {
+  //   const { data, error } = await supabase.auth.getSession();
+  //   const session = data.session;
+  //   setUserEmail(session.user.email);
+  //   // setUserName(localStorage.getItem('loggedUserName'));
+  //   console.log(userName); // 테스트
+  // };
 
   // 리뷰 등록 - 작성한 리뷰 백엔드로 전송 sendingReviewToBackEnd
   const handleSubmitReview = async (e) => {
