@@ -4,6 +4,7 @@ import { useNavigate } from "react-router-dom";
 import { Input, PwInput, Btn } from "../login/LoginPage";
 import styles from "./JoinPage.module.css";
 // import { IconName } from "react-icons/fa";
+import styled from "styled-components";
 
 function JoinPageStep1() {
   const [firstName, setFirstName] = useState(""); // 이름 값
@@ -144,20 +145,23 @@ function JoinPageStep1() {
             onChange={handleCheckPw}
           />
           <div className={styles.errorMsgStyle}>{pwCheckErrorMsg}</div>
-          <Btn
-            style={{
-              marginBottom: "50px",
-              // input들이 정확히 입력되지 않았을 때는 버튼 색이 원래의 50%만큼 투명하게 보이도록 설정
-              backgroundColor: notAllow ? "#6e6e6e66" : "#6e6e6e",
-            }}
+          <ThemedBtn
+            notAllow={notAllow}
             type="submit"
             disabled={notAllow}
           >
             다음
-          </Btn>
+          </ThemedBtn>
         </form>
     </>
   );
 }
+
+export const ThemedBtn = styled(Btn)`
+  margin-bottom: 50px;
+  background-color: ${({ theme, notAllow }) => (notAllow ? theme.btnBackgroundDisabled : theme.btnBackground)};
+  // 기타 버튼 스타일
+`;
+
 
 export default JoinPageStep1;

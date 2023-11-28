@@ -20,21 +20,21 @@ function PostView() {
   const [submitCmtEditBtnText, setSubmitCmtEditBtnText] = useState("수정");
 
   // 이메일 불러오기
-  useEffect(() => {
-    const fetchData = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      const session = data.session;
+  // useEffect(() => {
+  //   const fetchData = async () => {
+  //     const { data, error } = await supabase.auth.getSession();
+  //     const session = data.session;
 
-      if (session === null) {
-        alert("로그인을 먼저 해주세요.");
-        navigate("/login");
-      } else {
-        const email = session.user.email;
-        setEmail(email);
-      }
-    };
-    fetchData();
-  }, []);
+  //     if (session === null) {
+  //       alert("로그인을 먼저 해주세요.");
+  //       navigate("/login");
+  //     } else {
+  //       // const email = session.user.email; -> 에러 발생
+  //       setEmail(email);
+  //     }
+  //   };
+  //   fetchData();
+  // }, []);
 
   // 게시글 불러오기
   useEffect(() => {
@@ -74,7 +74,7 @@ function PostView() {
       alert("본인의 댓글만 삭제가 가능합니다.");
       return;
     }
-  
+
     try {
       await axios.delete(`/toonder/board/${brdNo}`, {
         data: { mem_email: email },
@@ -273,9 +273,7 @@ function PostView() {
       </PostContentContainer>
 
       {/* 댓글 */}
-      <div style={{ color: "#e2e2e2", textAlign: "left", fontSize: "18px" }}>
-        댓글
-      </div>
+      <Text>댓글</Text>
       <CommentContainer>
         {filteredComments.map((comment) => (
           <CommentInnerContainer key={comment.cmtNo}>
@@ -286,7 +284,7 @@ function PostView() {
                     style={{ fontFamily: "NIXGONB-Vb-B" }}
                   >{`${comment.memName}`}</div>
                   <CommentWriteForm
-                    style={{marginTop:"0px"}}
+                    style={{ marginTop: "0px" }}
                     value={
                       editingCommentNo === comment.cmtNo
                         ? editedComment
@@ -368,7 +366,7 @@ function PostView() {
 }
 
 export const PostHeader = styled.div`
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.postText};
   border-bottom: 1px solid grey;
   width: 100%;
   text-align: left;
@@ -387,7 +385,7 @@ export const PostProperty = styled.div`
   flex-direction: row; /* 모바일 뷰에서 컬럼 방향으로 변경 */
   justify-content: space-between; /* 내부 아이템 간격 벌리기 */
   align-items: center; /* 세로 중앙 정렬 */
-  color: #d8d8d8;
+  color: ${({ theme }) => theme.postProperty};
   font-size: 12px;
   margin: 10px 0px 10px 0;
 
@@ -421,7 +419,7 @@ const PostContentContainer = styled.div`
   justify-content: flex-start;
   position: relative;
   font-size: 14px;
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.postText};
   margin: 20px 0px 20px 0px;
   white-space: pre-line; /* 글 내용 줄바꿈 적용 */
   line-height: 1.8; /* 줄간격 조정을 위한 line-height 속성 */
@@ -442,8 +440,9 @@ const PostBtnWrapper = styled.div`
 const CommentContainer = styled.div`
   display: flex;
   flex-direction: column;
-  border: 1.5px solid #6e6e6e;
-  background: #6e6e6e;
+  border: 1.5px solid;
+  border-color: ${({ theme }) => theme.commentForm};
+  background: ${({ theme }) => theme.commentForm};
   border-radius: 10px;
   box-sizing: border-box;
   margin-top: 10px;
@@ -465,6 +464,7 @@ const CommentInnerContainer = styled.div`
 const CommentContentWrapper = styled(PostProperty)`
   display: flex;
   flex-direction: column;
+  color: ${({ theme }) => theme.postText};
   text-align: left;
   line-height: 1.4;
   margin-bottom: 0px;
@@ -479,7 +479,7 @@ const CommentPropertyWrapper = styled.div`
   justify-content: flex-start;
   align-items: center;
   font-size: 12px;
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.postText};
   margin: 5px 0px 10px 0px !important; /* margin 속성에 우선순위 부여 */
 `;
 
@@ -488,7 +488,7 @@ const CommentBtn = styled.button`
   float: left;
   background: none;
   border: none;
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.postText};
   font-size: 14px;
   cursor: pointer;
   display: flex;
@@ -507,10 +507,11 @@ const CommentWriteFormContainer = styled.form`
 const CommentWriteForm = styled.textarea`
   font-family: "NIXGONM-Vb";
   display: flex;
-  border: 1.5px solid #808080;
+  border: 1.5px solid;
+  border-color: ${({ theme }) => theme.commentWriteForm};
+  background: ${({ theme }) => theme.commentWriteForm};
   font-size: 14px;
-  color: #efefef;
-  background: #808080;
+  color:  ${({ theme }) => theme.text};
   width: 100%;
   border-radius: 10px;
   box-sizing: border-box;
@@ -525,7 +526,7 @@ const CommentWriteForm = styled.textarea`
   }
 
   &::placeholder {
-    color: #cccccc;
+    color: ${({ theme }) => theme.placeholder};
   }
 `;
 
@@ -534,11 +535,17 @@ const CommentSubmitBtn = styled.button`
   font-size: 14px;
   width: 100%;
   padding: 8px 16px;
-  background-color: #808080;
-  color: white;
+  background-color: ${({ theme }) => theme.commentWriteForm};
+  color: ${({ theme }) => theme.postText};
   border: none;
   border-radius: 5px;
   cursor: pointer;
+`;
+
+const Text = styled.div`
+  color: ${({ theme }) => theme.text};
+  text-align: left;
+  font-size: 18px;
 `;
 
 export default PostView;

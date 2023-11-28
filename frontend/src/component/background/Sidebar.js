@@ -3,7 +3,7 @@ import React, { useRef, useEffect } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import supabase from "../supabase";
-import { useAuth } from "../../AuthContext";
+// import { useAuth } from "../../AuthContext";
 import { useState } from "react";
 
 const SidebarContainer = styled.div`
@@ -76,16 +76,19 @@ const menuItems = [
   { to: "/", text: "웹툰 목록" },
 ];
 
-const Sidebar = ({ isOpen, onMenuClick }) => {
+const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
   const navigate = useNavigate();
-  // const { isLoggedIn, logout } = useAuth();
+  const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 확인
   const sidebarRef = useRef(null);
-  const [darkMode, setDarkMode] = useState(false); // 다크 모드를 위한 상태
+  const [theme, setTheme] = useState("Light Mode");
   const [adultFilter, setAdultFilter] = useState(false); // 19금 필터를 위한 상태
 
   const handleDarkModeToggle = () => {
-    setDarkMode(!darkMode); // 다크 모드 상태 변경
-    // 여기에 다크 모드 스타일을 적용하거나 설정을 처리하는 로직을 추가할 수 있어요.
+    const newTheme = isDarkTheme ? "Light Mode" : "Dark Mode";
+    setIsDarkTheme(!isDarkTheme); // 테마 전환
+
+    // 로컬 스토리지에 변경한 테마 저장
+    localStorage.setItem("theme", newTheme);
   };
 
   const handleAdultFilterToggle = () => {
@@ -107,31 +110,38 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
     };
   }, [onMenuClick]);
 
-  // useEffect(() => {
-  //   // 로그인 상태 변경될 때마다 확인
-  //   const checkLoginStatus = async () => {
-  //     const { data, error } = await supabase.auth.getSession();
-  //     const session = data?.session;
+  useEffect(() => {
+    // 사용자의 인증 상태 확인
+    const checkLoggedIn = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      const session = data.session;
 
-  //     if (session !== null) {
-  //       console.log("로그인되어 있습니다.");
-  //     } else {
-  //       console.log("로그아웃되어 있습니다.");
-  //     }
-  //   };
+      if (session) {
+        setIsLoggedIn(true); // 로그인 상태인 경우 true로 설정
+      } else {
+        setIsLoggedIn(false); // 로그아웃 상태인 경우 false로 설정
+      }
+    };
 
-  //   checkLoginStatus();
-  // }, [isLoggedIn]); // isLoggedIn이 변경될 때마다 실행
+    checkLoggedIn();
+  }, []);
 
-  // const handleLogoutClick = async () => {
-  //   await logout();
-  // };
+  const handleLogoutClick = async () => {
+    const { error } = await supabase.auth.signOut();
 
-  // const handleLoginClick = () => {
-  //   // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
-  //   navigate("/login");
-  //   onMenuClick();
-  // };
+    if (error) {
+      console.error("로그아웃 중 오류가 발생했습니다.", error);
+    } else {
+      navigate("/"); // 로그아웃 성공시 메인으로 리다이렉트
+      alert("로그아웃되었습니다.");
+      window.location.replace("/");
+    }
+  };
+
+  const handleLoginClick = () => {
+    navigate("/login"); // 로그인 페이지로 이동
+    onMenuClick(); // 사이드바 닫기
+  };
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
@@ -144,10 +154,10 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
       {/* 다크 모드 토글 스위치 */}
       <Menu>
         <ToggleSwitch>
-          <span>Dark Mode</span>
+          <span>{theme}</span>
           <Input
             type="checkbox"
-            checked={darkMode}
+            checked={!isDarkTheme}
             onChange={handleDarkModeToggle}
           />
           <Slider />
@@ -167,13 +177,12 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
         </ToggleSwitch>
       </Menu>
 
-      {/* 로그인 상태면 로그아웃 버튼, 로그아웃 상태면 로그인 버튼 보이도록 함 */}
-
-      <Menu
-        style={{ fontSize: "12px", textDecoration: "none" }}
-        // onClick={handleLogoutClick}
-      >
-        로그인
+      <Menu onClick={handleLoginClick}>
+        {isLoggedIn ? (
+          <Menu onClick={handleLogoutClick}>로그아웃</Menu>
+        ) : (
+          <Menu onClick={handleLoginClick}>로그인</Menu>
+        )}
       </Menu>
     </SidebarContainer>
   );
