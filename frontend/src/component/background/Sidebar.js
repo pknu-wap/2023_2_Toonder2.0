@@ -179,12 +179,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
 
       <Menu onClick={handleLoginClick}>
         {isLoggedIn ? (
-          <Menu
-            style={{ fontSize: "12px", textDecoration: "none" }}
-            onClick={handleLogoutClick}
-          >
-            로그아웃
-          </Menu>
+          <Menu onClick={handleLogoutClick}>로그아웃</Menu>
         ) : (
           <Menu onClick={handleLoginClick}>로그인</Menu>
         )}
