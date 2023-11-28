@@ -25,7 +25,7 @@ image_size = (64, 64)
 train_ds = image_dataset_from_directory(
     directory=image_dir,
     labels="inferred",
-    color_mode='grayscale',
+    color_mode='rgb',
     class_names=['class'],
     image_size=image_size,
     batch_size=batch_size,
@@ -39,8 +39,9 @@ print(train_ds.element_spec)
 print("class_names : ", class_names)
 print("data_mode   : ", take)
 
-for images in train_ds.take(10):
+for images, labels in train_ds.take(1):
   print('images.shape: ', images.shape)
+  print('labels.shape: ', labels.shape)
 
 # for images, labels in train_ds.take(1):
 #     # 첫 번째 이미지를 선택합니다.
