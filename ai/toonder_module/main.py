@@ -30,17 +30,17 @@ def delete_data_folder():
 url = 'ai/data/data.csv'
 db, cursor, api_url, api_key = connect_to_db()
 
-# delete_data_folder() # 매일마다 데이터 폴더를 삭제하고 다시 시작함
-# api_to_csv() # api -> csv
-# print("api_to_csv() done")
-# csv_to_data() # csv에서 중복 제거
-# print("csv_to_data() done")
-# data_to_img(url) # csv의 이미지 url에서 jpeg로 파일 변경
-# print("data_to_img(url) done")
-# toonder_csv()
-# print("toonder_csv() done")
-# -----여기까지는 무리 없이 됨-----
+delete_data_folder() # 매일마다 데이터 폴더를 삭제하고 다시 시작함
+api_to_csv() # api -> csv
+print("api_to_csv() done")
+csv_to_data() # csv에서 중복 제거
+print("csv_to_data() done")
+data_to_img(url) # csv의 이미지 url에서 jpeg로 파일 변경
+print("data_to_img(url) done")
+toonder_csv()
+print("toonder_csv() done")
 toonder_img()
 print("toonder_img() done")
 create_db(url) # db에 연결
 print("PROGRAM ENDED")
+# -----여기까지는 무리 없이 됨-----

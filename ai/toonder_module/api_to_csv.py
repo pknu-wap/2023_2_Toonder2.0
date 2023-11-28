@@ -8,7 +8,7 @@ def api_to_csv():
   df = pd.DataFrame()
 
   for i in range(1,460):
-    url = f'https://www.kmas.or.kr/openapi/search/rgDtaMasterList?prvKey=ac588af480c81e0c020a57c56bec3efa&listSeCd=1&viewItemCnt=100&pageNo={i}'
+    url = f'https://www.kmas.or.kr/openapi/search/rgDtaMasterList?prvKey=ac588af480c81e0c020a57c56bec3efa&listSeCd=1&pageNo={i}&viewItemCnt=100'
     response = urllib.request.urlopen(url)
     json_str = response.read().decode("utf-8")
     json_object = json.loads(json_str)
