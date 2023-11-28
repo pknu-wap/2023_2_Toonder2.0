@@ -18,13 +18,24 @@ def create_db(csv_file_path):
             # 테이블 생성
             create_table_query = f"""
             CREATE TABLE IF NOT EXISTS wbtnInfo (
-            {', '.join([f"{header} TEXT NOT NULL" for header in headers])}
-            )
+                mastrId VARCHAR(255) NOT NULL,
+                title VARCHAR(255) NOT NULL,
+                pictrWritrNm VARCHAR(255),
+                sntncWritrNm VARCHAR(255),
+                mainGenreCdNm VARCHAR(255),
+                outline VARCHAR(3000),
+                pltfomCdNm VARCHAR(255),
+                imageDownloadUrl VARCHAR(255),
+                adult VARCHAR(255),
+                drawId VARCHAR(255),
+                mem_email varchar(255),
+                outline_recommendations VARCHAR(3000))
             """
             cursor.execute(create_table_query)
 
             # 데이터 추가
             insert_query = f"INSERT INTO wbtnInfo ({', '.join(headers)}) VALUES ({', '.join(['%s'] * len(headers))})"
+            
             for row in reader:
                 cursor.execute(insert_query, row)
 
