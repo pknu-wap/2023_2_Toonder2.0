@@ -84,11 +84,11 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
   const [adultFilter, setAdultFilter] = useState(false); // 19금 필터를 위한 상태
 
   const handleDarkModeToggle = () => {
-    setIsDarkTheme(!isDarkTheme); // 다크 모드 상태 변경
+    const newTheme = isDarkTheme ? "Light Mode" : "Dark Mode";
+    setIsDarkTheme(!isDarkTheme); // 테마 전환
 
-    // 추가적인 다크 모드 설정 및 스타일 적용 로직을 추가할 수 있습니다.
-    if (theme === "Dark Mode") setTheme("Light Mode");
-    else setTheme("Dark Mode");
+    // 로컬 스토리지에 변경한 테마 저장
+    localStorage.setItem("theme", newTheme);
   };
 
   const handleAdultFilterToggle = () => {

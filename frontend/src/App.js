@@ -48,7 +48,11 @@ function App() {
     checkLoggedIn();
   }, []);
 
-  const [isDarkTheme, setIsDarkTheme] = useState(true);
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    // 로컬 스토리지에 저장된 테마 불러오기
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'Dark Mode';
+  });
 
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
