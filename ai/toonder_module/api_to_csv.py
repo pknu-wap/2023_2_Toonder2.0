@@ -27,4 +27,4 @@ def api_to_csv():
           'webtoonPusryYn',
           'imageDownloadUrl']]
 
-  df.to_csv("/Users/kite/Desktop/flask/toonder_ai/toonder_module/webtoon.csv", index=False)
+  df.to_csv("ai/data/webtoon.csv", index=False)
