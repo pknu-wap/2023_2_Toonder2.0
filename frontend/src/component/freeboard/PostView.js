@@ -159,7 +159,7 @@ function PostView() {
       setComment("");
 
       const response = await axios.get(`/toonder/board/${brdNo}/comment`);
-      setComment(response.data);
+      setComments(response.data);
     } catch (error) {
       console.log(error);
       alert("댓글 작성에 실패했습니다.");
@@ -180,7 +180,7 @@ function PostView() {
     }
   };
 
-  
+
   // 댓글 수정 내용
   const handleEditChange = (editedText, cmtNo) => {
     // 수정 중인 댓글의 내용을 변경합니다.
