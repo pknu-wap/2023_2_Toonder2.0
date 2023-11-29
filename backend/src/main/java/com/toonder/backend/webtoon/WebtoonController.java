@@ -26,59 +26,33 @@ public class WebtoonController {
     
     @Autowired
     private WebtoonService webtoonService;
-
-    // 19금 필터 클릭 시 장르="성인" 제외하고 웹툰 목록 리턴
-    @GetMapping("/webtoon/filter")
-    public ResponseEntity<List<WebtoonResponseDto>> filteredWebtoons(
-        @RequestParam(required = false) Boolean filter19Plus,
-        @RequestParam(value = "page", required = false) Integer page,
-        @PageableDefault(size = 64, sort = "mastrId", direction = Sort.Direction.DESC) Pageable pageable) {
     
-        if (page == null) {
-            page = 1;
-        }
-        
-        Pageable modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
-                              
-        ResponseEntity<Map<String, Object>> response = webtoonService.getFilteredWebtoons(modifiedPageable);
-        if (response == null || response.getBody() == null) {
-            return ResponseEntity.ok(Collections.emptyList());
-        }
-
-        List<WebtoonResponseDto> webtoonResponseDtoList = (List<WebtoonResponseDto>) response.getBody().get("list");
-    
-        return ResponseEntity.ok(webtoonResponseDtoList);
-    }
-
-
-    
-    // 웹툰 목록 리턴 (페이징 처리)
+    // 웹툰 목록 리턴 (페이징 처리) +19금 필터
     @GetMapping("/webtoon")
     public ResponseEntity<List<WebtoonResponseDto>> getAllWebtoons(
-        @RequestParam(value ="type", required = false)  String type,
+        @RequestParam(value ="type", required = false) String type,
         @RequestParam(value = "page", required = false) Integer page,
+        @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter,
         @PageableDefault(size = 64, direction = Sort.Direction.DESC) Pageable pageable) {
-    
+
         if (page == null) {
             page = 1;
         }
 
         Pageable modifiedPageable;
-        // Check if the 'type' parameter is null or empty
         if (StringUtils.hasText(type)) {
             modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), Sort.by(type));
         } else {
-            // If 'type' is null or empty, default to sorting by mastrId
             modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), Sort.by("mastrId").descending());
         }
 
-        ResponseEntity<Map<String, Object>> response = webtoonService.getPagingWebtoon(type, modifiedPageable);
+        ResponseEntity<Map<String, Object>> response = webtoonService.getPagingWebtoon(type, modifiedPageable, adultFilter);
         if (response == null || response.getBody() == null) {
             return ResponseEntity.ok(Collections.emptyList());
         }
-    
+
         List<WebtoonResponseDto> webtoonResponseDtoList = (List<WebtoonResponseDto>) response.getBody().get("list");
-    
+
         return ResponseEntity.ok(webtoonResponseDtoList);
     }
 
@@ -102,29 +76,67 @@ public class WebtoonController {
         return ResponseEntity.ok(webtoonResponseDto);
     } 
 
-    //웹툰 제목/작가명으로 검색
+    //웹툰 제목/작가명으로 검색 +19금 필터
     @GetMapping("/webtoon/search")
     public ResponseEntity<List<WebtoonResponseDto>> search(
-        @RequestParam("type") String type, 
-        @RequestParam("keyword") String keyword, 
+        @RequestParam("type") String type,
+        @RequestParam("keyword") String keyword,
         @RequestParam(value = "page", required = false) Integer page,
+        @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter,
         @PageableDefault(size = 64, sort = "mastrId", direction = Sort.Direction.DESC) Pageable pageable) {
-        
 
         if (page == null) {
             page = 1;
         }
-        
+
         Pageable modifiedPageable = PageRequest.of(page - 1, pageable.getPageSize(), pageable.getSort());
 
-        ResponseEntity<Map<String, Object>> response = webtoonService.search(type, keyword, modifiedPageable);
+        ResponseEntity<Map<String, Object>> response = webtoonService.search(type, keyword, modifiedPageable, adultFilter);
         if (response == null || response.getBody() == null) {
             return ResponseEntity.ok(Collections.emptyList());
         }
-        
+
         List<WebtoonResponseDto> webtoonResponseDtoList = (List<WebtoonResponseDto>) response.getBody().get("list");
-    
+
         return ResponseEntity.ok(webtoonResponseDtoList);
+    }
+
+    //메인페이지 - outline recommendation +19금 필터
+    @GetMapping("/webtoon/recommend/outline")
+    public ResponseEntity<List<WebtoonResponseDto>> getRecommendedWebtoons(
+            HttpSession session,
+            @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter) {
+    
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
+    
+        if (userSession == null || userSession.getRecentlyViewedMastrId() == null) {
+            return ResponseEntity.notFound().build();
+        }
+    
+        String recentlyViewedMastrId = userSession.getRecentlyViewedMastrId();
+    
+        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getRecommendedWebtoons(recentlyViewedMastrId, adultFilter);
+    
+        return ResponseEntity.ok(recommendedWebtoons);
+    }
+
+    //메인페이지 - draw recommendation +19금 필터
+    @GetMapping("/webtoon/recommend/draw")
+    public ResponseEntity<List<WebtoonResponseDto>> getDrawRecommendedWebtoons(
+            HttpSession session,
+            @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter) {
+
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
+
+        if (userSession == null || userSession.getRecentlyViewedMastrId() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String recentlyViewedMastrId = userSession.getRecentlyViewedMastrId();
+
+        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getDrawRecommendedWebtoons(recentlyViewedMastrId, adultFilter);
+
+        return ResponseEntity.ok(recommendedWebtoons);
     }
 
 }
