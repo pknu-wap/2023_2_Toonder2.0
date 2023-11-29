@@ -97,7 +97,6 @@ function PostView() {
       await axios.delete(`/toonder/board/${brdNo}`, {
         data: { mem_email: email },
       });
-      alert("게시글을 성공적으로 삭제했습니다.");
       navigate("/board");
     } catch (error) {
       console.log(error);
@@ -139,7 +138,7 @@ function PostView() {
     };
 
     fetchComments();
-  }, [brdNo]);
+  }, [brdNo, isCommentDeleted]);
 
   // 댓글 등록
   const handleSubmitComment = async (e) => {
@@ -155,7 +154,6 @@ function PostView() {
         mem_name: name,
         mem_email: email,
       });
-      alert("댓글이 작성되었습니다.");
       setComment("");
 
       const response = await axios.get(`/toonder/board/${brdNo}/comment`);
@@ -203,7 +201,6 @@ function PostView() {
         cmtContent: editedComment,
         mem_email: email,
       });
-      alert("댓글이 성공적으로 수정되었습니다.");
       // 수정이 완료되면 상태를 초기화
       setEditedComment("");
       setEditingCommentNo("");
@@ -224,21 +221,15 @@ function PostView() {
   };
 
   // 댓글 삭제
-  const handleDeleteComment = async (cmtContent, cmtBno, cmtEmail) => {
-    if (cmtEmail !== email) {
-      alert("본인의 댓글만 삭제가 가능합니다.");
-      return;
-    }
-
+  const handleDeleteComment = async (cmtContent, cmtBno) => {
     try {
       await axios.delete(`/toonder/board/${brdNo}/comment/${cmtBno}`, {
         data: { cmtContent: cmtContent, mem_email: email },
       });
-      alert("댓글이 삭제되었습니다.");
       setIsCommentDeleted(true);
     } catch (error) {
       console.log(error);
-      alert("댓글 삭제에 실패했습니다.");
+      alert('본인의 댓글만 수정이 가능합니다.');
     }
   };
 
@@ -364,8 +355,7 @@ function PostView() {
                       onClick={() =>
                         handleDeleteComment(
                           comment.cmtContent,
-                          comment.cmtNo,
-                          comment.mem_email
+                          comment.cmtNo
                         )
                       }
                     >
