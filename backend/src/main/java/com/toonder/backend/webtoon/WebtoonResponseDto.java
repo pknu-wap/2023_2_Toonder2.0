@@ -22,6 +22,7 @@ public class WebtoonResponseDto {
     private String imageDownloadUrl;
 
     private String adult;
+    private String drawId;
     private String outline_recommendations;
 
     private List<ReviewResponseDto> review;
@@ -36,6 +37,7 @@ public class WebtoonResponseDto {
         this.pltfomCdNm = webtoon.getPltfomCdNm();
         this.imageDownloadUrl = webtoon.getImageDownloadUrl();
         this.adult = webtoon.getAdult();
+        this.drawId = webtoon.getDrawId();
         this.outline_recommendations = webtoon.getOutline_recommendations();
 
         if(webtoon.getReview() != null){
