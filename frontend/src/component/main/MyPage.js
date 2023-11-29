@@ -147,7 +147,7 @@ const Container = styled(ContentWrapper)``;
 const Content = styled(ReviewWrapper)``;
 
 export const MyReview = styled(ReviewProperty)`
-  font-size: 16px;
+  font-size: 15px;
 `;
 
 const MyPost = styled(MyReview)``;
