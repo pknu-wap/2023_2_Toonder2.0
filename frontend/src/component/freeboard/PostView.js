@@ -113,7 +113,6 @@ function PostView() {
       await axios.post(`/toonder/board/${brdNo}/like`, null, {
         headers,
       });
-      alert("좋아요가 반영되었습니다.");
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -242,7 +241,6 @@ function PostView() {
       await axios.post(`/toonder/board/${brdNo}/comment/${cmtNo}/like`, null, {
         headers,
       });
-      alert("댓글 좋아요가 반영되었습니다.");
       window.location.reload();
     } catch (error) {
       console.log(error);
