@@ -34,8 +34,8 @@ function MyPage() {
         email: email,
       };
 
-      console.log(requestData);
-      
+      // console.log(requestData);
+
       axios
         .post("toonder/mypage", requestData)
         .then((hashData) => {
@@ -66,13 +66,14 @@ function MyPage() {
           const titles = reversedData.map((review) => review.brdTitle);
           const brdNo = reversedData.map((review) => review.brdNo);
           setBoardData(titles);
-          console.log("내가 쓴 글", boardData);
           setBrdNo(brdNo);
           // setIsBoardLoading(false);
         })
         .catch((error) => {
           console.log("Error:", error);
         });
+
+      console.log("내가 쓴 글", boardData);
 
       // 리뷰 불러오기
       //   axios
@@ -122,8 +123,9 @@ function MyPage() {
           <InfoWrapper>
             <div style={{ fontSize: "20px", fontFamily: "NIXGONB-Vb-B" }}>
               {loggedUserName}
+              <span style={{ color: "#F2ACAC" }}>{` ♥`}</span>
             </div>
-            <div>{loggedUserHashTag}</div>
+            <div>{`${loggedUserHashTag}`}</div>
           </InfoWrapper>
         </ContentWrapper>
 
@@ -160,21 +162,16 @@ function MyPage() {
         {/* 최근 쓴 글 */}
         <div style={{ marginTop: "30px" }}>최근 쓴 글</div>
         <ContentWrapper>
-          {jsonData.review &&
-            jsonData.review.map((review) => {
-              if (review.memName === loggedUserName) {
-                return (
-                  <ReviewWrapper key={review.revNo}>
-                    <MyPost>
-                      <div style={{ display: "flex", alignItems: "center" }}>
-                        {review.revContent}
-                      </div>
-                    </MyPost>
-                  </ReviewWrapper>
-                );
-              }
-              return null; // 웹툰 제목이 일치하지 않는 경우는 아무것도 반환하지 않습니다.
-            })}
+          {boardData &&
+            boardData.slice(0, 3).map((title, index) => (
+              <ReviewWrapper key={index}>
+                <MyPost>
+                  <div style={{ display: "flex", alignItems: "center" }}>
+                    {title}
+                  </div>
+                </MyPost>
+              </ReviewWrapper>
+            ))}
         </ContentWrapper>
       </BoardContainer>
     </>
