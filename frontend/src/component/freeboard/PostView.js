@@ -517,7 +517,6 @@ const CommentBtn = styled.button`
 const CommentWriteFormContainer = styled.form`
   position: relative;
   width: 100%;
-  margin-top: 30px;
   margin-bottom: 10px; /* 버튼과의 간격 조정 */
 `;
 
