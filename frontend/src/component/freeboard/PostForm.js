@@ -12,6 +12,7 @@ function PostForm() {
   const [loggedUserName, setLoggedUserName] = useState();
   const [loggedUserEmail, setLoggedUserEmail] = useState();
 
+  // 사용자 이메일, 이름 불러오기
   useEffect(() => {
     const fetchData = async () => {
       const { data, error } = await supabase.auth.getSession();
@@ -21,8 +22,9 @@ function PostForm() {
         alert("로그인을 먼저 해주세요.");
         navigate("/login");
       } else {
-        const email = session.user.email;
+        const email = data.session.user.email;
         setLoggedUserEmail(email);
+        console.log(loggedUserEmail);
 
         const rdata = {
           email: email,
@@ -44,6 +46,7 @@ function PostForm() {
   //   return text.replace(/\n/g, "@d`}");
   // };
 
+  // 글 작성하기
   const handleSubmit = async () => {
     if (title.length >= 100) alert("제목은 100글자를 넘을 수 없습니다.");
 
@@ -65,6 +68,7 @@ function PostForm() {
       navigate(-1);
     } catch (error) {
       console.log(error);
+      console.log(requestData);
       alert("글을 저장하지 못했습니다.");
     }
   };

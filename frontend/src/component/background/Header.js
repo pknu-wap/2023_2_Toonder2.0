@@ -10,14 +10,14 @@ const HeaderContainer = styled.div`
 const Title = styled.div`
 font-family: "NIXGONB-Vb-B";
   font-size: 24px;
-  color: #efefef;
+  color: ${({ theme }) => theme.header};
   letter-spacing: 2px;
   margin: 5px;
 `;
 
 const Subtitle = styled.div`
   font-size: 14px;
-  color: #efefef;
+  color: ${({ theme }) => theme.header};
   letter-spacing: "2px";
 `;
 
