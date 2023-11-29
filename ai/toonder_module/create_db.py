@@ -21,14 +21,12 @@ def create_db(csv_file_path):
                 mastrId VARCHAR(255) NOT NULL,
                 title VARCHAR(255) NOT NULL,
                 pictrWritrNm VARCHAR(255),
-                sntncWritrNm VARCHAR(255),
                 mainGenreCdNm VARCHAR(255),
                 outline VARCHAR(3000),
                 pltfomCdNm VARCHAR(255),
                 imageDownloadUrl VARCHAR(255),
                 adult VARCHAR(255),
                 drawId VARCHAR(255),
-                mem_email varchar(255),
                 outline_recommendations VARCHAR(3000))
             """
             cursor.execute(create_table_query)
