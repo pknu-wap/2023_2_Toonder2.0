@@ -2,7 +2,9 @@ package com.toonder.backend.webtoon;
 
 import java.util.List;
 import java.util.stream.Collectors;
-    
+
+import javax.persistence.Id;
+
 import com.toonder.backend.review.ReviewResponseDto;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -14,13 +16,15 @@ public class WebtoonResponseDto {
     private String mastrId;
     private String title;
     private String pictrWritrNm;
-    private String sntncWritrNm;
     private String mainGenreCdNm;
     private String outline;
     private String pltfomCdNm;
-    private String fnshYn;
-    private String webtoonPusryYn;
     private String imageDownloadUrl;
+
+    private String adult;
+    private String drawId;
+    private String outline_recommendations;
+
     private List<ReviewResponseDto> review;
 
     /* Entity -> Dto*/
@@ -28,13 +32,13 @@ public class WebtoonResponseDto {
         this.mastrId = webtoon.getMastrId();
         this.title = webtoon.getTitle();
         this.pictrWritrNm = webtoon.getPictrWritrNm();
-        this.sntncWritrNm = webtoon.getSntncWritrNm();
         this.mainGenreCdNm = webtoon.getMainGenreCdNm();
         this.outline = webtoon.getOutline();
         this.pltfomCdNm = webtoon.getPltfomCdNm();
-        this.fnshYn = webtoon.getFnshYn();
-        this.webtoonPusryYn = webtoon.getWebtoonPusryYn();
         this.imageDownloadUrl = webtoon.getImageDownloadUrl();
+        this.adult = webtoon.getAdult();
+        this.drawId = webtoon.getDrawId();
+        this.outline_recommendations = webtoon.getOutline_recommendations();
 
         if(webtoon.getReview() != null){
             this.review = webtoon.getReview().stream().map(ReviewResponseDto::new).collect(Collectors.toList());
