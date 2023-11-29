@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { Link, useNavigate, useLocation } from "react-router-dom";
 import styled from "styled-components";
 import Pagination from "./Pagination";
+import axios from "axios";
 
 const PostContainer = styled.div`
   color: ${({ theme }) => theme.text};
@@ -32,57 +33,75 @@ const PostProperty = styled.div`
 `;
 
 function BoardList() {
-  const [jsonData, setJsonData] = useState([]);
+  const [posts, setPosts] = useState([]);
   const [limit, setLimit] = useState(5);
-  const [page, setPage] = useState(1);
-  const offset = (page - 1) * limit;
+  const [pageNum, setPageNum] = useState(1);
+  const [totalPages, setTotalPages] = useState(1);
+  const offset = (pageNum - 1) * limit;
   const navigate = useNavigate();
   const location = useLocation();
 
-  useEffect(() => {
-    const queryParams = new URLSearchParams(location.search);
-    queryParams.set("p_num", String(page));
-    navigate(`${location.pathname}?${queryParams.toString()}`);
-  }, [page, navigate, location.search]);
-
+  // 글 목록 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("./postdata.json");
-        const data = await response.json();
-        setJsonData(data);
+        const response = await axios.get(`/toonder/board?p_num=${pageNum}`);
+        setPosts(response.data);
+        let total = pageNum;
+        let hasMorePages = true;
+
+        while (hasMorePages) {
+          const response = await axios.get(`/toonder/board?p_num=${total + 1}`);
+          if (response.data.length === 0) {
+            hasMorePages = false;
+          } else {
+            total++;
+          }
+        }
+
+        setTotalPages(total);
+        // // setLoading(false);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log(error);
       }
     };
 
     fetchData();
-  }, []);
+  }, [pageNum]);
 
+  // 글 작성 날짜 포맷 YY.MM.DD 형식으로 변경
+  function formatDate(dateString) {
+    const date = new Date(dateString);
+    const year = date.getFullYear();
+    const month = String(date.getMonth() + 1).padStart(2, '0');
+    const day = String(date.getDate()).padStart(2, '0');
+    return `${year}-${month}-${day}`;
+  }
+  
   return (
     <>
-      {jsonData.slice(offset, offset + limit).map((post, index) => (
+       {posts.map((post, index) => (
         <PostContainer key={index}>
           <PostTitle
             onClick={() => {
               navigate(`/postview`, {
-                state: {brdNo: post.brdNo}, 
+                state: { brdNo: post.brdNo },
               });
             }}
           >
             {post.brdTitle}
           </PostTitle>
           <PostProperty>
-            {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
+            {`${post.mem_name} · ${formatDate(post.brdRegDate)} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike}`}
           </PostProperty>
         </PostContainer>
       ))}
       {/* Pagination */}
       <Pagination
-        total={jsonData.length}
+        total={posts.length}
         limit={limit}
-        page={page}
-        setPage={setPage}
+        pageNum={pageNum}
+        setPageNum={setPageNum}
       />
     </>
   );

@@ -20,6 +20,7 @@ public class OpenApiController {
         this.webtoonService = webtoonService;
     }
 
+    /*
     @GetMapping("/openApiLoadData") //DB 저장 및 업데이트 - api 호출
     public String callApi() throws IOException {
         StringBuilder result = new StringBuilder();
@@ -60,5 +61,5 @@ public class OpenApiController {
         }
 
         return "웹툰 정보 저장 완료.";
-    }
+    }*/
 }

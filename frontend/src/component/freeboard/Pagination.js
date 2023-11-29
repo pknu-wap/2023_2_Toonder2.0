@@ -1,26 +1,26 @@
 import React from "react";
 import styled from "styled-components";
 
-function Pagination({ total, limit, page, setPage }) {
+function Pagination({ total, limit, page, setPageNum }) {
   const numPages = Math.ceil(total / limit);
   const startPage = Math.floor((page - 1) / 5) * 5 + 1;
   const endPage = Math.min(startPage + 4, numPages);
 
   return (
     <Nav>
-      <Button onClick={() => setPage(page - 1)} disabled={page === 1}>
+      <Button onClick={() => setPageNum(page - 1)} disabled={page === 1}>
         &lt;
       </Button>
       {Array.from({ length: endPage - startPage + 1 }, (_, i) => (
         <Button
           key={startPage + i}
-          onClick={() => setPage(startPage + i)}
+          onClick={() => setPageNum(startPage + i)}
           aria-current={page === startPage + i ? "page" : undefined}
         >
           {startPage + i}
         </Button>
       ))}
-      <Button onClick={() => setPage(page + 1)} disabled={page === numPages}>
+      <Button onClick={() => setPageNum(page + 1)} disabled={page === numPages}>
         &gt;
       </Button>
     </Nav>

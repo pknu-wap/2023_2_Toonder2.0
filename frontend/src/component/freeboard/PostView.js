@@ -10,12 +10,24 @@ function PostView() {
   const location = useLocation();
   const { state } = location;
   const brdNo = location.state?.brdNo;
-  const [post, setPost] = useState(null); // 글
+  const [post, setPost] = useState({
+    brdNo: "",
+    brdTitle: "",
+    brdContent: "",
+    mem_name: "",
+    mem_email: "",
+    brdRegDate: "",
+    brdUpdateDate: "",
+    brdViewCount: 0,
+    brdLike: 0,
+    comment: [],
+  });
   const [comments, setComments] = useState([]); // 댓글
   const [comment, setComment] = useState("");
   const [editedComment, setEditedComment] = useState("");
   const [editingCommentNo, setEditingCommentNo] = useState("");
   const [email, setEmail] = useState();
+  const [isClickCommentLike, setIsClickCommentLike] = useState(false);
   const [isCommentDeleted, setIsCommentDeleted] = useState(false);
   const [submitCmtEditBtnText, setSubmitCmtEditBtnText] = useState("수정");
 
@@ -31,6 +43,7 @@ function PostView() {
       } else {
         const email = session.user.email;
         setEmail(email);
+        console.log("접속한 사용자 이메일:", email);
       }
     };
     fetchData();
@@ -40,17 +53,22 @@ function PostView() {
   useEffect(() => {
     const fetchData = async () => {
       try {
-        const response = await fetch("./postdata.json");
-        const data = await response.json();
-        const foundPost = data.find((post) => post.brdNo === state?.brdNo);
-        setPost(foundPost);
+        const response = await axios.get(`/toonder/board/${brdNo}`);
+        setPost(response.data);
+        console.log(post);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log(error);
+        alert("게시글을 불러오지 못했습니다.");
+      } finally {
       }
     };
 
     fetchData();
-  }, [state]);
+  }, [brdNo]);
+
+  const { brdTitle, brdContent, mem_name, brdRegDate, brdViewCount, brdLike } =
+    post;
+  const formattedDate = brdRegDate.split("T")[0];
 
   // 게시글 수정
   const handleEditPost = () => {
@@ -79,8 +97,7 @@ function PostView() {
       await axios.delete(`/toonder/board/${brdNo}`, {
         data: { mem_email: email },
       });
-      alert("게시글을 성공적으로 삭제했습니다.");
-      navigate("/freeboard");
+      navigate("/board");
     } catch (error) {
       console.log(error);
       alert("게시글 삭제에 실패했습니다.");
@@ -96,7 +113,6 @@ function PostView() {
       await axios.post(`/toonder/board/${brdNo}/like`, null, {
         headers,
       });
-      alert("좋아요가 반영되었습니다.");
       window.location.reload();
     } catch (error) {
       console.log(error);
@@ -104,25 +120,23 @@ function PostView() {
     }
   };
 
-  // 댓글 불러오기
+  // 댓글 불러오기 - 백엔드의 댓글 데이터 불러오기
   useEffect(() => {
-    const fetchData = async () => {
+    const fetchComments = async () => {
       try {
-        const response = await fetch("./commentdata.json");
-        const data = await response.json();
-        setComments(data);
+        const response = await axios.get(`/toonder/board/${brdNo}/comment`);
+        setComments(response.data);
       } catch (error) {
-        console.error("Error fetching data:", error);
+        console.log(error);
+        alert("댓글을 불러오지 못했습니다.");
+      } finally {
+        // setIsCommentDelete(false);
+        setIsClickCommentLike(false);
       }
     };
 
-    fetchData();
-  }, []);
-
-  // 불러온 댓글
-  const filteredComments = comments.filter(
-    (comment) => comment.brdNo === post?.brdNo
-  );
+    fetchComments();
+  }, [brdNo, isCommentDeleted, isClickCommentLike]);
 
   // 댓글 등록
   const handleSubmitComment = async (e) => {
@@ -138,11 +152,10 @@ function PostView() {
         mem_name: name,
         mem_email: email,
       });
-      alert("댓글이 작성되었습니다.");
       setComment("");
 
       const response = await axios.get(`/toonder/board/${brdNo}/comment`);
-      setComment(response.data);
+      setComments(response.data);
     } catch (error) {
       console.log(error);
       alert("댓글 작성에 실패했습니다.");
@@ -150,23 +163,18 @@ function PostView() {
   };
 
   // 댓글 수정
-  const handleEditComment = (cmtNo, cmtEmail) => {
-    if (cmtEmail !== email) {
-      alert("본인의 댓글만 수정이 가능합니다.");
-      return;
-    } else {
-      // 해당 댓글의 내용과 번호를 가져와서 상태에 설정합니다.
-      const targetComment = comments.find((comment) => comment.cmtNo === cmtNo);
-      // 수정할 댓글 내용을 textarea에 표시하기 위해 setEditedComment를 이용해 설정합니다.
-      setEditedComment(targetComment.cmtContent); // 수정 가능하도록 textarea에 댓글 내용 설정
-      setEditingCommentNo(cmtNo); // 수정 중인 댓글 번호 설정
-    }
+  const handleEditComment = (cmtNo) => {
+    // 해당 댓글의 내용과 번호를 가져와서 상태에 설정합니다.
+    const targetComment = comments.find((comment) => comment.cmtNo === cmtNo);
+    // 수정할 댓글 내용을 textarea에 표시하기 위해 setEditedComment를 이용해 설정합니다.
+    setEditedComment(targetComment.cmtContent); // 수정 가능하도록 textarea에 댓글 내용 설정
+    setEditingCommentNo(cmtNo); // 수정 중인 댓글 번호 설정
   };
 
   // 댓글 수정 내용
-  const handleEditChange = (editedText, cmtNo) => {
+  const handleEditChange = (editedCmt, cmtNo) => {
     // 수정 중인 댓글의 내용을 변경합니다.
-    setEditedComment(editedText);
+    setEditedComment(editedCmt);
     // 현재 수정 중인 댓글 번호를 상태에 설정합니다.
     setEditingCommentNo(cmtNo);
   };
@@ -185,7 +193,6 @@ function PostView() {
         cmtContent: editedComment,
         mem_email: email,
       });
-      alert("댓글이 성공적으로 수정되었습니다.");
       // 수정이 완료되면 상태를 초기화
       setEditedComment("");
       setEditingCommentNo("");
@@ -206,21 +213,15 @@ function PostView() {
   };
 
   // 댓글 삭제
-  const handleDeleteComment = async (cmtContent, cmtBno, cmtEmail) => {
-    if (cmtEmail !== email) {
-      alert("본인의 댓글만 삭제가 가능합니다.");
-      return;
-    }
-
+  const handleDeleteComment = async (cmtContent, cmtBno) => {
     try {
       await axios.delete(`/toonder/board/${brdNo}/comment/${cmtBno}`, {
         data: { cmtContent: cmtContent, mem_email: email },
       });
-      alert("댓글이 삭제되었습니다.");
       setIsCommentDeleted(true);
     } catch (error) {
       console.log(error);
-      alert("댓글 삭제에 실패했습니다.");
+      alert("본인의 댓글만 수정이 가능합니다.");
     }
   };
 
@@ -233,12 +234,16 @@ function PostView() {
       await axios.post(`/toonder/board/${brdNo}/comment/${cmtNo}/like`, null, {
         headers,
       });
-      alert("댓글 좋아요가 반영되었습니다.");
+      window.location.reload();
     } catch (error) {
       console.log(error);
       alert("좋아요가 실패 했습니다.");
     }
   };
+
+  if (!post) {
+    return null;
+  }
 
   return (
     <>
@@ -246,10 +251,10 @@ function PostView() {
       <PostHeader>
         {post ? (
           <>
-            <PostTitle>{post.brdTitle}</PostTitle>
+            <PostTitle>{brdTitle}</PostTitle>
             <PostProperty>
               <div>
-                {`${post.brdUpdateDate} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 작성자 ${post.member}`}
+                {`${mem_name} · ${formattedDate} · 조회 ${brdViewCount} · 좋아요 ${brdLike}`}
               </div>
               <PostActions>
                 <PostBtn onClick={handleEditPost}>수정</PostBtn>
@@ -264,7 +269,7 @@ function PostView() {
       <PostContentContainer>
         {post && (
           <>
-            <PostContentWrapper>{post.brdContent}</PostContentWrapper>
+            <PostContentWrapper>{brdContent}</PostContentWrapper>
             <PostBtnWrapper>
               <PostBtn onClick={handleLike}>♡</PostBtn>
             </PostBtnWrapper>
@@ -275,7 +280,7 @@ function PostView() {
       {/* 댓글 */}
       <Text>댓글</Text>
       <CommentContainer>
-        {filteredComments.map((comment) => (
+        {comments.map((comment) => (
           <CommentInnerContainer key={comment.cmtNo}>
             <>
               {editingCommentNo === comment.cmtNo ? (
@@ -317,10 +322,13 @@ function PostView() {
                   >{`${comment.memName}`}</div>
                   <div>{`${comment.cmtContent}`}</div>
                   <CommentPropertyWrapper>
-                    <span>{`${comment.cmtUpdateDate}`}</span>
+                    <span>{`${comment.cmtRegDate.split("T")[0]}`}</span>
                     <CommentBtn
-                      style={{ padding: "0px 2px 0px 12px" }}
-                      onclick={() => handleLikeComment(comment.cmtNo)}
+                      style={{ padding: "0px 5px 0px 10px" }}
+                      onClick={() => {
+                        handleLikeComment(comment.cmtNo);
+                        setIsClickCommentLike(true);
+                      }}
                     >
                       ♡
                     </CommentBtn>
@@ -335,11 +343,7 @@ function PostView() {
                     </CommentBtn>
                     <CommentBtn
                       onClick={() =>
-                        handleDeleteComment(
-                          comment.cmtContent,
-                          comment.cmtNo,
-                          comment.mem_email
-                        )
+                        handleDeleteComment(comment.cmtContent, comment.cmtNo)
                       }
                     >
                       삭제
@@ -500,7 +504,6 @@ const CommentBtn = styled.button`
 const CommentWriteFormContainer = styled.form`
   position: relative;
   width: 100%;
-  margin-top: 30px;
   margin-bottom: 10px; /* 버튼과의 간격 조정 */
 `;
 
@@ -511,7 +514,7 @@ const CommentWriteForm = styled.textarea`
   border-color: ${({ theme }) => theme.commentWriteForm};
   background: ${({ theme }) => theme.commentWriteForm};
   font-size: 14px;
-  color:  ${({ theme }) => theme.text};
+  color: ${({ theme }) => theme.text};
   width: 100%;
   border-radius: 10px;
   box-sizing: border-box;
@@ -522,7 +525,7 @@ const CommentWriteForm = styled.textarea`
 
   &:focus {
     outline: none;
-    color: #e2e2e2;
+    color: ${({ theme }) => theme.text};
   }
 
   &::placeholder {
