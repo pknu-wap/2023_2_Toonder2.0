@@ -119,7 +119,7 @@ function MyPage() {
       <Header title="마이페이지" />
       <BoardContainer>
         {/* 사용자 정보 표시 */}
-        <ContentWrapper>
+        <Container>
           <InfoWrapper>
             <div style={{ fontSize: "20px", fontFamily: "NIXGONB-Vb-B" }}>
               {loggedUserName}
@@ -127,16 +127,16 @@ function MyPage() {
             </div>
             <div>{`${loggedUserHashTag}`}</div>
           </InfoWrapper>
-        </ContentWrapper>
+        </Container>
 
         {/* 최근 쓴 리뷰 */}
         <div style={{ marginTop: "30px" }}>최근 쓴 리뷰</div>
-        <ContentWrapper>
+        <Container>
           {jsonData.review &&
             jsonData.review.map((review) => {
               if (review.memName === loggedUserName) {
                 return (
-                  <ReviewWrapper key={review.revNo}>
+                  <Content key={review.revNo}>
                     <MyReview>
                       <div style={{ display: "flex", alignItems: "center" }}>
                         <div
@@ -152,33 +152,37 @@ function MyPage() {
                         />
                       </div>
                     </MyReview>
-                  </ReviewWrapper>
+                  </Content>
                 );
               }
               return null; // 웹툰 제목이 일치하지 않는 경우는 아무것도 반환하지 않습니다.
             })}
-        </ContentWrapper>
+        </Container>
 
         {/* 최근 쓴 글 */}
         <div style={{ marginTop: "30px" }}>최근 쓴 글</div>
-        <ContentWrapper>
+        <Container>
           {boardData &&
             boardData.slice(0, 3).map((title, index) => (
-              <ReviewWrapper key={index}>
+              <Content key={index}>
                 <MyPost>
                   <div style={{ display: "flex", alignItems: "center" }}>
                     {title}
                   </div>
                 </MyPost>
-              </ReviewWrapper>
+              </Content>
             ))}
-        </ContentWrapper>
+        </Container>
       </BoardContainer>
     </>
   );
 }
 
 // Webtoon Info 컴포넌트에서 styled component import
+const Container = styled(ContentWrapper)``;
+
+const Content = styled(ReviewWrapper)``;
+
 export const MyReview = styled(ReviewProperty)`
   font-size: 15px;
 `;
