@@ -5,6 +5,7 @@ import styled from "styled-components";
 import supabase from "../supabase";
 // import { useAuth } from "../../AuthContext";
 import { useState } from "react";
+import axios from "axios";
 
 const SidebarContainer = styled.div`
   position: absolute;
@@ -82,7 +83,33 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
   const sidebarRef = useRef(null);
   const [theme, setTheme] = useState("Light Mode");
   const [adultFilter, setAdultFilter] = useState(false); // 19금 필터를 위한 상태
+  const [loggedUserName, setLoggedUserName] = useState();
 
+  // 사용자 이름 불러오기
+  useEffect(() => {
+    const fetchData = async () => {
+      const { data, error } = await supabase.auth.getSession();
+      const session = data.session;
+
+      if (session) {
+        const email = session.user.email;
+
+        const rdata = {
+          email: email,
+        };
+
+        axios
+          .post("toonder/name", rdata)
+          .then((loggedUserData) => {
+            setLoggedUserName(loggedUserData.data.mem_name);
+          })
+          .catch((error) => console.log(error));
+      }
+    };
+    fetchData();
+  }, []);
+
+  // 다크모드 토글
   const handleDarkModeToggle = () => {
     const newTheme = isDarkTheme ? "Light Mode" : "Dark Mode";
     setIsDarkTheme(!isDarkTheme); // 테마 전환
@@ -145,6 +172,17 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
+      <Menu style={{ cursor: "auto", lineHeight: "1.5" }}>
+        {isLoggedIn ? (
+          <div>
+            {loggedUserName}님<br />
+            안녕하세요!
+          </div>
+        ) : (
+          <></>
+        )}
+      </Menu>
+
       {menuItems.map((item, index) => (
         <Link key={index} to={item.to} style={{ textDecoration: "none" }}>
           <Menu onClick={onMenuClick}>{item.text}</Menu>
