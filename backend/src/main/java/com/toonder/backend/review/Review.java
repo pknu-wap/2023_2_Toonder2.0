@@ -4,20 +4,12 @@ import java.sql.Timestamp;
 import java.util.HashSet;
 import java.util.Set;
 
-import javax.persistence.CollectionTable;
-import javax.persistence.Column;
-import javax.persistence.ElementCollection;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.ManyToOne;
-import javax.persistence.Table;
-import javax.persistence.JoinColumn;
+import javax.persistence.*;
 
 import org.hibernate.annotations.CreationTimestamp;
 import org.hibernate.annotations.UpdateTimestamp;
 
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 import com.toonder.backend.member.Member;
 import com.toonder.backend.webtoon.Webtoon;
 import lombok.AllArgsConstructor;
@@ -52,8 +44,8 @@ public class Review {
 	private Double revRating;
 
     @ManyToOne 
-	//@JsonManagedReference
-	@JoinColumn(name="mastrId") 
+	@JsonManagedReference
+	@JoinColumn(name="mastrId", referencedColumnName = "mastrId", foreignKey = @ForeignKey(name = "fk_review_wbtnInfo"), nullable = false)
 	private Webtoon webtoon;
 
 	@ManyToOne

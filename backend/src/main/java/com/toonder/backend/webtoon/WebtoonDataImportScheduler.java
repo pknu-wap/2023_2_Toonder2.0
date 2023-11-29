@@ -11,6 +11,7 @@ public class WebtoonDataImportScheduler {
     @Autowired
     private OpenApiController openApiController;
 
+    /* 
     @Scheduled(cron = "0 0 0 * * *") 
     public void importWebtoonDataDaily() {
         try {
@@ -19,6 +20,6 @@ public class WebtoonDataImportScheduler {
         } catch (Exception e) {
             e.printStackTrace();
         }
-    }
+    }*/
 }
 
