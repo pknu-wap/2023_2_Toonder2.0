@@ -7,6 +7,8 @@ import java.util.*;
 
 import java.util.stream.Collectors;
 
+import javax.servlet.http.HttpSession;
+
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
 import org.json.simple.parser.JSONParser;
@@ -163,6 +165,38 @@ public class WebtoonService {
     }
 
     //메인페이지 - draw recommendation
+    public List<WebtoonResponseDto> getDrawRecommendedWebtoons(String mastrId, boolean adultFilter) {
+        Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
+    
+        if (optionalWebtoon.isPresent()) {
+            Webtoon webtoon = optionalWebtoon.get();
+            String drawId = webtoon.getDrawId();
+    
+            List<Webtoon> webtoonsWithSameDrawId = webtoonRepository.findByDrawId(drawId);
+
+            webtoonsWithSameDrawId.removeIf(w -> w.getMastrId().equals(mastrId));
+
+            if (adultFilter) {
+                webtoonsWithSameDrawId.removeIf(w -> "1".equals(w.getAdult()));
+            }
+    
+            List<Webtoon> recommendedWebtoons = selectRandomWebtoons(webtoonsWithSameDrawId, 3);
+    
+            return recommendedWebtoons.stream()
+                    .map(WebtoonResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+    
+        return Collections.emptyList();
+    }
+    
+    private List<Webtoon> selectRandomWebtoons(List<Webtoon> webtoons, int count) {
+        Collections.shuffle(webtoons);
+    
+        int size = Math.min(count, webtoons.size());
+    
+        return webtoons.subList(0, size);
+    }
 
 	// --- 리뷰 ---
 

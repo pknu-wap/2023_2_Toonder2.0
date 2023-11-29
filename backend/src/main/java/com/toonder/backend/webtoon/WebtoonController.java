@@ -120,4 +120,23 @@ public class WebtoonController {
         return ResponseEntity.ok(recommendedWebtoons);
     }
 
+    //메인페이지 - draw recommendation +19금 필터
+    @GetMapping("/webtoon/recommend/draw")
+    public ResponseEntity<List<WebtoonResponseDto>> getDrawRecommendedWebtoons(
+            HttpSession session,
+            @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter) {
+
+        UserSession userSession = (UserSession) session.getAttribute("userSession");
+
+        if (userSession == null || userSession.getRecentlyViewedMastrId() == null) {
+            return ResponseEntity.notFound().build();
+        }
+
+        String recentlyViewedMastrId = userSession.getRecentlyViewedMastrId();
+
+        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getDrawRecommendedWebtoons(recentlyViewedMastrId, adultFilter);
+
+        return ResponseEntity.ok(recommendedWebtoons);
+    }
+
 }

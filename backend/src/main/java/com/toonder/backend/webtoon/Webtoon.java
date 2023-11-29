@@ -38,6 +38,7 @@ public class Webtoon {
 
     private String imageDownloadUrl; //이미지다운로드URL(표지)
     private String adult;
+    private String drawId;
     private String outline_recommendations;
 
 
