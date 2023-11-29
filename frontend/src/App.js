@@ -19,6 +19,9 @@ import PostView from "./component/freeboard/PostView";
 import PostForm from "./component/freeboard/PostForm";
 import BoardLayout from "./component/freeboard/BoardLayout";
 import EditForm from "./component/freeboard/EditForm";
+import { ThemeProvider } from "styled-components";
+import GlobalStyles from "@mui/system/GlobalStyles";
+import { lightTheme, darkTheme } from "./theme/theme";
 
 function App() {
   document.title = "툰더";
@@ -45,11 +48,20 @@ function App() {
   //   checkLoggedIn();
   // }, []);
 
+  const [isDarkTheme, setIsDarkTheme] = useState(() => {
+    // 로컬 스토리지에 저장된 테마 불러오기
+    const savedTheme = localStorage.getItem('theme');
+    return savedTheme === 'Dark Mode';
+  });
+
   return (
-    <div className="App">
-      <>
+    <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
+      <GlobalStyles />
+      <div
+        style={{ background: isDarkTheme ? darkTheme.body : lightTheme.body }}
+      >
         <Container>
-          <Navbar />
+          <Navbar isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
 
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
@@ -70,10 +82,10 @@ function App() {
             ></Route>
             <Route path="/webtooninfo" element={<WebtoonInfo />}></Route>
           </Routes>
-          <Footer />
+          <Footer isDarkTheme={isDarkTheme} />
         </Container>
-      </>
-    </div>
+      </div>
+    </ThemeProvider>
   );
 }
 

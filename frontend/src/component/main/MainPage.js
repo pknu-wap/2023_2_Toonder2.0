@@ -40,9 +40,12 @@ function MainPage() {
   //   const fetchData = async () => {
   //     const { data } = await supabase.auth.getSession();
   //     const email = data.session.user.email;
+  //     console.log("로그인한 이메일:", email);
+
   //     const requestData = {
   //       email: email,
   //     };
+
 
   //     if (!localStorage.getItem("loggedUserName")) {
   //       axios
