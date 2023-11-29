@@ -2,7 +2,7 @@ import Header from "../background/Header";
 import Navbar from "../background/Navbar";
 import styled from "styled-components";
 import { useEffect, useState } from "react";
-import { useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import supabase from "../supabase";
 import axios from "axios";
 import HoverRating from "./HoverRating";
@@ -16,6 +16,8 @@ import {
 } from "./WebtoonInfo";
 
 function MyPage() {
+  const navigate = useNavigate();
+
   const [loggedUserName, setLoggedUserName] = useState(
     localStorage.getItem("loggedUserName")
   );
@@ -26,80 +28,41 @@ function MyPage() {
   const [boardData, setBoardData] = useState([]);
   const [brdNo, setBrdNo] = useState([]);
 
+  // 사용자 이메일, 해시태그, 최근 쓴 글 불러오기
   useEffect(() => {
     const fetchData = async () => {
-      const { data } = await supabase.auth.getSession();
-      const email = data.session.user.email;
-      const requestData = {
-        email: email,
-      };
+      try {
+        const sessionData = await supabase.auth.getSession();
+        const email = sessionData.data.session.user.email;
+        const requestData = { email };
 
-      // console.log(requestData);
+        const [hashData, nameData, boardRes] = await Promise.all([
+          axios.post("toonder/mypage", requestData),
+          axios.post("toonder/name", requestData),
+          axios.post("toonder/mypage/board/", requestData),
+        ]);
 
-      axios
-        .post("toonder/mypage", requestData)
-        .then((hashData) => {
-          setLoggedUserHashTag(hashData.data.mem_hashtag);
-          localStorage.setItem("loggedUserHashTag", hashData.data.mem_hashtag);
-        })
-        .catch((error) => console.log(error));
+        setLoggedUserHashTag(hashData.data.mem_hashtag);
+        localStorage.setItem("loggedUserHashTag", hashData.data.mem_hashtag);
 
-      if (!localStorage.getItem("loggedUserName")) {
-        axios
-          .post("toonder/name", requestData)
-          .then((loggedUserData) => {
-            setLoggedUserName(loggedUserData.data.mem_name);
-            localStorage.setItem(
-              "loggedUserName",
-              loggedUserData.data.mem_name
-            );
-          })
-          .catch((error) => console.log(error));
+        setLoggedUserName(nameData.data.mem_name);
+        localStorage.setItem("loggedUserName", nameData.data.mem_name);
+
+        const data = boardRes.data;
+        const reversedData = [...data].reverse();
+        const titles = reversedData.map((review) => review.brdTitle);
+        const brdNo = reversedData.map((review) => review.brdNo);
+        setBoardData(titles);
+        setBrdNo(brdNo);
+      } catch (error) {
+        console.error("Error fetching data:", error);
       }
-
-      //내 게시글 불러오기
-      axios
-        .post("toonder/mypage/board/", requestData)
-        .then((boardRes) => {
-          const data = boardRes.data; // 받아온 게시글 데이터
-          const reversedData = [...data].reverse();
-          const titles = reversedData.map((review) => review.brdTitle);
-          const brdNo = reversedData.map((review) => review.brdNo);
-          setBoardData(titles);
-          setBrdNo(brdNo);
-          // setIsBoardLoading(false);
-        })
-        .catch((error) => {
-          console.log("Error:", error);
-        });
-
-      console.log("내가 쓴 글", boardData);
-
-      // 리뷰 불러오기
-      //   axios
-      //     .post("/toonder/mypage/review", requestData)
-      //     .then((reviewRes) => {
-      //       const data = reviewRes.data; // 받아온 리뷰 데이터
-      //       const reversedData = [...data].reverse();
-      //       const titles = reversedData.map((review) => review.webtoon.title);
-      //       const contents = reversedData.map((review) => review.revContent);
-      //       const webId = reversedData.map((review) => review.webtoon.mastrId);
-      //       setwebId(webId);
-      //       setWebtoonTitles(titles);
-      //       setReviewData(contents);
-
-      //       setIsReviewLoading(false);
-      //     })
-      //     .catch((error) => {
-      //       console.log("Error:", error);
-      //     });
-      // };
     };
 
     fetchData();
   }, []);
 
-  // 테스트용 정적 데이터 불러오기
+  // 최근 쓴 리뷰 - 테스트용 정적 데이터 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
@@ -184,7 +147,7 @@ const Container = styled(ContentWrapper)``;
 const Content = styled(ReviewWrapper)``;
 
 export const MyReview = styled(ReviewProperty)`
-  font-size: 15px;
+  font-size: 16px;
 `;
 
 const MyPost = styled(MyReview)``;
