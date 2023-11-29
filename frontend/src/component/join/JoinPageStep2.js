@@ -12,8 +12,17 @@ function JoinPageStep2() {
   const navigate = useNavigate();
   const [notAllow, setNotAllow] = useState(true); // '완료' 버튼 활성화 여부
   const [selectedHashtags, setSelectedHashtags] = useState([]);
+  
 
   useEffect(() => {
+    const { email, pw, firstName, lastName,snsLogin } = state;
+    console.log(email)
+    console.log(firstName)
+    console.log(lastName)
+          
+    console.log(snsLogin)
+    console.log(selectedHashtags)
+
     if (selectedHashtags.length > 0) setNotAllow(false);
     else setNotAllow(true);
     return;
@@ -21,12 +30,13 @@ function JoinPageStep2() {
 
   const handleSubmit = async (e) => {
     // setLoading(true);
-    const { email, pw, firstName, lastName } = state;
+    const { email, pw, firstName, lastName, snsLogin } = state;
     // 체크박스로 입력받은 해시태그는 공백으로 단어가 분리된 문자열로 저장을 해서 데이터로 보냄
     const hashtag = "#" + selectedHashtags.join(" #");
-
+    
+    console.log(hashtag)
     axios
-      .post("toonder/join", {
+      .post("/toonder/join", {
         mem_email: email,
         mem_name: lastName + firstName,
         mem_hashtag: hashtag,
@@ -37,18 +47,21 @@ function JoinPageStep2() {
 
     e.preventDefault();
 
-    const { data, error } = await supabase.auth.signUp({
-      email: email,
-      password: pw,
-    });
-
-    if (error) {
-      alert(error);
-      // setLoading(false);
-    } else {
-      alert("인증 메일을 발송했습니다. 이메일 확인 후 로그인해주세요.");
-      navigate("/"); // 메인 화면으로 리다이렉트
+    if (snsLogin === undefined){
+      const { data, error } = await supabase.auth.signUp({
+        email: email,
+        password: pw,
+      });
+  
+      if (error) {
+        alert(error);
+        // setLoading(false);
+      } else {
+        alert("인증 메일을 발송했습니다. 이메일 확인 후 로그인해주세요.");
+      }
     }
+    navigate("/"); // 메인 화면으로 리다이렉트
+    
   };
 
   const handleCheckbox = (event) => {
