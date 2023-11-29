@@ -11,7 +11,7 @@ function PostView() {
   const { state } = location;
   const brdNo = location.state?.brdNo;
   const [post, setPost] = useState({
-    brdNo: null,
+    brdNo: "",
     brdTitle: "",
     brdContent: "",
     mem_name: "",
@@ -126,7 +126,6 @@ function PostView() {
       try {
         const response = await axios.get(`/toonder/board/${brdNo}/comment`);
         setComments(response.data);
-        console.log("댓글:", comments);
       } catch (error) {
         console.log(error);
         alert("댓글을 불러오지 못했습니다.");
