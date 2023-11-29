@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { hashtagOptions } from "./hashtagOptions";
-import { Btn } from "../login/LoginPage";
+import { ThemedBtn } from "./JoinPageStep1";
 import Header from "../background/Header";
 import styles from "./JoinPage.module.css";
 import axios from "axios";
 import supabase from "../supabase";
+import styled from "styled-components";
 
 function JoinPageStep2() {
   const { state } = useLocation(); // useLocation() : useNavigate()로 넘겨받은 파라미터를 취득함
@@ -80,36 +81,32 @@ function JoinPageStep2() {
 
   return (
     <>
-        <Header title="회원가입"></Header>
-        <div style={{ color: "#efefef", marginBottom: "20px" }}>
-          좋아하는 웹툰 장르를 1개 이상 선택하세요
-        </div>
-        <div className={styles.CheckboxContainer}>
-          {hashtagOptions.map((hashtag) => (
-            <label className={styles.CheckboxLabel}>
-              <input
-                type="checkbox"
-                className={styles.CheckboxInput}
-                value={hashtag}
-                onChange={handleCheckbox}
-              />
-              {hashtag}
-            </label>
-          ))}
-        </div>
-        <Btn
-          style={{
-            // input들이 정확히 입력되지 않았을 때는 버튼 색이 원래의 50%만큼 투명하게 보이도록 설정
-            backgroundColor: notAllow ? "#6e6e6e66" : "#6e6e6e",
-          }}
-          type="submit"
-          onClick={handleSubmit}
-          disabled={notAllow}
-        >
-          완료
-        </Btn>
+      <Header title="회원가입"></Header>
+      <Text>좋아하는 웹툰 장르를 1개 이상 선택하세요</Text>
+      <div className={styles.CheckboxContainer}>
+        {hashtagOptions.map((hashtag) => (
+          <label className={styles.CheckboxLabel}>
+            <input
+              type="checkbox"
+              className={styles.CheckboxInput}
+              value={hashtag}
+              onChange={handleCheckbox}
+            />
+            {hashtag}
+          </label>
+        ))}
+      </div>
+      
+      <ThemedBtn type="submit" onClick={handleSubmit} notAllow={notAllow}>
+        완료
+      </ThemedBtn>
     </>
   );
 }
+
+const Text = styled.div`
+  color: ${({ theme }) => theme.text};
+  margin-bottom: 20px;
+`;
 
 export default JoinPageStep2;
