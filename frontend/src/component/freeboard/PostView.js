@@ -137,7 +137,7 @@ function PostView() {
     };
 
     fetchComments();
-  }, [brdNo, isCommentDeleted]);
+  }, [brdNo, isCommentDeleted, isClickCommentLike]);
 
   // 댓글 등록
   const handleSubmitComment = async (e) => {
@@ -164,24 +164,18 @@ function PostView() {
   };
 
   // 댓글 수정
-  const handleEditComment = (cmtNo, cmtEmail) => {
-    if (cmtEmail !== email) {
-      alert("본인의 댓글만 수정이 가능합니다.");
-      return;
-    } else {
-      // 해당 댓글의 내용과 번호를 가져와서 상태에 설정합니다.
-      const targetComment = comments.find((comment) => comment.cmtNo === cmtNo);
-      // 수정할 댓글 내용을 textarea에 표시하기 위해 setEditedComment를 이용해 설정합니다.
-      setEditedComment(targetComment.cmtContent); // 수정 가능하도록 textarea에 댓글 내용 설정
-      setEditingCommentNo(cmtNo); // 수정 중인 댓글 번호 설정
-    }
+  const handleEditComment = (cmtNo) => {
+    // 해당 댓글의 내용과 번호를 가져와서 상태에 설정합니다.
+    const targetComment = comments.find((comment) => comment.cmtNo === cmtNo);
+    // 수정할 댓글 내용을 textarea에 표시하기 위해 setEditedComment를 이용해 설정합니다.
+    setEditedComment(targetComment.cmtContent); // 수정 가능하도록 textarea에 댓글 내용 설정
+    setEditingCommentNo(cmtNo); // 수정 중인 댓글 번호 설정
   };
 
-
   // 댓글 수정 내용
-  const handleEditChange = (editedText, cmtNo) => {
+  const handleEditChange = (editedCmt, cmtNo) => {
     // 수정 중인 댓글의 내용을 변경합니다.
-    setEditedComment(editedText);
+    setEditedComment(editedCmt);
     // 현재 수정 중인 댓글 번호를 상태에 설정합니다.
     setEditingCommentNo(cmtNo);
   };
@@ -228,7 +222,7 @@ function PostView() {
       setIsCommentDeleted(true);
     } catch (error) {
       console.log(error);
-      alert('본인의 댓글만 수정이 가능합니다.');
+      alert("본인의 댓글만 수정이 가능합니다.");
     }
   };
 
@@ -342,19 +336,15 @@ function PostView() {
                     <span>{`${comment.cmtLike}`}</span>
                     <CommentBtn
                       style={{ marginLeft: "10px" }}
-                      onClick={() => {
-                        handleEditComment(comment.cmtNo, comment.mem_email);
-                        console.log(comment);
-                      }}
+                      onClick={() =>
+                        handleEditComment(comment.cmtNo, comment.mem_email)
+                      }
                     >
                       수정
                     </CommentBtn>
                     <CommentBtn
                       onClick={() =>
-                        handleDeleteComment(
-                          comment.cmtContent,
-                          comment.cmtNo
-                        )
+                        handleDeleteComment(comment.cmtContent, comment.cmtNo)
                       }
                     >
                       삭제
@@ -536,7 +526,7 @@ const CommentWriteForm = styled.textarea`
 
   &:focus {
     outline: none;
-    color: #e2e2e2;
+    color: ${({ theme }) => theme.text};
   }
 
   &::placeholder {
