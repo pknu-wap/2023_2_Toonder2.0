@@ -2,10 +2,12 @@ package com.toonder.backend.webtoon;
 
 import java.nio.file.AccessDeniedException;
 import java.sql.Timestamp;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+
+import java.util.*;
+
+import java.util.stream.Collectors;
+
+import javax.servlet.http.HttpSession;
 
 import org.json.simple.JSONArray;
 import org.json.simple.JSONObject;
@@ -33,39 +35,23 @@ public class WebtoonService {
 	@Autowired
     private ReviewRepository reviewRepository;
 
-    //19금 필터 적용된 웹툰 목록 
-    public ResponseEntity<Map<String, Object>> getFilteredWebtoons(Pageable pageable) {
-        Map<String, Object> result = new HashMap<>();
-        List<Webtoon> webtoonList = webtoonRepository.findByMainGenreCdNmNotContaining("성인", pageable);
-        List<WebtoonResponseDto> dtoList = new ArrayList<>();
-        for (Webtoon webtoon : webtoonList) {
-            WebtoonResponseDto dto = new WebtoonResponseDto(webtoon);
-            dtoList.add(dto);
-        }
-        result.put("list", dtoList);
-        return ResponseEntity.ok(result);
-    }
-    
-    // 웹툰 목록 
-    public List<Webtoon> getAllWebtoons() {
-        return webtoonRepository.findAll();
-    }
-    
-    public int findAllCount() {
-        return (int) webtoonRepository.count();
-    }
-    
-    // 페이징 처리된 웹툰목록 데이터를 리턴
-	public ResponseEntity<Map<String, Object>> getPagingWebtoon(String type, Pageable pageable) {
+    // 페이징 처리된 웹툰목록 데이터를 리턴 + 19금 필터
+    public ResponseEntity<Map<String, Object>> getPagingWebtoon(String type, Pageable pageable, boolean filterAdult) {
         Map<String, Object> result = new HashMap<>();
         List<Webtoon> webtoonList;
-
+    
         if ("title".equals(type)) {
-            webtoonList = webtoonRepository.findAllByOrderByTitleAsc(pageable); 
+            webtoonList = webtoonRepository.findAllByOrderByTitleAsc(pageable);
         } else {
-            webtoonList = webtoonRepository.findAllByOrderByMastrIdDesc(pageable); 
+            webtoonList = webtoonRepository.findAllByOrderByMastrIdDesc(pageable);
         }
-
+    
+        // 19금 필터 true = adult 컬럼이 0인 데이터만 가져오도록 필터링
+        if (filterAdult) {
+            webtoonList = webtoonList.stream()
+                    .filter(webtoon -> "0".equals(webtoon.getAdult()))
+                    .collect(Collectors.toList());
+        }
         List<WebtoonResponseDto> dtoList = new ArrayList<>();
         for (Webtoon webtoon : webtoonList) {
             WebtoonResponseDto dto = new WebtoonResponseDto(webtoon);
@@ -73,7 +59,7 @@ public class WebtoonService {
         }
         result.put("list", dtoList);
         return ResponseEntity.ok(result);
-	}
+    }
 
     // id값에 해당하는 웹툰 불러오기
     public WebtoonResponseDto getWebtoon(String mastrId) {
@@ -84,7 +70,7 @@ public class WebtoonService {
 
     //웹툰 제목/작가명으로 검색 (페이징 처리)
     @Transactional
-    public ResponseEntity<Map<String, Object>> search(String type, String keyword, Pageable pageable) {
+    public ResponseEntity<Map<String, Object>> search(String type, String keyword, Pageable pageable, boolean adultFilter) {
         Map<String, Object> result = new HashMap<>();
 
         if (keyword == null || keyword.isEmpty()) {
@@ -103,7 +89,13 @@ public class WebtoonService {
             invalidTypeResponse.put("message", "유효하지 않은 검색 타입입니다");
             return ResponseEntity.ok(invalidTypeResponse);
         }
-        
+
+        if (adultFilter) {
+            webtoonList = webtoonList.stream()
+                    .filter(webtoon -> "0".equals(webtoon.getAdult()))
+                    .collect(Collectors.toList());
+        }
+
         if (webtoonList == null || webtoonList.isEmpty()) {
             Map<String, Object> emptyResponse = new HashMap<>();
             emptyResponse.put("message", "검색 결과가 없습니다");
@@ -120,6 +112,91 @@ public class WebtoonService {
         return ResponseEntity.ok(result);
     }
 
+    //메인페이지 - outline recommendation
+    public List<WebtoonResponseDto> getRecommendedWebtoons(String mastrId, boolean adultFilter) {
+
+        Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
+    
+        if (optionalWebtoon.isPresent()) {
+            Webtoon webtoon = optionalWebtoon.get();
+    
+            List<String> recommendations = processRecommendations(webtoon.getOutline_recommendations());
+    
+            List<String> selectedRecommendations = selectRandomRecommendations(recommendations, 3);
+    
+            List<Webtoon> recommendedWebtoons = webtoonRepository.findByMastrIdIn(selectedRecommendations);
+    
+            if (adultFilter) {
+                recommendedWebtoons = filterAdultWebtoons(recommendedWebtoons);
+            }
+    
+            List<WebtoonResponseDto> recommendedWebtoonDtos = recommendedWebtoons.stream()
+                    .map(WebtoonResponseDto::new)
+                    .collect(Collectors.toList());
+    
+            return recommendedWebtoonDtos;
+        }
+    
+        return Collections.emptyList();
+    }
+    
+    private List<Webtoon> filterAdultWebtoons(List<Webtoon> webtoons) {
+        return webtoons.stream()
+                .filter(webtoon -> !"1".equals(webtoon.getAdult()))
+                .collect(Collectors.toList());
+    }
+
+    private List<String> processRecommendations(String outlineRecommendations) {
+        String[] recommendationArray = outlineRecommendations.replaceAll("\\[|\\]", "").split("\\s*,\\s*");
+        return Arrays.asList(recommendationArray);
+    }
+
+    private List<String> selectRandomRecommendations(List<String> recommendations, int count) {
+        Collections.shuffle(recommendations);
+
+        List<String> validRecommendations = recommendations.stream()
+                .filter(mastrId -> {
+                    boolean hasCorrespondingTuple = webtoonRepository.findByMastrId(mastrId).isPresent();
+                    return hasCorrespondingTuple;
+                })
+                .collect(Collectors.toList());
+
+        return validRecommendations.subList(0, Math.min(count, validRecommendations.size()));
+    }
+
+    //메인페이지 - draw recommendation
+    public List<WebtoonResponseDto> getDrawRecommendedWebtoons(String mastrId, boolean adultFilter) {
+        Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
+    
+        if (optionalWebtoon.isPresent()) {
+            Webtoon webtoon = optionalWebtoon.get();
+            String drawId = webtoon.getDrawId();
+    
+            List<Webtoon> webtoonsWithSameDrawId = webtoonRepository.findByDrawId(drawId);
+
+            webtoonsWithSameDrawId.removeIf(w -> w.getMastrId().equals(mastrId));
+
+            if (adultFilter) {
+                webtoonsWithSameDrawId.removeIf(w -> "1".equals(w.getAdult()));
+            }
+    
+            List<Webtoon> recommendedWebtoons = selectRandomWebtoons(webtoonsWithSameDrawId, 3);
+    
+            return recommendedWebtoons.stream()
+                    .map(WebtoonResponseDto::new)
+                    .collect(Collectors.toList());
+        }
+    
+        return Collections.emptyList();
+    }
+    
+    private List<Webtoon> selectRandomWebtoons(List<Webtoon> webtoons, int count) {
+        Collections.shuffle(webtoons);
+    
+        int size = Math.min(count, webtoons.size());
+    
+        return webtoons.subList(0, size);
+    }
 
 	// --- 리뷰 ---
 
@@ -229,6 +306,7 @@ public class WebtoonService {
 		return new ReviewResponseDto(likedReview);
 	}
 
+    /* 
     //--- 웹툰 정보 저장 ---
     @Transactional(rollbackFor = Exception.class)
     public void init(String jsonData) {
@@ -263,9 +341,6 @@ public class WebtoonService {
                                     case "pictrWritrNm":
                                         webtoon.setPictrWritrNm(value);
                                         break;
-                                    case "sntncWritrNm":
-                                        webtoon.setSntncWritrNm(value);
-                                        break;
                                     case "mainGenreCdNm":
                                         webtoon.setMainGenreCdNm(value);
                                         break;
@@ -277,12 +352,6 @@ public class WebtoonService {
                                         break;
                                     case "pltfomCdNm":
                                         webtoon.setPltfomCdNm(value);
-                                        break;
-                                    case "fnshYn":
-                                        webtoon.setFnshYn(value);
-                                        break;
-                                    case "webtoonPusryYn":
-                                        webtoon.setWebtoonPusryYn(value);
                                         break;
                                 }
                             }
@@ -299,7 +368,8 @@ public class WebtoonService {
             e.printStackTrace();
             //예외 처리
         }
-    }
+    }*/
+
 
 
 }
