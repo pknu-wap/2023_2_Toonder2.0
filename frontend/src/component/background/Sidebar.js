@@ -127,11 +127,11 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
   //   await logout();
   // };
 
-  // const handleLoginClick = () => {
-  //   // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
-  //   navigate("/login");
-  //   onMenuClick();
-  // };
+  const handleLoginClick = () => {
+    // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
+    navigate("/login"); 
+    onMenuClick();
+  };
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
@@ -171,7 +171,7 @@ const Sidebar = ({ isOpen, onMenuClick }) => {
 
       <Menu
         style={{ fontSize: "12px", textDecoration: "none" }}
-        // onClick={handleLogoutClick}
+        onClick={handleLoginClick}
       >
         로그인
       </Menu>
