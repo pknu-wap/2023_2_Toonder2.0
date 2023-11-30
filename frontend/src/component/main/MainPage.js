@@ -15,7 +15,7 @@ const RecommandWebtoonArea = styled.div`
 const Subtitle = styled.div`
   margin-top: 20px;
   font-size: 18px;
-  color: #efefef;
+  color: ${({ theme }) => theme.text};
   letter-spacing: "2px";
   border-bottom: 1px solid white;
   padding: 10px;
@@ -26,48 +26,47 @@ const DivTitle = styled.div`
   text-align: left;
   margin-top: 20px;
   font-size: 15px;
-  color: #efefef;
+  color: ${({ theme }) => theme.text};
 `;
 
 function MainPage() {
   // 사용자 이름 불러오기
-  const [loggedUserName, setLoggedUserName] = useState(
-    localStorage.getItem("loggedUserName")
-  );
+  const [loggedUserName, setLoggedUserName] = useState('');
 
   // 로컬 스토리지에 사용자 이름 저장
   useEffect(() => {
     const fetchData = async () => {
-      const { data, error } = await supabase.auth.getSession();
-      const session = data.session;
 
-      if (session) {
-        const email = session.user.email;
+      const email = localStorage.getItem('loggedUserEmail')
 
-        const rdata = {
-          email: email,
-        };
+      const rdata = {
+        email: email,
+      };
 
-        axios
-          .post("toonder/name", rdata)
-          .then((loggedUserData) => {
-            const userName = loggedUserData.data.mem_name;
-            setLoggedUserName(userName);
+      axios
+        .post("toonder/name", rdata)
+        .then((loggedUserData) => {
+          const userName = loggedUserData.data.mem_name;
+          setLoggedUserName(userName);
 
-            localStorage.setItem("loggedUserName", userName);
-            console.log(loggedUserName);
-          })
-          .catch((error) => console.log(error));
-      }
+          localStorage.setItem("loggedUserName", userName);
+          console.log(userName);
+        })
+        .catch((error) => {
+          console.log(error)
+          setLoggedUserName('')});
+
     };
+    console.log(loggedUserName)
     fetchData();
+    
   }, []);
 
   return (
     <>
       <Header title="TOONDER" subtitle="당신이 찾는 모든 웹툰에 대해" />
 
-      <Subtitle>오늘 ??? 님이 볼만한 웹툰!</Subtitle>
+      <Subtitle>오늘 {loggedUserName === '' ? '???' : loggedUserName} 님이 볼만한 웹툰!</Subtitle>
 
       <RecommandWebtoonArea>
         <DivTitle>좋아하시는 장르가 비슷해요.</DivTitle>
