@@ -1,0 +1,29 @@
+logging:
+  level:
+    '[org.springframework.web]': debug
+
+spring:
+  datasource:
+    driver-class-name: com.mysql.cj.jdbc.Driver
+    url: jdbc:mysql://182.215.121.80:3306/toonderDB?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
+    username: root
+    password: toonderServer1201
+  jpa:
+    database: mysql
+    database-platform: org.hibernate.dialect.MySQL8Dialect
+    show-sql: true
+    hibernate:
+      ddl-auto: update
+      naming:
+        physical-strategy: org.hibernate.boot.model.naming.PhysicalNamingStrategyStandardImpl
+    properties:
+      hibernate:
+        format-sql: true
+  jackson:
+    serialization:
+      fail-on-empty-beans: false
+server:
+  servlet:
+    encoding:
+      force: true
+      charset: UTF-8

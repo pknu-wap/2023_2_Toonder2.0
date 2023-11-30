@@ -41,11 +41,6 @@ function PostForm() {
     fetchData();
   }, []);
 
-  // 문자열 내의 모든 개행 문자를 @로 대체
-  // const addConvertLine = (text) => {
-  //   return text.replace(/\n/g, "@d`}");
-  // };
-
   // 글 작성하기
   const handleSubmit = async () => {
     if (title.length >= 100) alert("제목은 100글자를 넘을 수 없습니다.");
@@ -106,7 +101,7 @@ function PostForm() {
 
 export const PostTitle = styled.input`
   font-family: "NIXGONM-Vb";
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.text};
   background: none;
   border: none;
   font-size: 20px;
@@ -115,7 +110,6 @@ export const PostTitle = styled.input`
 
   &:focus {
     outline: none;
-    color: #e2e2e2;
   }
 
   @media (max-width: 540px) {
@@ -125,7 +119,7 @@ export const PostTitle = styled.input`
 
 export const PostContent = styled.textarea`
   font-family: "NIXGONM-Vb";
-  color: #e2e2e2;
+  color: ${({ theme }) => theme.text};
   background: none;
   border: none;
   font-size: 14px;
@@ -137,7 +131,7 @@ export const PostContent = styled.textarea`
 
   &:focus {
     outline: none;
-    color: #e2e2e2;
+    color: ${({ theme }) => theme.text};
   }
 `;
 

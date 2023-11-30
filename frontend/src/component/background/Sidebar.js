@@ -166,8 +166,10 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
   };
 
   const handleLoginClick = () => {
-    navigate("/login"); // 로그인 페이지로 이동
-    onMenuClick(); // 사이드바 닫기
+
+    // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
+    navigate("/login"); 
+
   };
 
   return (
@@ -221,6 +223,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
         ) : (
           <Menu onClick={handleLoginClick}>로그인</Menu>
         )}
+
       </Menu>
     </SidebarContainer>
   );
