@@ -59,7 +59,7 @@ public class WebtoonController {
     // 웹툰 상세보기
     @GetMapping("/webtoon/{mastrId}")
     public ResponseEntity<WebtoonResponseDto> getWebtoon(@PathVariable String mastrId,  HttpSession session) {
-
+        
         //최근 본 웹툰
         UserSession userSession = (UserSession) session.getAttribute("userSession");
 

@@ -133,7 +133,7 @@ public class WebtoonService {
     
     public List<WebtoonResponseDto> getRecommendedWebtoons(String mastrId, boolean adultFilter) {
         if (mastrId == null) {
-            return getRandomWebtoons(12, adultFilter);
+            return getRandomWebtoons(3, adultFilter);
         }
     
         Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
@@ -189,7 +189,7 @@ public class WebtoonService {
     public List<WebtoonResponseDto> getDrawRecommendedWebtoons(String mastrId, boolean adultFilter) {
 
         if (mastrId == null) {
-            return getRandomWebtoons(12, adultFilter);
+            return getRandomWebtoons(3, adultFilter);
         }
 
         Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
