@@ -44,6 +44,8 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
 	
 	List<Webtoon> findByDrawIdIn(List<String> drawIds);
 
+	List<Webtoon> findAll();
+
 	public final static String SELECT_WEBTOON_LIST_PAGED = ""
 			+ "SELECT " 
 			+ "mastrId,"
