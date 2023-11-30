@@ -19,7 +19,7 @@ import lombok.Data;
 
 @Data
 @Entity
-@Table(name = "wbtninfo")
+@Table(name = "wbtnInfo")
 public class Webtoon {
 
     @Id
