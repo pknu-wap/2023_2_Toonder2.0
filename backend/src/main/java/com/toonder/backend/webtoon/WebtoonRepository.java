@@ -6,6 +6,7 @@ import java.util.*;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 
 public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
@@ -26,6 +27,12 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
 		, nativeQuery = true)
 	List<Webtoon> findAllByOrderByTitleAsc(Pageable pageable);
 
+	@Query(value = "SELECT mastrId FROM wbtnInfo ORDER BY RAND() LIMIT :count", nativeQuery = true)
+    List<String> findRandomMastrIds(@Param("count") int count);
+
+	@Query(value = "SELECT mastrId FROM wbtnInfo WHERE adult != '1' ORDER BY RAND() LIMIT :count", nativeQuery = true)
+	List<String> findNonAdultRandomMastrIds(@Param("count") int count);
+
 	List<Webtoon> findAllByOrderByMastrIdDesc(Pageable pageable);
 
     List<Webtoon> findByMainGenreCdNm(String mainGenreCdNm);
@@ -43,6 +50,8 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
 	List<Webtoon> findByDrawId(String drawId);
 	
 	List<Webtoon> findByDrawIdIn(List<String> drawIds);
+
+	List<Webtoon> findAll();
 
 	public final static String SELECT_WEBTOON_LIST_PAGED = ""
 			+ "SELECT " 
