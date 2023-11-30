@@ -28,10 +28,9 @@ def delete_unreadable_png(directory):
                 print(f"Deleted: {file_path}")
 
     if deleted_files == 0:
-        print("No unreadable PNG files found.")
+        print("No unreadable png files found.")
     else:
-        print(f"Deleted {deleted_files} unreadable PNG file(s).")
-
+        print(f"Deleted {deleted_files} unreadable png file(s).")
 def preprocessig_df(encoded_imgs):
     
     # 열 이름 변경

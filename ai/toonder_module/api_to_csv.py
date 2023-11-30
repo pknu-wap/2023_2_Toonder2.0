@@ -14,9 +14,18 @@ def api_to_csv():
     while True:
         url = f'https://www.kmas.or.kr/openapi/search/rgDtaMasterList?prvKey={api_key}&listSeCd=1&viewItemCnt=100&pageNo={i}'
         try:
+            print(i, end = " ")
             response = urllib.request.urlopen(url)
             json_str = response.read().decode("utf-8")
             json_object = json.loads(json_str)
+            # 만약 값이 없으면 종료
+            if not json_object['itemList']:
+                break
+                
+            new_data = pd.json_normalize(json_object['itemList'])
+            df = pd.concat([df, new_data], ignore_index=True)
+            i += 100        
+
         except KeyError:
             # 키 에러가 발생하면 다른 키로 바꿔서 다시 시도
             if api_key == api_key1:
@@ -26,13 +35,7 @@ def api_to_csv():
             
             continue  # 다음 반복 시작
         
-        # 만약 값이 없으면 종료
-        if not json_object['itemList']:
-            break
-            
-        new_data = pd.json_normalize(json_object['itemList'])
-        df = pd.concat([df, new_data], ignore_index=True)
-        i += 100
+
     
     # df 중복값 제거
     df = df[['mastrId',
@@ -44,6 +47,3 @@ def api_to_csv():
              'imageDownloadUrl']]
 
     df.to_csv("ai/data/webtoon.csv", index=False)
-
-# 함수 호출
-api_to_csv()
