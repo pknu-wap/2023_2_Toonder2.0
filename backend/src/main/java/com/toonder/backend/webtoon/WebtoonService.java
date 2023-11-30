@@ -112,21 +112,15 @@ public class WebtoonService {
         return ResponseEntity.ok(result);
     }
 
-    //메인페이지 - outline recommendation
+    //메인페이지 - outline recommendation 
     public List<WebtoonResponseDto> getRandomWebtoons(int count, boolean adultFilter) {
-        List<Webtoon> allWebtoons = webtoonRepository.findAll();
-    
-        if (adultFilter) {
-            allWebtoons = filterAdultWebtoons(allWebtoons);
-        }
-    
-        List<String> allMastrIds = allWebtoons.stream()
-                .map(Webtoon::getMastrId)
-                .collect(Collectors.toList());
-    
-        List<String> randomMastrIds = selectRandomRecommendations(allMastrIds, count);
+        List<String> randomMastrIds = webtoonRepository.findRandomMastrIds(count);
     
         List<Webtoon> randomWebtoons = webtoonRepository.findByMastrIdIn(randomMastrIds);
+    
+        if (adultFilter) {
+            randomWebtoons = filterAdultWebtoons(randomWebtoons);
+        }
     
         List<WebtoonResponseDto> randomWebtoonDtos = randomWebtoons.stream()
                 .map(WebtoonResponseDto::new)
@@ -134,7 +128,6 @@ public class WebtoonService {
     
         return randomWebtoonDtos;
     }
-    
     public List<WebtoonResponseDto> getRecommendedWebtoons(String mastrId, boolean adultFilter) {
         if (mastrId == null) {
             return getRandomWebtoons(12, adultFilter);
