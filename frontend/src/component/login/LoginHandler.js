@@ -45,9 +45,19 @@ const LoginRedirect = () => {
             const lastName = name[0]
             const pw = ''
             const snsLogin = 'kakao'
-            navigate("/join/step2", {
-                state: { email, pw, firstName, lastName, snsLogin },
-              });
+
+            axios
+                .post ('toonder/name', {email:email})
+                .then(res => {
+                    localStorage.setItem('loggedUserEmail',email)
+                    navigate("/")
+                })
+                .catch (error => {
+                    console.log(error)
+                    navigate("/join/step2", {
+                        state: { email, pw, firstName, lastName, snsLogin },
+                      });
+                })
         })
     })
     .catch((Error: any) => { 

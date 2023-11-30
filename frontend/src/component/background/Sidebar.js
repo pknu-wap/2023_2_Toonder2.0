@@ -143,7 +143,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
       const { data, error } = await supabase.auth.getSession();
       const session = data.session;
 
-      if (session) {
+      if (session || localStorage.getItem('loggedUserEmail')) {
         setIsLoggedIn(true); // 로그인 상태인 경우 true로 설정
       } else {
         setIsLoggedIn(false); // 로그아웃 상태인 경우 false로 설정
@@ -151,6 +151,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
     };
 
     checkLoggedIn();
+    
   }, []);
 
   const handleLogoutClick = async () => {
@@ -161,6 +162,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
     } else {
       navigate("/"); // 로그아웃 성공시 메인으로 리다이렉트
       alert("로그아웃되었습니다.");
+      localStorage.clear()
       window.location.replace("/");
     }
   };
