@@ -5,11 +5,7 @@ logging:
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-<<<<<<< HEAD
     url: jdbc:mysql://182.215.121.80:3306/toonderDB?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
-=======
-    url: jdbc:mysql://localhost:3306/test3?useSSL=false&useUnicode=true&serverTimezone=Asia/Seoul&allowPublicKeyRetrieval=true&useSSL=false
->>>>>>> 94907233e3c3359ee5f0267ee5402792188debeb
     username: root
     password: toonderServer1201
   jpa:
