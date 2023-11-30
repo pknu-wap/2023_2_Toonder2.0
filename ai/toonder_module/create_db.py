@@ -10,9 +10,9 @@ def create_db(url):
             headers = next(reader)
 
             delete_table_query = f"""
-            DROP TABLE IF EXISTS wbtnInfo 
+            DELETE from wbtnInfo;
             """
-            # cursor.execute(delete_table_query)
+            cursor.execute(delete_table_query)
             print("successfully DROPED")
             
             # 테이블 생성
@@ -73,3 +73,5 @@ def create_db(url):
 
     except Exception as e:
         print(f"오류 발생: {str(e)}")
+
+create_db('ai/data/data.csv')
