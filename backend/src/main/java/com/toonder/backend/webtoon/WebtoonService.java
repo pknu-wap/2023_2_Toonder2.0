@@ -113,8 +113,33 @@ public class WebtoonService {
     }
 
     //메인페이지 - outline recommendation
+    public List<WebtoonResponseDto> getRandomWebtoons(int count, boolean adultFilter) {
+        List<Webtoon> allWebtoons = webtoonRepository.findAll();
+    
+        if (adultFilter) {
+            allWebtoons = filterAdultWebtoons(allWebtoons);
+        }
+    
+        List<String> allMastrIds = allWebtoons.stream()
+                .map(Webtoon::getMastrId)
+                .collect(Collectors.toList());
+    
+        List<String> randomMastrIds = selectRandomRecommendations(allMastrIds, count);
+    
+        List<Webtoon> randomWebtoons = webtoonRepository.findByMastrIdIn(randomMastrIds);
+    
+        List<WebtoonResponseDto> randomWebtoonDtos = randomWebtoons.stream()
+                .map(WebtoonResponseDto::new)
+                .collect(Collectors.toList());
+    
+        return randomWebtoonDtos;
+    }
+    
     public List<WebtoonResponseDto> getRecommendedWebtoons(String mastrId, boolean adultFilter) {
-
+        if (mastrId == null) {
+            return getRandomWebtoons(12, adultFilter);
+        }
+    
         Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
     
         if (optionalWebtoon.isPresent()) {
@@ -139,7 +164,7 @@ public class WebtoonService {
     
         return Collections.emptyList();
     }
-    
+
     private List<Webtoon> filterAdultWebtoons(List<Webtoon> webtoons) {
         return webtoons.stream()
                 .filter(webtoon -> !"1".equals(webtoon.getAdult()))
@@ -166,6 +191,11 @@ public class WebtoonService {
 
     //메인페이지 - draw recommendation
     public List<WebtoonResponseDto> getDrawRecommendedWebtoons(String mastrId, boolean adultFilter) {
+
+        if (mastrId == null) {
+            return getRandomWebtoons(12, adultFilter);
+        }
+
         Optional<Webtoon> optionalWebtoon = webtoonRepository.findByMastrId(mastrId);
     
         if (optionalWebtoon.isPresent()) {
