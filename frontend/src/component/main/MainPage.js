@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import supabase from "../supabase";
 import styled from "styled-components";
+import { useNavigate } from "react-router-dom";
 
 const RecommandWebtoonArea = styled.div`
   overflow: hidden;
@@ -58,7 +59,7 @@ function MainPage() {
   const [recommendAuthor, setRecommendAuthor] = useState([]);
   // 로컬 스토리지에 사용자 이름 저장
 
-
+  const navigate = useNavigate();
 
   useEffect(() => {
     const fetchNameData = async () => {
@@ -84,7 +85,7 @@ function MainPage() {
 
     };
     
-    const fetchUnloggedList = () => {
+    const fetchUnloggedList = () => {   
       axios
         .get('toonder/webtoon/recommend/outline?19filter=false')
         .then(res => setRecommendGenre(res.data))
@@ -122,7 +123,7 @@ function MainPage() {
         <DivTitle>좋아하시는 장르가 비슷해요.</DivTitle>
         <DivWebtoon>
           {recommendGenre.map(item => (
-            <div style={{marginRight:"5%"}}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
           
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
