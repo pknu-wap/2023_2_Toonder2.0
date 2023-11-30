@@ -19,7 +19,7 @@ const SidebarContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  padding: 16px;
+  padding: 12px;
   color: #fff;
   cursor: pointer;
   font-size: 15px;
