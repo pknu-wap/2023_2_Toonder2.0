@@ -5,8 +5,30 @@ from csv_to_data import csv_to_data
 from toonder_db_connection import connect_to_db
 from create_db import create_db
 from data_to_img import data_to_img
-from toonder_csv import toonder_csv
-from toonder_img import toonder_img
+# python3.11 환경에서 돌릴 것!!
+# python3.11 환경에서 돌릴 것!!
+# python3.11 환경에서 돌릴 것!!
+# python3.11 환경에서 돌릴 것!!
+# python3.11 환경에서 돌릴 것!!
+# python3.11 환경에서 돌릴 것!!
+global directory
+directory = "ai/data"
+import os
+
+directory = 'ai/data/toonder_img/class'
+
+# 디렉토리가 존재하든 안하든 일단 생성
+def delete_data_folder():
+    
+    if os.path.exists(directory):
+        shutil.rmtree(directory)
+        os.makedirs(directory)
+        print(f"폴더 '{directory}'와 하위 디렉토리가 모두 삭제되었습니다.")    
+        print(f"디렉토리 {directory}가 생성되었습니다.")
+
+    else:
+        os.makedirs(directory)
+        print(f"디렉토리 {directory}가 생성되었습니다.")
 
 url = 'ai/data/data.csv'
 db, cursor, api_url, api_key = connect_to_db()
