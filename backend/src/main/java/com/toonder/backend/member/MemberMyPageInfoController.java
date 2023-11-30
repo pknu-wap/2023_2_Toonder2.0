@@ -99,7 +99,8 @@ public class MemberMyPageInfoController{
 
         if (recentlyViewedWebtoonOptional.isPresent()) {
             Webtoon recentlyViewedWebtoon = recentlyViewedWebtoonOptional.get();
-            WebtoonTitleDto titleDto = new WebtoonTitleDto(recentlyViewedWebtoon.getMastrId(), recentlyViewedWebtoon.getTitle());
+            WebtoonTitleDto titleDto = new WebtoonTitleDto(recentlyViewedWebtoon.getMastrId(),
+                     recentlyViewedWebtoon.getTitle(), recentlyViewedWebtoon.getImageDownloadUrl());
             return ResponseEntity.ok(titleDto);
         } else {
             return ResponseEntity.notFound().build();
