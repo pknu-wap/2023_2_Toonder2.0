@@ -30,6 +30,9 @@ public interface WebtoonRepository extends JpaRepository<Webtoon, String> {
 	@Query(value = "SELECT mastrId FROM wbtnInfo ORDER BY RAND() LIMIT :count", nativeQuery = true)
     List<String> findRandomMastrIds(@Param("count") int count);
 
+	@Query(value = "SELECT mastrId FROM wbtnInfo WHERE adult != '1' ORDER BY RAND() LIMIT :count", nativeQuery = true)
+	List<String> findNonAdultRandomMastrIds(@Param("count") int count);
+
 	List<Webtoon> findAllByOrderByMastrIdDesc(Pageable pageable);
 
     List<Webtoon> findByMainGenreCdNm(String mainGenreCdNm);
