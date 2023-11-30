@@ -2,13 +2,28 @@ import numpy as np
 import pandas as pd
 import os
 import tensorflow as tf
-
+import random
 from tensorflow.keras.preprocessing import image_dataset_from_directory
 from keras.layers import Input, Dense, Flatten
 from keras.models import Model
 from keras import backend as K
+import subprocess
+
+
 
 # ====================================함수화====================================
+
+
+def mogrify_png(directory):
+    # mogrify 명령어 실행
+    try:
+        subprocess.run(["mogrify", "*.png"], cwd=directory, shell=True, check=True)
+        print("모든 PNG 파일이 성공적으로 변환되었습니다.")
+    except subprocess.CalledProcessError as e:
+        print("오류 발생:", e)
+    
+    print("mogrify_png done")
+
 def is_readable_by_tensorflow(file_path):
     try:
         img = tf.io.read_file(file_path)
@@ -16,6 +31,7 @@ def is_readable_by_tensorflow(file_path):
         return True
     except tf.errors.InvalidArgumentError:
         return False
+    
 
 def delete_unreadable_png(directory):
     deleted_files = 0
@@ -31,6 +47,8 @@ def delete_unreadable_png(directory):
         print("No unreadable png files found.")
     else:
         print(f"Deleted {deleted_files} unreadable png file(s).")
+    print("delete_unreadable_png done")
+
 def preprocessig_df(encoded_imgs):
     
     # 열 이름 변경
@@ -39,7 +57,7 @@ def preprocessig_df(encoded_imgs):
     encoded_imgs['drawId'], _ = encoded_imgs['rst'].factorize()
     # 매핑된 값 확인
     print(encoded_imgs['drawId'].nunique())
-
+    print("preprocessig_df done")
     return encoded_imgs
 
 def df_to_csv(directory, encoded_imgs):
@@ -56,6 +74,7 @@ def df_to_csv(directory, encoded_imgs):
     print(df['drawId'])
 
     df.to_csv(csv_path, index=False)
+    print("df_to_csv done")
 
 def image_AI(image_dataset, encoding_dim ):
     # configure
@@ -89,10 +108,20 @@ def image_AI(image_dataset, encoding_dim ):
     encoded_imgs = [str(inner_list) for inner_list in encoded_imgs]
 
     encoded_imgs = pd.DataFrame(encoded_imgs)
+    print("image_AI done")
+
     return encoded_imgs
 # ====================================함수화====================================
 def toonder_img():
     directory_path = "ai/data/toonder_img/class"  # Replace with your directory path
+    # TensorFlow의 랜덤 시드 설정
+    tf.random.set_seed(42)
+
+    # Python의 랜덤 시드 설정 (Numpy와 일반 Python 랜덤 시드)
+    np.random.seed(42)
+    random.seed(42)
+
+    # mogrify_png(directory)
 
     delete_unreadable_png(directory_path)
 

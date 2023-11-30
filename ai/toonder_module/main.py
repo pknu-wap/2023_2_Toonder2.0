@@ -19,11 +19,11 @@ db, cursor, api_url, api_key = connect_to_db()
 # print("data_to_img(url) done")
 # toonder_csv()
 # print("toonder_csv() done")
+# toonder_img()
+# print("toonder_img() done")
+# create_db(url) # db에 연결
 # -----여기까지는 무리 없이 됨-----
 
 
 
-toonder_img()
-print("toonder_img() done")
-create_db(url) # db에 연결
 print("PROGRAM ENDED")
