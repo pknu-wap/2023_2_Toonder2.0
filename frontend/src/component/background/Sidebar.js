@@ -70,10 +70,10 @@ const Input = styled.input`
 `;
 
 const menuItems = [
-  { to: "/mypage", text: "마이페이지" },
+  //{ to: "/mypage", text: "마이페이지" },
   { to: "/board", text: "자유게시판" },
-  // { to: "/mywebtoon", text: "마이웹툰" },
-  // { to: "/webtoonlist", text: "웹툰 목록" },
+  { to: "/mywebtoon", text: "마이웹툰" },
+  { to: "/webtoonlist", text: "웹툰 목록" },
 ];
 
 const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
@@ -171,16 +171,36 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
-      <Menu style={{ marginTop: "20px", cursor: "auto", lineHeight: "1.5" }}>
-        {isLoggedIn ? (
-          <div><span style={{ fontSize:"16px", fontFamily: "NIXGONB-Vb-B" }}>
-            {`${loggedUserName}`}</span><span>님</span><br />
+      {isLoggedIn ? (
+        <>
+          <Menu
+            style={{ marginTop: "20px", cursor: "auto", lineHeight: "1.5" }}
+          >
+            <span style={{ fontSize: "16px", fontFamily: "NIXGONB-Vb-B" }}>
+              {`${loggedUserName}`}
+            </span>
+            <span>님</span>
+            <br />
             안녕하세요!
-          </div>
-        ) : (
-          <></>
-        )}
-      </Menu>
+          </Menu>
+        </>
+      ) : (
+        <></>
+      )}
+      {isLoggedIn ? (
+        <>
+          <Link to="/mypage" style={{ textDecoration: "none" }}>
+            <Menu>마이페이지</Menu>
+          </Link>
+          <Menu onClick={handleLogoutClick}>로그아웃</Menu>) : (
+        </>
+      ) : (
+        <>
+          <Menu style={{ marginTop: "20px" }} onClick={handleLoginClick}>
+            로그인
+          </Menu>
+        </>
+      )}
 
       {menuItems.map((item, index) => (
         <Link key={index} to={item.to} style={{ textDecoration: "none" }}>
@@ -212,14 +232,6 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
           />
           <Slider />
         </ToggleSwitch>
-      </Menu>
-
-      <Menu onClick={handleLoginClick}>
-        {isLoggedIn ? (
-          <Menu onClick={handleLogoutClick}>로그아웃</Menu>
-        ) : (
-          <Menu onClick={handleLoginClick}>로그인</Menu>
-        )}
       </Menu>
     </SidebarContainer>
   );
