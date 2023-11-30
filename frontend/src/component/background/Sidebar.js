@@ -19,7 +19,7 @@ const SidebarContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  padding: 12px;
+  margin: 24px;
   color: #fff;
   cursor: pointer;
   font-size: 15px;
@@ -158,6 +158,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
     if (error) {
       console.error("로그아웃 중 오류가 발생했습니다.", error);
     } else {
+      onMenuClick(); // 사이드바 닫기
       navigate("/"); // 로그아웃 성공시 메인으로 리다이렉트
       alert("로그아웃되었습니다.");
       window.location.replace("/");
@@ -166,6 +167,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
 
   const handleLoginClick = () => {
     // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
+    onMenuClick(); // 사이드바 닫기
     navigate("/login");
   };
 
@@ -192,11 +194,11 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
           <Link to="/mypage" style={{ textDecoration: "none" }}>
             <Menu>마이페이지</Menu>
           </Link>
-          <Menu onClick={handleLogoutClick}>로그아웃</Menu>) : (
+          <Menu onClick={handleLogoutClick}>로그아웃</Menu>
         </>
       ) : (
         <>
-          <Menu style={{ marginTop: "20px" }} onClick={handleLoginClick}>
+          <Menu style={{ marginTop: "30px" }} onClick={handleLoginClick}>
             로그인
           </Menu>
         </>
