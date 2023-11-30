@@ -45,7 +45,7 @@ public class Review {
 
     @ManyToOne 
 	@JsonManagedReference
-	@JoinColumn(name="mastrId", referencedColumnName = "mastrId", foreignKey = @ForeignKey(name = "fk_review_wbtninfo"), nullable = false)
+	@JoinColumn(name="mastrId")
 	private Webtoon webtoon;
 
 	@ManyToOne
