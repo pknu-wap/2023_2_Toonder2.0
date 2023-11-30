@@ -35,7 +35,7 @@ export const lightTheme = {
   postProperty: "#424242", // 글 속성 (작성일자, 조회수, 작성자 등)
   commentForm: "#e0e0e0", // 댓글란
   commentWriteForm: "#bdbdbd", // 댓글 작성 폼
-  placeholderText: "#929292", // 댓글 작성 폼 placeholer
+  placeholder: "#929292", // 댓글 작성 폼 placeholer
   paginationDefault: "#9e9e9e",
   paginationHover: "#bdbdbd",
   inputFormBackground: "#fafafa", // 로그인 & 회원가입 input
@@ -56,7 +56,7 @@ export const darkTheme = {
   postProperty: "#d8d8d8",
   commentForm: "#6e6e6e",
   commentWriteForm: "#808080",
-  placeholderText: "#cccccc",
+  placeholder: "#cccccc",
   paginationDefault: "grey",
   paginationHover: "black",
   inputFormBackground: "#414141",

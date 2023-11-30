@@ -42,8 +42,7 @@ const ListContainer = styled.div`
 
 export const BoardBtn = styled.button`
   font-family: "NIXGONM-Vb";
-  background-color: 
-  ${({ theme }) => theme.btnBackground};
+  background-color: ${({ theme }) => theme.btnBackground};
   border: none;
   color: #e2e2e2;
   font-size: 14px;
