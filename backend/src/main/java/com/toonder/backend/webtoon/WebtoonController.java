@@ -59,7 +59,7 @@ public class WebtoonController {
     // 웹툰 상세보기
     @GetMapping("/webtoon/{mastrId}")
     public ResponseEntity<WebtoonResponseDto> getWebtoon(@PathVariable String mastrId,  HttpSession session) {
-
+        
         //최근 본 웹툰
         UserSession userSession = (UserSession) session.getAttribute("userSession");
 
@@ -104,19 +104,15 @@ public class WebtoonController {
     //메인페이지 - outline recommendation +19금 필터
     @GetMapping("/webtoon/recommend/outline")
     public ResponseEntity<List<WebtoonResponseDto>> getRecommendedWebtoons(
-            HttpSession session,
-            @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter) {
-    
+        HttpSession session,
+        @RequestParam(value = "19filter", required = false, defaultValue = "false") boolean adultFilter) {
+
         UserSession userSession = (UserSession) session.getAttribute("userSession");
-    
-        if (userSession == null || userSession.getRecentlyViewedMastrId() == null) {
-            return ResponseEntity.notFound().build();
-        }
-    
-        String recentlyViewedMastrId = userSession.getRecentlyViewedMastrId();
-    
-        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getRecommendedWebtoons(recentlyViewedMastrId, adultFilter);
-    
+
+        String mastrId = (userSession != null) ? userSession.getRecentlyViewedMastrId() : null;
+
+        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getRecommendedWebtoons(mastrId, adultFilter);
+
         return ResponseEntity.ok(recommendedWebtoons);
     }
 
@@ -128,13 +124,9 @@ public class WebtoonController {
 
         UserSession userSession = (UserSession) session.getAttribute("userSession");
 
-        if (userSession == null || userSession.getRecentlyViewedMastrId() == null) {
-            return ResponseEntity.notFound().build();
-        }
+        String mastrId = (userSession != null) ? userSession.getRecentlyViewedMastrId() : null;
 
-        String recentlyViewedMastrId = userSession.getRecentlyViewedMastrId();
-
-        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getDrawRecommendedWebtoons(recentlyViewedMastrId, adultFilter);
+        List<WebtoonResponseDto> recommendedWebtoons = webtoonService.getDrawRecommendedWebtoons(mastrId, adultFilter);
 
         return ResponseEntity.ok(recommendedWebtoons);
     }
