@@ -150,7 +150,10 @@ function MainPage() {
         <DivTitle>좋아하시는 장르가 비슷해요.</DivTitle>
         <DivWebtoon>
           {recommendGenre.map(item => (
-            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate('/webtooninfo', {
+              state: { mastrId: item.mastrId },
+            })}>  
+          
           
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
