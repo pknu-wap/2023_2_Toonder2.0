@@ -23,7 +23,7 @@ const Icon = styled.div`
   cursor: pointer;
 `;
 
-export const Navbar = ({ isDarkTheme, setIsDarkTheme }) => {
+export const Navbar = ({ isDarkTheme, setIsDarkTheme, isAdult, setIsAdult}) => {
   const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const toggleSidebar = () => {
@@ -52,6 +52,8 @@ export const Navbar = ({ isDarkTheme, setIsDarkTheme }) => {
         onMenuClick={handleMenuClick}
         isDarkTheme={isDarkTheme}
         setIsDarkTheme={setIsDarkTheme}
+        isAdult={isAdult}
+        setIsAdult={setIsAdult}
       />
     </>
   );

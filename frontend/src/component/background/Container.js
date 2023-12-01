@@ -15,5 +15,5 @@ export const Container = styled.div`
   transition: box-shadow 0.3s ease; /* 효과를 부드럽게 적용하기 위한 트랜지션 추가 */
   overflow-x: hidden; /* 가로 스크롤 없애기 */
   overflow-y: hidden; /* 스크롤이 필요한 경우 스크롤 표시 */
-  min-height: 250vh; /* 컨테이너의 최소 높이를 뷰포트 높이로 설정 */
+  min-height: 185vh; /* 컨테이너의 최소 높이를 뷰포트 높이로 설정 */
 `;
