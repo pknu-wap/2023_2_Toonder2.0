@@ -150,10 +150,14 @@ function MainPage() {
         <DivTitle>좋아하시는 장르가 비슷해요.</DivTitle>
         <DivWebtoon>
           {recommendGenre.map(item => (
+<<<<<<< HEAD
             <div style={{marginRight:"5%"}} onClick ={ () => navigate('/webtooninfo', {
               state: { mastrId: item.mastrId },
             })}>  
           
+=======
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo" ,{state :{mastrId : item.mastrId}})}>  
+>>>>>>> 0caf163b4bd049b234b649065caa5ecece1e241c
           
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
@@ -165,7 +169,7 @@ function MainPage() {
         <DivTitle>좋아하시는 그림체가 비슷해요.</DivTitle>
         <DivWebtoon>
           {recommendDraw.map(item => (
-            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo", {state :{mastrId : item.mastrId}})}>  
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
               <AuthorText>{item.pictrWritrNm}</AuthorText>
@@ -176,7 +180,7 @@ function MainPage() {
         <DivTitle>좋아하시는 줄거리가 비슷합니다.</DivTitle>
         <DivWebtoon>
           {recommendOutline.map(item => (
-            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo", {state :{mastrId : item.mastrId}})}>  
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
               <AuthorText>{item.pictrWritrNm}</AuthorText>
@@ -187,7 +191,7 @@ function MainPage() {
         <DivTitle>좋아하시는 작가님의 다른 작품이에요!</DivTitle>
         <DivWebtoon>
           {recommendAuthor.map(item => (
-            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo", {state :{mastrId : item.mastrId}})}>  
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
               <AuthorText>{item.pictrWritrNm}</AuthorText>

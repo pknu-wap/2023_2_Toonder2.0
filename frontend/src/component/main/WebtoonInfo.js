@@ -263,7 +263,7 @@ export const InfoContainer = styled.div`
   align-items: flex-start; /* 왼쪽 정렬로 변경 */
 `;
 
-const ThumbnailWrapper = styled.img`
+export const ThumbnailWrapper = styled.img`
   margin-right: 20px;
   border-radius: 10px; /* 테두리를 둥글게 설정 */
   overflow: hidden; /* 테두리를 둥글게 만들기 위해 추가 */
@@ -325,14 +325,14 @@ export const BoardBtn = styled.button`
   }
 `;
 
-const ReviewWriteFormContainer = styled.form`
+export const ReviewWriteFormContainer = styled.form`
   position: relative;
   width: 100%;
   margin-top: 20px;
   margin-bottom: 10px; /* 버튼과의 간격 조정 */
 `;
 
-const ReviewWriteForm = styled.textarea`
+export const ReviewWriteForm = styled.textarea`
   font-family: "NIXGONM-Vb";
   display: flex;
   border: 1.5px solid;
@@ -358,14 +358,14 @@ const ReviewWriteForm = styled.textarea`
   }
 `;
 
-const ReviewActionBtn = styled.button`
+export const ReviewActionBtn = styled.button`
   font-family: "NIXGONM-Vb";
   color: #d8d8d8;
   border: none;
   background: none;
   cursor: pointer;
 `;
-const ReviewSubmitBtn = styled.button`
+export const ReviewSubmitBtn = styled.button`
   font-family: "NIXGONM-Vb";
   font-size: 15px;
   width: 100%;
