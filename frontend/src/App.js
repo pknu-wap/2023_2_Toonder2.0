@@ -24,6 +24,7 @@ import EditForm from "./component/freeboard/EditForm";
 import { ThemeProvider } from "styled-components";
 import GlobalStyles from "@mui/system/GlobalStyles";
 import { lightTheme, darkTheme } from "./theme/theme";
+import MyPage from "./component/main/MyPage";
 
 function App() {
   document.title = "툰더";
@@ -78,6 +79,8 @@ function App() {
             <Route path="/newpw" element={<NewPwPage />}></Route>
 
             <Route path="/webtoonlist" element={<WebtoonList />}></Route>
+            <Route path="/mypage" element={<MyPage />}></Route>
+
             <Route element={<BoardLayout />}>
               <Route path="board" element={<BoardList />} />
               <Route path="postview" element={<PostView />} />

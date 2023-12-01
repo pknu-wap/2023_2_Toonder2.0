@@ -19,10 +19,10 @@ const SidebarContainer = styled.div`
 `;
 
 const Menu = styled.div`
-  padding: 16px;
+  margin: 24px;
   color: #fff;
   cursor: pointer;
-  font-size: 14px;
+  font-size: 15px;
 `;
 
 const ToggleSwitch = styled.label`
@@ -70,11 +70,10 @@ const Input = styled.input`
 `;
 
 const menuItems = [
-  { to: "/mypage", text: "마이페이지" },
+  //{ to: "/mypage", text: "마이페이지" },
   { to: "/board", text: "자유게시판" },
-  { to: "/", text: "마이웹툰" },
-  { to: "/", text: "최근 쓴 글" },
-  { to: "/", text: "웹툰 목록" },
+  { to: "/mywebtoon", text: "마이웹툰" },
+  { to: "/webtoonlist", text: "웹툰 목록" },
 ];
 
 const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme, isAdult, setIsAdult }) => {
@@ -166,6 +165,7 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme, isAdult, se
     if (error) {
       console.error("로그아웃 중 오류가 발생했습니다.", error);
     } else {
+      onMenuClick(); // 사이드바 닫기
       navigate("/"); // 로그아웃 성공시 메인으로 리다이렉트
       alert("로그아웃되었습니다.");
       localStorage.clear()
@@ -174,24 +174,43 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme, isAdult, se
   };
 
   const handleLoginClick = () => {
-
     // "로그인" 메뉴를 클릭하면 로그인 페이지로 이동하고 사이드바를 닫음
-    navigate("/login"); 
-
+    onMenuClick(); // 사이드바 닫기
+    navigate("/login");
   };
 
   return (
     <SidebarContainer isOpen={isOpen} ref={sidebarRef}>
-      <Menu style={{ cursor: "auto", lineHeight: "1.5" }}>
-        {isLoggedIn ? (
-          <div>
-            {loggedUserName}님<br />
+      {isLoggedIn ? (
+        <>
+          <Menu
+            style={{ marginTop: "20px", cursor: "auto", lineHeight: "1.5" }}
+          >
+            <span style={{ fontSize: "16px", fontFamily: "NIXGONB-Vb-B" }}>
+              {`${loggedUserName}`}
+            </span>
+            <span>님</span>
+            <br />
             안녕하세요!
-          </div>
-        ) : (
-          <></>
-        )}
-      </Menu>
+          </Menu>
+        </>
+      ) : (
+        <></>
+      )}
+      {isLoggedIn ? (
+        <>
+          <Link to="/mypage" style={{ textDecoration: "none" }}>
+            <Menu>마이페이지</Menu>
+          </Link>
+          <Menu onClick={handleLogoutClick}>로그아웃</Menu>
+        </>
+      ) : (
+        <>
+          <Menu style={{ marginTop: "30px" }} onClick={handleLoginClick}>
+            로그인
+          </Menu>
+        </>
+      )}
 
       {menuItems.map((item, index) => (
         <Link key={index} to={item.to} style={{ textDecoration: "none" }}>
@@ -223,15 +242,6 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme, isAdult, se
           />
           <Slider />
         </ToggleSwitch>
-      </Menu>
-
-      <Menu onClick={handleLoginClick}>
-        {isLoggedIn ? (
-          <Menu onClick={handleLogoutClick}>로그아웃</Menu>
-        ) : (
-          <Menu onClick={handleLoginClick}>로그인</Menu>
-        )}
-
       </Menu>
     </SidebarContainer>
   );

@@ -34,6 +34,7 @@ const PostProperty = styled.div`
 
 function BoardList() {
   const [posts, setPosts] = useState([]);
+  const [commentsCounts, setCommentsCounts] = useState({}); // 상태 추가
   const [limit, setLimit] = useState(5);
   const [pageNum, setPageNum] = useState(1);
   const [totalPages, setTotalPages] = useState(1);
@@ -41,26 +42,25 @@ function BoardList() {
   const navigate = useNavigate();
   const location = useLocation();
 
-  // 글 목록 불러오기
+  // 게시글 목록 불러오기
   useEffect(() => {
     const fetchData = async () => {
       try {
         const response = await axios.get(`/toonder/board?p_num=${pageNum}`);
         setPosts(response.data);
-        let total = pageNum;
-        let hasMorePages = true;
 
-        while (hasMorePages) {
-          const response = await axios.get(`/toonder/board?p_num=${total + 1}`);
-          if (response.data.length === 0) {
-            hasMorePages = false;
-          } else {
-            total++;
+        // 각 게시물의 댓글 수 가져오기
+        const commentsCountsData = {};
+        for (const post of response.data) {
+          try {
+            const commentResponse = await axios.get(`/toonder/board/${post.brdNo}/comment`);
+            commentsCountsData[post.brdNo] = commentResponse.data.length;
+          } catch (error) {
+            console.log(`Failed to fetch comments for post ${post.brdNo}`);
+            commentsCountsData[post.brdNo] = 0;
           }
         }
-
-        setTotalPages(total);
-        // // setLoading(false);
+        setCommentsCounts(commentsCountsData);
       } catch (error) {
         console.log(error);
       }
@@ -91,8 +91,8 @@ function BoardList() {
           >
             {post.brdTitle}
           </PostTitle>
-          <PostProperty>
-            {`${post.mem_name} · ${formatDate(post.brdRegDate)} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike}`}
+          <PostProperty style={{fontFamily:""}}>
+            {`${post.mem_name} · ${formatDate(post.brdRegDate)} · 조회 ${post.brdViewCount} · 좋아요 ${post.brdLike} · 댓글 ${commentsCounts[post.brdNo] || 0}`}
           </PostProperty>
         </PostContainer>
       ))}
