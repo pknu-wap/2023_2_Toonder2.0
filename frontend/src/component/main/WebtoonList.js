@@ -92,7 +92,11 @@ function WebtoonList(){
             <RecommandWebtoonArea>
                 <DivWebtoon>
                 {webtoonList.map(item => (
-                    <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
+                    <div style={{marginRight:"5%"}} onClick={() => {
+                      navigate('/webtooninfo', {
+                        state: { mastrId: item.mastrId },
+                      });
+                    }}>  
                 
                     <StyleImage src={item.imageDownloadUrl} alt="image error"/>
                     <AuthorText>{item.title.length > 8 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
