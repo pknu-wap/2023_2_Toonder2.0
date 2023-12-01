@@ -37,13 +37,20 @@ function PostView() {
       const { data, error } = await supabase.auth.getSession();
       const session = data.session;
 
-      if (session === null) {
+      if (session === null && localStorage.getItem('loggedUserEmail') === undefined) {
         alert("로그인을 먼저 해주세요.");
         navigate("/login");
       } else {
-        const email = session.user.email;
-        setEmail(email);
-        console.log("접속한 사용자 이메일:", email);
+                var email ;
+        if (session === null){
+          email = localStorage.getItem('loggedUserEmail');
+          setEmail(localStorage.getItem('loggedUserEmail'));  
+        }
+        else {
+          email = data.session.user.email;
+          setEmail(email);
+          console.log(email);
+        }
       }
     };
     fetchData();

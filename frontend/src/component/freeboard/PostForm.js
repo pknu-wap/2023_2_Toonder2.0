@@ -18,14 +18,22 @@ function PostForm() {
       const { data, error } = await supabase.auth.getSession();
       const session = data.session;
 
-      if (session === null) {
+      if (session === null && localStorage.getItem('loggedUserEmail') === undefined) {
         alert("로그인을 먼저 해주세요.");
         navigate("/login");
       } else {
-        const email = data.session.user.email;
-        setLoggedUserEmail(email);
-        console.log(loggedUserEmail);
-
+        var email ;
+        if (session === null){
+          email = localStorage.getItem('loggedUserEmail');
+          setLoggedUserEmail(localStorage.getItem('loggedUserEmail'));  
+        }
+        else {
+          email = data.session.user.email;
+          setLoggedUserEmail(email);
+          console.log(loggedUserEmail);
+        }
+        
+    
         const rdata = {
           email: email,
         };
