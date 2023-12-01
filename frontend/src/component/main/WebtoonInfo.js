@@ -10,56 +10,89 @@ import HoverRating from "./HoverRating";
 function WebtoonInfo() {
   const [jsonData, setJsonData] = useState([]);
   const { state } = useLocation();
-  // const { mastrId } = state;
+  const { mastrId } = state;
   const [userEmail, setUserEmail] = useState("");
   const [userName, setUserName] = useState("안시현");
   const [review, setReview] = useState("");
+  const [reviewList, setReviewList] = useState([]);
   const [reviewRating, setReviewRating] = useState(0); // 별점 상태 관리를 위한 useState 추가
 
-  // useEffect(() => {
-  //   setUserEmailForStart();
-  // }, []);
+  // 웹툰 데이터 state
+  const [webtoonImage, setWebtoonImage] = useState(null);
+  const [webtoonTitle, setWebtoonTitle] = useState("");
+  const [webtoonOutline, setWebtoonOutline] = useState("");
+  const [webtoonAuthors, setWebtoonAuthors] = useState("");
+  const [webtoonPlatform, setWebtoonPlatform] = useState("");
+  const [webtoonGenre, setWebtoonGenre] = useState("");
+
+  useEffect(() => {
+    setUserEmailForStart();
+    console.log("마스터 아이디:", mastrId);
+  }, []);
 
   // 사용자 이메일, 닉네임 불러오기
-  // const setUserEmailForStart = async () => {
-  //   const { data, error } = await supabase.auth.getSession();
-  //   const session = data.session;
-  //   setUserEmail(session.user.email);
-  //   // setUserName(localStorage.getItem('loggedUserName'));
-  //   console.log(userName); // 테스트
-  // };
+  const setUserEmailForStart = async () => {
+    const { data, error } = await supabase.auth.getSession();
+    const session = data.session;
+    setUserEmail(session.user.email);
+    // setUserName(localStorage.getItem('loggedUserName'));
+    console.log(userName); // 테스트
+  };
 
-  // 리뷰 등록 - 작성한 리뷰 백엔드로 전송 sendingReviewToBackEnd
-  const handleSubmitReview = async (e) => {
-    if (!reviewRating) {
-      alert("별점을 매겨주세요.");
-      return;
-    }
+  useEffect(() => {
+    setUserEmailForStart();
 
-    if (!review) {
-      alert("리뷰를 입력하세요.");
-      return;
-    }
+    axios.get("toonder/webtoon/" + mastrId).then((res) => {
+      const webtoonInfo = res.data;
+      setWebtoonImage(webtoonInfo.imageDownloadUrl);
+      setWebtoonTitle(webtoonInfo.title);
+      setWebtoonOutline(webtoonInfo.outline);
+      setWebtoonAuthors(
+        webtoonInfo.sntncWritrNm === webtoonInfo.pictrWritrNm ||
+          webtoonInfo.sntncWritrNm === "" ||
+          webtoonInfo.pictrWritrNm === ""
+          ? webtoonInfo.pictrWritrNm
+          : webtoonInfo.sntncWritrNm + " / " + webtoonInfo.pictrWritrNm
+      );
+      setWebtoonPlatform(webtoonInfo.pltfomCdNm);
+      setWebtoonGenre(webtoonInfo.mainGenreCdNm);
+    });
 
-    const reviewData = {
+    axios.get("toonder/webtoon/" + mastrId + "/review").then((res) => {
+      console.log(res.data);
+      setReviewList(res.data);
+    });
+  }, []);
+
+  // 리뷰 등록
+  const handleSubmitReview = () => {
+    //   if (!reviewRating) {
+    //     alert("별점을 매겨주세요.");
+    //     return;
+    //   }
+
+    //   if (!review) {
+    //     alert("리뷰를 입력하세요.");
+    //     return;
+    //   }
+    const sendingReviewData = {
       revContent: review,
       revRating: reviewRating,
-      // memName: localStorage.getItem('loggedUserName'),
+      memName: localStorage.getItem("loggedUserName"),
       mem_email: userEmail,
     };
 
-    console.log(reviewData);
+    console.log(sendingReviewData);
 
-    // 백엔드 서버 연결 후 주석 해제
-    // axios
-    //   .post("toonder/webtoon/" + mastrId + "/review", reviewData)
-    //   .then((res) => {
-    //     //console.log(res.data);
-    //     // setReviewList(reviewList.concat(res.data));
-    //   })
-    //   .catch((error) => console.log(error));
+    axios
+      .post("toonder/webtoon/" + mastrId + "/review", sendingReviewData)
+      .then((res) => {
+        console.log(res.data);
+        setReviewList(reviewList.concat(res.data));
+      })
+      .catch((error) => console.log(error));
 
-    setReview("");
+    // setInputReviewText('');
 
     // setRegRateValue(5.0);
     // setOpenModalForConfirm(false);
@@ -81,13 +114,13 @@ function WebtoonInfo() {
     // console.log('toonder/webtoon/' + mastrId + '/review/' + revNo);
 
     // 백엔드 서버 연결 후 주석 해제
-    // axios
-    //   .delete('toonder/webtoon/' + mastrId + '/review/' + revNo, {
-    //     data: reviewData,
-    //   })
-    //   .catch((error) => console.log(error));
+    axios
+      .delete('toonder/webtoon/' + mastrId + '/review/' + revNo, {
+        data: reviewData,
+      })
+      .catch((error) => console.log(error));
 
-    // setReviewList(reviewList.filter((review) => review.revNo !== revNo));
+    setReviewList(reviewList.filter((review) => review.revNo !== revNo));
   };
 
   // 테스트용 정적 데이터 불러오기
@@ -107,30 +140,28 @@ function WebtoonInfo() {
 
   return (
     <>
+      {/* const [webtoonImage, setWebtoonImage] = useState(null);
+  const [webtoonTitle, setWebtoonTitle] = useState('');
+  const [webtoonOutline, setWebtoonOutline] = useState('');
+  const [webtoonAuthors, setWebtoonAuthors] = useState('');
+  const [webtoonPlatform, setWebtoonPlatform] = useState('');
+  const [webtoonGenre, setWebtoonGenre] = useState(''); */}
+
       <Header title="웹툰 정보" />
       <BoardContainer>
         <InfoContainer>
           <ThumbnailWrapper
-            src={process.env.PUBLIC_URL + "/webtoon_thumbnail.jpg"}
+            src={webtoonImage}
             alt="webtoon_thumbnail"
             width="150px"
             height="auto"
           />
           <InfoWrapper>
-            <div style={{ fontSize: "24px" }}>{jsonData.title}</div>
-            <div>
-              {/* 글 작가가 따로 없는 경우 '글/그림 | 작가명' 출력 */}
-              {jsonData.sntncWritrNm === "" ? (
-                <div>글/그림 | {jsonData.pictrWritrNm}</div>
-              ) : (
-                <div>
-                  글 | {jsonData.sntncWritrNm} · 그림 | {jsonData.pictrWritrNm}
-                </div>
-              )}
-            </div>
-            <div>장르 | {jsonData.mainGenreCdNm}</div>
-            <div>연재처 | {jsonData.pltfomCdNm}</div>
-            <div>
+            <div style={{ fontSize: "24px" }}>{webtoonTitle}</div>
+            <div>글/그림 | {webtoonAuthors}</div>
+            <div>장르 | {webtoonGenre}</div>
+            <div>연재처 | {webtoonPlatform}</div>
+            {/* <div>
               평균별점 |{" "}
               {jsonData.review &&
                 (
@@ -140,47 +171,44 @@ function WebtoonInfo() {
                   ) / jsonData.review.length
                 ).toFixed(1)}
             </div>
-            <BoardBtn>즐겨찾기</BoardBtn>
+            <BoardBtn>즐겨찾기</BoardBtn> */}
           </InfoWrapper>
         </InfoContainer>
 
         {/* 줄거리 */}
         <div style={{ marginTop: "30px" }}>줄거리</div>
-        <ContentWrapper>{jsonData.outline}</ContentWrapper>
+        <ContentWrapper>{webtoonOutline}</ContentWrapper>
 
         {/* 리뷰 */}
         <div style={{ marginTop: "30px" }}>리뷰</div>
         <ContentWrapper>
-          {jsonData.review &&
-            jsonData.review.map((review) => (
-              <ReviewWrapper key={review.revNo}>
-                <ReviewContent>{review.revContent}</ReviewContent>
-                <ReviewProperty>
-                  <div style={{ display: "flex", alignItems: "center" }}>
-                    <div>{review.memName}</div>
-                    {review.memName === userName && (
-                      <div style={{ marginLeft: "10px" }}>
-                        <ReviewActionBtn>수정</ReviewActionBtn>
-                        <ReviewActionBtn
-                          onClick={() =>
-                            handleDeleteReview(review.revNo, review)
-                          }
-                        >
-                          삭제
-                        </ReviewActionBtn>
-                      </div>
-                    )}
-                  </div>
-                  <div>
-                    <HoverRating
-                      value={review.revRating}
-                      size="small"
-                      readOnly={true}
-                    />
-                  </div>
-                </ReviewProperty>
-              </ReviewWrapper>
-            ))}
+          {reviewList.map((review) => (
+            <ReviewWrapper key={review.revNo}>
+              <ReviewContent>{review.revContent}</ReviewContent>
+              <ReviewProperty>
+                <div style={{ display: "flex", alignItems: "center" }}>
+                  <div>{review.memName}</div>
+                  {review.memEmail === userEmail && (
+                    <div style={{ marginLeft: "10px" }}>
+                      <ReviewActionBtn>수정</ReviewActionBtn>
+                      <ReviewActionBtn
+                        onClick={() => handleDeleteReview(review.revNo, review)}
+                      >
+                        삭제
+                      </ReviewActionBtn>
+                    </div>
+                  )}
+                </div>
+                <div>
+                  <HoverRating
+                    value={review.revRating}
+                    size="small"
+                    readOnly={true}
+                  />
+                </div>
+              </ReviewProperty>
+            </ReviewWrapper>
+          ))}
         </ContentWrapper>
 
         {/* 리뷰 작성 폼 */}
