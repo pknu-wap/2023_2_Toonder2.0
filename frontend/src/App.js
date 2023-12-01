@@ -13,6 +13,8 @@ import LoginHandler from "./component/login/LoginHandler";
 import supabase from "./component/supabase";
 import { Footer } from "./component/background/Footer";
 import WebtoonInfo from "./component/main/WebtoonInfo";
+import WebtoonList from "./component/main/WebtoonList";
+
 import Navbar from "./component/background/Navbar";
 // import { AuthProvider } from "./AuthContext";
 import PostView from "./component/freeboard/PostView";
@@ -55,6 +57,10 @@ function App() {
     return savedTheme === 'Dark Mode';
   });
 
+  const [isAdult, setIsAdult] = useState(() => {
+    const savedStatus = localStorage.getItem('adult');
+    return savedStatus === true;
+  })
   return (
     <ThemeProvider theme={isDarkTheme ? darkTheme : lightTheme}>
       <GlobalStyles />
@@ -62,7 +68,7 @@ function App() {
         style={{ background: isDarkTheme ? darkTheme.body : lightTheme.body }}
       >
         <Container>
-          <Navbar isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} />
+          <Navbar isDarkTheme={isDarkTheme} setIsDarkTheme={setIsDarkTheme} isAdult = {isAdult} setIsAdult = {setIsAdult}/>
 
           <Routes>
             <Route path="/" element={<MainPage />}></Route>
@@ -71,7 +77,10 @@ function App() {
             <Route path="/join/step2" element={<JoinPageStep2 />} />
             <Route path="/findpw" element={<FindPwPage />}></Route>
             <Route path="/newpw" element={<NewPwPage />}></Route>
+
+            <Route path="/webtoonlist" element={<WebtoonList />}></Route>
             <Route path="/mypage" element={<MyPage />}></Route>
+
             <Route element={<BoardLayout />}>
               <Route path="board" element={<BoardList />} />
               <Route path="postview" element={<PostView />} />

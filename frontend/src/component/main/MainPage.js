@@ -58,7 +58,7 @@ function MainPage() {
   const [recommendOutline, setRecommendOutline] = useState([]);
   const [recommendAuthor, setRecommendAuthor] = useState([]);
   // 로컬 스토리지에 사용자 이름 저장
-
+  const [isAdult, setIsAdult] = useState(false)
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -85,30 +85,57 @@ function MainPage() {
 
     };
     
-    const fetchUnloggedList = () => {   
+    
+    const fetchUnloggedList = () => {  
       axios
-        .get('toonder/webtoon/recommend/outline?19filter=false')
+        .get('toonder/webtoon/recommend/outline?19filter=true')
         .then(res => setRecommendGenre(res.data))
       
         axios
-        .get('toonder/webtoon/recommend/outline?19filter=false')
+        .get('toonder/webtoon/recommend/outline?19filter=true')
         .then(res => setRecommendDraw(res.data))
   
         axios
-        .get('toonder/webtoon/recommend/outline?19filter=false')
+        .get('toonder/webtoon/recommend/outline?19filter=true')
         .then(res => setRecommendOutline(res.data))
         
         axios
-        .get('toonder/webtoon/recommend/outline?19filter=false')
+        .get('toonder/webtoon/recommend/outline?19filter=true')
+        .then(res => setRecommendAuthor(res.data))
+    };
+
+    const fetchLoggedList = () => {   
+      const email = localStorage.getItem('loggedUserEmail')
+      const rtData = {
+        email : email
+      }
+      axios
+        .post('toonder/recommand', rtData)
+        .then(res => setRecommendGenre(res.data))
+        .catch(error => console.log(error))
+      
+        axios
+        .get('toonder/webtoon/recommend/outline?19filter='+isAdult)
+        .then(res => setRecommendDraw(res.data))
+  
+        axios
+        .get('toonder/webtoon/recommend/draw?19filter='+isAdult)
+        .then(res => setRecommendOutline(res.data))
+        
+        axios
+        .get('toonder/webtoon/recommend/outline?19filter='+isAdult)
         .then(res => setRecommendAuthor(res.data))
     };
 
     fetchNameData();
 
     if (localStorage.getItem('loggedUserEmail') ){
-      fetchUnloggedList()
+      fetchLoggedList()
     }
     else {
+      console.log(isAdult)
+      console.log(!localStorage.getItem('adult'))
+      setIsAdult(localStorage.getItem('adult'))
       fetchUnloggedList()
     }
   }, []);
@@ -135,7 +162,7 @@ function MainPage() {
         <DivTitle>좋아하시는 그림체가 비슷해요.</DivTitle>
         <DivWebtoon>
           {recommendDraw.map(item => (
-            <div style={{marginRight:"5%"}}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
               <AuthorText>{item.pictrWritrNm}</AuthorText>
@@ -146,7 +173,7 @@ function MainPage() {
         <DivTitle>좋아하시는 줄거리가 비슷합니다.</DivTitle>
         <DivWebtoon>
           {recommendOutline.map(item => (
-            <div style={{marginRight:"5%"}}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
               <AuthorText>{item.pictrWritrNm}</AuthorText>
@@ -157,7 +184,7 @@ function MainPage() {
         <DivTitle>좋아하시는 작가님의 다른 작품이에요!</DivTitle>
         <DivWebtoon>
           {recommendAuthor.map(item => (
-            <div style={{marginRight:"5%"}}>  
+            <div style={{marginRight:"5%"}} onClick ={ () => navigate("/webtooninfo")}>  
               <StyleImage src={item.imageDownloadUrl} alt="image error"/>
               <AuthorText>{item.title.length > 9 ? item.title.substring(0,10) + '...' : item.title}</AuthorText>
               <AuthorText>{item.pictrWritrNm}</AuthorText>

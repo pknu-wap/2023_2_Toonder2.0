@@ -76,13 +76,13 @@ const menuItems = [
   { to: "/webtoonlist", text: "웹툰 목록" },
 ];
 
-const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
+const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme, isAdult, setIsAdult }) => {
   const navigate = useNavigate();
   const [isLoggedIn, setIsLoggedIn] = useState(false); // 로그인 상태 확인
   const sidebarRef = useRef(null);
   const [theme, setTheme] = useState("Light Mode");
   const [adultFilter, setAdultFilter] = useState(false); // 19금 필터를 위한 상태
-  const [loggedUserName, setLoggedUserName] = useState();
+  const [loggedUserName, setLoggedUserName] = useState(localStorage.getItem('loggedUserName'));
 
   // 사용자 이름 불러오기
   useEffect(() => {
@@ -118,7 +118,13 @@ const Sidebar = ({ isOpen, onMenuClick, isDarkTheme, setIsDarkTheme }) => {
   };
 
   const handleAdultFilterToggle = () => {
-    setAdultFilter(!adultFilter); // 19금 필터 상태 변경
+    const tempAdult = adultFilter ? false : true
+    setAdultFilter(tempAdult); // 19금 필터 상태 변경
+    
+    setIsAdult(!adultFilter)
+    console.log(!tempAdult)
+    localStorage.setItem('adult', !tempAdult)
+
     // 여기에 19금 필터를 적용하거나 설정을 처리하는 로직을 추가할 수 있어요.
   };
 
