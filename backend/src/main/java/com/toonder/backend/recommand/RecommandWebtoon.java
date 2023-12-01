@@ -51,7 +51,7 @@ public class RecommandWebtoon {
         Random random = new Random();
         
         List<WebtoonRecommendationDto> chosenWebtoonsInfo = new ArrayList<>();
-        while (chosenWebtoonsInfo.size()!=4){
+        while (chosenWebtoonsInfo.size()!=3){
             String randomGenre = hashTagArray.get(random.nextInt(hashTagArray.size()));
             List<Webtoon> chosenGenreWebtoons = webtoonRepository.findByMainGenreCdNm(randomGenre);
             Webtoon chosenWebtoon = chosenGenreWebtoons.get(random.nextInt(chosenGenreWebtoons.size()));
