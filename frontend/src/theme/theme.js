@@ -8,6 +8,13 @@ export const GlobalStyles = createGlobalStyle`
     font-weight: normal;
     font-style: normal;
   }
+  @font-face {
+    font-family: "NIXGONM-Vb";
+    src: url("https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_six@1.2/NIXGONM-Vb.woff")
+      format("woff");
+    font-weight: normal;
+    font-style: normal;
+  }
   html {
     background: ${({ theme }) => theme.body};
   }
@@ -46,7 +53,7 @@ export const darkTheme = {
   header: "#efefef",
   body: "#414141",
   text: "#efefef",
-  icon: "white", 
+  icon: "white",
   btnBackground: "#6e6e6e",
   btnBackgroundDisabled: "#6e6e6e66",
   footerBackground: "#121212",
