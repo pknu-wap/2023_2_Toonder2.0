@@ -207,7 +207,7 @@ function WebtoonInfo() {
 
 // PostView 컴포넌트에서 styled component import
 
-export const BoardContainer = styled.div`
+const BoardContainer = styled.div`
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -228,7 +228,7 @@ export const BoardContainer = styled.div`
   }
 `;
 
-export const InfoContainer = styled.div`
+const InfoContainer = styled.div`
   display: flex;
   flex-direction: row;
   justify-content: space-between;
@@ -246,7 +246,7 @@ const ThumbnailWrapper = styled.img`
   }
 `;
 
-export const InfoWrapper = styled.div`
+const InfoWrapper = styled.div`
   font-size: 15px;
   text-align: left;
   margin-top: 10px;
@@ -256,7 +256,7 @@ export const InfoWrapper = styled.div`
   }
 `;
 
-export const ContentWrapper = styled.div`
+const ContentWrapper = styled.div`
   display: flex;
   flex-direction: column;
   font-size: 15px;
@@ -349,7 +349,7 @@ const ReviewSubmitBtn = styled.button`
   cursor: pointer;
 `;
 
-export const ReviewWrapper = styled.div`
+const ReviewWrapper = styled.div`
   color: ${({ theme }) => theme.text};
   border-bottom: 1px solid #ccc;
   width: 100%;
@@ -357,7 +357,7 @@ export const ReviewWrapper = styled.div`
   text-align: left;
 `;
 
-export const ReviewContent = styled.div`
+const ReviewContent = styled.div`
   font-size: 16px;
 
   @media (max-width: 540px) {
@@ -365,7 +365,7 @@ export const ReviewContent = styled.div`
   }
 `;
 
-export const ReviewProperty = styled.div`
+const ReviewProperty = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
